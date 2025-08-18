@@ -3,6 +3,7 @@
   --heading-color: linear-gradient(180deg, #E9B540 0%, #F7D2C4 100%);
 
   --text-color: #E9B540;
+  --sub-heading: #A67C52;
 }
 
 * {
@@ -18,6 +19,7 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+/* Header*/
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -78,6 +80,7 @@ body {
   font-size: 25px;
 }
 
+/* HERO - SECTION */
 .hero-section {
   display: flex;
   justify-content: space-between;
@@ -119,13 +122,13 @@ body {
   align-items: center;
 }
 
-.hero-buttons a span{
+.hero-buttons a span {
   color: var(--text-color);
   font-weight: bold;
   margin-left: 5px;
 }
 
-.hero-buttons a span:hover{
+.hero-buttons a span:hover {
   text-decoration: none;
 }
 
@@ -189,4 +192,30 @@ body {
   background-size: cover;
   opacity: 0.3;
   pointer-events: none;
+}
+
+/*POPULAR-SECTION*/
+.popular-section {
+  align-items: center;
+  margin-top: 20px;
+  padding: 50px;
+  background: none;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.popular-headings{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.popular-headings h1{
+  font-size: 45px;
+  color: #D6C39F;
+}
+
+.popular-headings h3{
+  color: var(--sub-heading);
+  font-family: 'Inter', sans-serif;
 }
