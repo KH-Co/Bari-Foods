@@ -82,7 +82,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 60px 50px;
+  padding: 50px;
   background: none;
   color: white;
   position: relative;
@@ -119,6 +119,16 @@ body {
   align-items: center;
 }
 
+.hero-buttons a span{
+  color: var(--text-color);
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.hero-buttons a span:hover{
+  text-decoration: none;
+}
+
 .btn-primary {
   background: #a0180d;
   color: #FAFEC6;
@@ -149,6 +159,13 @@ body {
   align-self: center;
   font-size: 16px;
 }
+
+.btn-secondary:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #eff4a4;
+}
+
 
 .hero-image {
   max-width: 40%;
