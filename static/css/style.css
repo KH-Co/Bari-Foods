@@ -4,6 +4,8 @@
 
   --text-color: #E9B540;
   --sub-heading: #A67C52;
+
+  --font-family-I: 'Inter', sans-serif;
 }
 
 * {
@@ -200,7 +202,6 @@ body {
   margin-top: 20px;
   padding: 50px;
   background: none;
-  color: white;
   position: relative;
   overflow: hidden;
 }
@@ -213,9 +214,34 @@ body {
 .popular-headings h1{
   font-size: 45px;
   color: #D6C39F;
+  margin-top: 35px;
 }
 
 .popular-headings h3{
   color: var(--sub-heading);
-  font-family: 'Inter', sans-serif;
+}
+
+.popular-headings h3, h1{
+  font-family: var(--font-family-I);
+  letter-spacing: 0.1rem;
+}
+
+
+
+
+/*About Section*/
+.about-section {
+  align-items: center;
+  margin-top: 20px;
+  padding: 50px;
+  background: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-container{
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: 6px solid #F7F7F7;
 }
