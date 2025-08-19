@@ -202,46 +202,38 @@ body {
 .popular-section {
   align-items: center;
   margin-top: 20px;
-  padding: 50px;
+  padding: 50px 20px 90px;
   background: none;
   position: relative;
   overflow: hidden;
   font-family: var(--font-family-I);
 }
+
 
 .popular-headings {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  text-align: center;
 }
 
 .popular-headings h1 {
-  font-size: 45px;
+  font-size: clamp(30px, 5vw, 56px);
   color: var(--heading-color);
-  margin-top: 35px;
+  margin: 18px 0 34px;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+  font-family: var(--font-family-I);
+  font-weight: 800;
+  letter-spacing: 0.1rem;
 }
 
 .popular-headings h3 {
   color: var(--sub-heading);
   font-size: 18px;
-}
-
-.popular-headings h3,
-h1 {
+  letter-spacing: 0.18em;
+  margin: 0;
   font-family: var(--font-family-I);
-  letter-spacing: 0.1rem;
-}
-
-/* ======= Popular Products (cards + ornaments) ======= */
-.popular-section {
-  align-items: center;
-  margin-top: 20px;
-  padding: 50px 20px 90px;
-  background: none;
-  position: relative;
-  overflow: hidden;
-  color: var(--text, #f6efe6);
 }
 
 .corner-img {
@@ -256,30 +248,6 @@ h1 {
   user-select: none;
 }
 
-.popular-headings {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  text-align: center;
-}
-
-.popular-headings h3 {
-  color: var(--sub-heading, #a67c52);
-  font-size: 14px;
-  letter-spacing: 0.28em;
-  margin: 0;
-}
-
-.popular-headings h1 {
-  font-family: var(--font-family-I, "Inter"), serif;
-  font-weight: 800;
-  font-size: clamp(30px, 5vw, 56px);
-  color: var(--text-color, #e9b540);
-  margin: 18px 0 34px;
-  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
-}
-
 /* Grid */
 .product-grid {
   display: grid;
@@ -287,18 +255,6 @@ h1 {
   gap: 40px;
   max-width: 1200px;
   margin: 0 auto;
-}
-
-@media (max-width: 1000px) {
-  .product-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 640px) {
-  .product-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* Card uses provided frame image */
