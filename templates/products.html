@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Products</title>
   <link rel="stylesheet" href="../static/css/style.css">
+  <link rel="stylesheet" href="../static/css/product.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href='https://cdn.boxicons.com' rel='stylesheet'>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 </head>
+
+</head>
+
 <body>
   <header class="navbar">
     <div class="logo-container">
@@ -31,7 +36,67 @@
     </div>
   </header>
 
-  
-  
+  <div class="container">
+    <div class="filters">
+      <button class="tab active" data-filter="all">All</button>
+      <button class="tab" data-filter="rajasthani">Rajasthani Special</button>
+      <button class="tab" data-filter="favorite">My Favorite</button>
+    </div>
+
+    <div id="grid" class="grid" aria-live="polite"></div>
+  </div>
+
+  <!-- Modal -->
+  <div id="backdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" role="document">
+      <header class="modal-header">
+        <div class="crumbs" id="modalCrumbs">Products › All › <span id="crumbName"></span></div>
+        <button class="close" id="modalClose" aria-label="Close">✕</button>
+      </header>
+
+      <div class="modal-body">
+        <!-- Left: hero -->
+        <aside class="hero">
+          <div class="hero-frame">
+            <img id="modalHero" alt="">
+          </div>
+          <div class="thumbs" id="modalThumbs"></div>
+        </aside>
+
+        <!-- Right: details -->
+        <section class="detail">
+          <h1 class="title" id="modalTitle"></h1>
+          <div class="sub muted" id="modalWeight"></div>
+
+          <div class="price-row">
+            <div class="price" id="modalPrice"></div>
+            <div class="qty">
+              <button id="dec" aria-label="Decrease">−</button>
+              <span id="qtyVal">1</span>
+              <button id="inc" aria-label="Increase">+</button>
+            </div>
+            <button class="cta-btn" id="addToCart">Add to Cart</button>
+            <button class="save" id="fav" aria-label="Favorite">☆</button>
+          </div>
+          <div class="tiny muted">(Inclusive of all taxes)</div>
+
+          <div class="divider"></div>
+
+          <div class="rating-row">
+            <div class="rating" id="modalRating"></div>
+          </div>
+
+          <h3 class="section-h">Product details</h3>
+          <p class="muted" id="modalDesc"></p>
+
+          <div class="divider"></div>
+          <div class="notice">This product is non-returnable</div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script src="../static/js/products.js" defer></script>
 </body>
+
 </html>
