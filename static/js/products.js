@@ -108,6 +108,55 @@ function renderGrid() {
 }
 renderGrid();
 
+state.search = "";
+
+const searchForm = document.getElementById('productSearchForm');
+const searchInput = document.getElementById('productSearch');
+
+if (searchForm && searchInput){ 
+  searchForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    state.search = (searchInput.value || "").trim();
+    renderGrid();
+  });
+
+  let typingTimer;
+  searchInput.addEventListener('input', ()=>{
+    clearTimeout(typingTimer);
+    typingTimer = setTimeout(()=>{
+      state.search = (searchInput.value || "").trim();
+      renderGrid();
+    }, 120);
+  });
+
+  searchInput.addEventListener('keydown', (e)=>{
+    if (e.key === 'Escape'){
+      searchInput.value = "";
+      state.search = "";
+      renderGrid();
+      searchInput.blur();
+    }
+  });
+}
+
+function renderGrid(){
+  const q = (state.search || "").toLowerCase();
+
+  const filtered = products.filter(p => {
+    const categoryOk =
+      state.filter === "all" ? true :
+      state.filter === "favorite" ? state.favorites.has(p.id) :
+      p.tag === state.filter;
+
+    const nameOk = q ? p.name.toLowerCase().includes(q) : true;
+
+    return categoryOk && nameOk;
+  });
+
+  grid.innerHTML = filtered.map(productCardHTML).join("");
+}
+
+
 /* Filters */
 document.querySelector(".filter-bar").addEventListener("click", (e) => {
   const btn = e.target.closest(".filter-chip");
