@@ -109,14 +109,17 @@ function renderGrid() {
 renderGrid();
 
 /* Filters */
-document.querySelector(".filters").addEventListener("click", (e) => {
-  const tab = e.target.closest(".tab");
-  if (!tab) return;
-  document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
-  tab.classList.add("active");
-  state.filter = tab.dataset.filter;
+document.querySelector(".filter-bar").addEventListener("click", (e) => {
+  const btn = e.target.closest(".filter-chip");
+  if(!btn) return;
+
+  document.querySelectorAll(".filter-chip").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+
+  state.filter = btn.dataset.filter;  // "all" | "rajasthani" | "favorite"
   renderGrid();
 });
+
 
 /* Grid: open modal / add / fav */
 grid.addEventListener("click", (e) => {
@@ -248,4 +251,46 @@ if (location.hash) {
   const id = location.hash.replace("#", "");
   if (products.some((p) => p.id === id)) openModal(id);
 }
+
+//headder scroll behavior
+(function(){
+  const nav = document.querySelector('.navbar');
+  if(!nav) return;
+
+  let lastY = window.scrollY;
+  let ticking = false;
+  const threshold = 6;
+  const showAtTop = 24;
+
+  function onScroll(){
+    const y = window.scrollY;
+
+    if (!ticking){
+      window.requestAnimationFrame(()=>{
+        const diff = y - lastY;
+
+        if (y <= showAtTop){
+          nav.classList.remove('is-hidden');
+          lastY = y;
+          ticking = false;
+          return;
+        }
+
+        if (Math.abs(diff) > threshold){
+          if (diff > 0){
+            nav.classList.add('is-hidden');
+          } else {
+            nav.classList.remove('is-hidden');
+          }
+          lastY = y;
+        }
+
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
 
