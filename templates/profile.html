@@ -5,11 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Account - Bari Foods</title>
-  <link rel="stylesheet" href="../static/css/root.css">
-  <link rel="stylesheet" href="../static/css/profile.css">
   <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap"
     rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/profile.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
@@ -17,21 +16,16 @@
   <!-- Header -->
   <header class="navbar">
     <div class="left-section">
-      <div class="menu-icon">
-        <i class="fas fa-bars"></i>
-      </div>
-      <a href="index.html" style="text-decoration: none;">
-        <div class="logo-container">
-          <img src="../assets/img/bari.jpg" alt="Bari Foods Logo" class="logo">
-          <div class="brand">BARI FOODS</div>
-        </div>
+      <a href="index.html" class="logo-container">
+        <img src="../assets/img/bari.jpg" alt="Bari Foods Logo" class="logo">
+        <div class="brand">BARI FOODS</div>
       </a>
     </div>
 
     <div class="product-search">
-      <input type="search" placeholder="Search product" autocomplete="off">
+      <input type="search" placeholder="Search products, brands, and more..." autocomplete="off">
       <button type="submit" class="search-btn">
-        <svg viewBox="0 0 24 24" width="20" height="20">
+        <svg viewBox="0 0 24 24" width="18" height="18">
           <path fill="currentColor"
             d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-1.06 1.06l.27.28v.79l4.25 4.25a1 1 0 1 0 1.41-1.41L15.5 14zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z" />
         </svg>
@@ -39,196 +33,764 @@
     </div>
 
     <div class="icons">
-      <a href="#"><i class="fas fa-shopping-cart"></i></a>
+      <i class="fas fa-shopping-cart"></i>
       <div class="divider"></div>
-      <a href="#"><i class="fas fa-user-circle"></i></a>
+      <i class="fas fa-user-circle"></i>
     </div>
   </header>
 
   <!-- Main Content -->
-  <main class="profile-main">
-    <!-- Account Header -->
-    <div class="account-header">
-      <div class="breadcrumb">
-        <a href="index.html" style="text-decoration: none;"><span class="breadcrumb-item">Home</span></a>
-        <span class="breadcrumb-arrow">▶</span>
-        <span class="breadcrumb-item active">Profile</span>
+  <main class="main-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="https://via.placeholder.com/80x80/e9b540/ffffff?text=JD" alt="Profile" class="profile-avatar">
+        <div class="profile-name">John Doe</div>
+        <div class="profile-email">john.doe@example.com</div>
       </div>
-      <h1 class="account-title">My Account</h1>
-    </div>
 
-    <div class="filter-bar">
-      <button class="filter-chip active" data-filter="account">Account</button>
-      <button class="filter-chip" data-filter="orders">Orders</button>
-      <button class="filter-chip" data-filter="addresses">Addresses</button>
-    </div>
+      <nav>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="#" class="nav-link active" data-section="profile">
+              <i class="fas fa-user-edit"></i>
+              <span>Profile</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-section="security">
+              <i class="fas fa-shield-alt"></i>
+              <span>Security</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-section="orders">
+              <i class="fas fa-box-open"></i>
+              <span>Order History</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-section="addresses">
+              <i class="fas fa-map-marked-alt"></i>
+              <span>Addresses</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-section="preferences">
+              <i class="fas fa-cog"></i>
+              <span>Preferences</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link" data-section="delete">
+              <i class="fas fa-exclamation-triangle"></i>
+              <span>Account Deletion</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
 
-    <!-- Profile Content -->
-    <div class="profile-content">
-      <!-- Profile Information Section -->
-      <div class="profile-card">
-        <h2 class="profile-card-title">Profile Information</h2>
+    <!-- Content Area -->
+    <div class="content-area">
+      <!-- Page Header -->
+      <div class="page-header">
+        <nav class="breadcrumb">
+          <span class="breadcrumb-item">Home</span>
+          <span class="breadcrumb-separator">›</span>
+          <span class="breadcrumb-item active">My Account</span>
+        </nav>
+        <h1 class="page-title">Account Management</h1>
+      </div>
 
-        <!-- Profile Picture Section -->
-        <div class="profile-picture-section">
-          <div class="profile-picture">
-            <img src="../assets/img/profile-placeholder.jpg" alt="Profile Picture" id="profileImage">
+      <!-- Profile Settings Section -->
+      <div class="content-section active" id="profileSection">
+        <div class="section-grid">
+          <!-- Profile Information -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Personal Information</h2>
+              <div class="card-icon">
+                <i class="fas fa-user-edit"></i>
+              </div>
+            </div>
+
+            <div class="profile-picture-section">
+              <div class="profile-picture-large">
+                <img src="https://via.placeholder.com/140x140/e9b540/ffffff?text=JD" alt="Profile Picture"
+                  id="profileImage">
+              </div>
+              <button class="btn btn-secondary btn-small">
+                <i class="fas fa-camera"></i>
+                Update Photo
+              </button>
+            </div>
+
+            <form class="form-grid" id="profileForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="firstName">
+                    <i class="fas fa-user"></i>
+                    First Name
+                  </label>
+                  <input type="text" id="firstName" name="firstName" class="form-input"
+                    placeholder="Enter your first name" value="John" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="lastName">
+                    <i class="fas fa-user"></i>
+                    Last Name
+                  </label>
+                  <input type="text" id="lastName" name="lastName" class="form-input" placeholder="Enter your last name"
+                    value="Doe" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="email">
+                    <i class="fas fa-envelope"></i>
+                    Email Address
+                  </label>
+                  <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email address"
+                    value="john.doe@example.com" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="mobile">
+                    <i class="fas fa-phone"></i>
+                    Mobile Number
+                  </label>
+                  <input type="tel" id="mobile" name="mobile" class="form-input" placeholder="Enter your mobile number"
+                    value="+91 9876543210" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="gender">
+                    <i class="fas fa-venus-mars"></i>
+                    Gender
+                  </label>
+                  <select id="gender" name="gender" class="form-select">
+                    <option value="" disabled>Select gender</option>
+                    <option value="male" selected>Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Prefer Not to Say</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="dateOfBirth">
+                    <i class="fas fa-calendar-alt"></i>
+                    Date of Birth
+                  </label>
+                  <input type="date" id="dateOfBirth" name="dateOfBirth" class="form-input" value="1990-01-01">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="bio">
+                  <i class="fas fa-edit"></i>
+                  Bio
+                </label>
+                <textarea id="bio" name="bio" class="form-textarea"
+                  placeholder="Tell us a bit about yourself..."></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-secondary">
+                  <i class="fas fa-times"></i>
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-save"></i>
+                  Save Changes
+                </button>
+              </div>
+            </form>
           </div>
-          <button class="change-picture-btn">
-            <span>Change Pictures</span>
-            <i class="fas fa-edit"></i>
-          </button>
+
+          <!-- Address Information -->
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Default Address</h2>
+              <div class="card-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+            </div>
+
+            <form class="form-grid" id="addressForm">
+              <div class="form-group">
+                <label class="form-label" for="address">
+                  <i class="fas fa-home"></i>
+                  Street Address
+                </label>
+                <textarea id="address" name="address" class="form-textarea"
+                  placeholder="Enter your complete address including street, landmark, etc.">123 Main Street, Near Central Park, Downtown Area</textarea>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="postalCode">
+                    <i class="fas fa-mail-bulk"></i>
+                    Postal Code
+                  </label>
+                  <input type="text" id="postalCode" name="postalCode" class="form-input" placeholder="e.g., 110001"
+                    value="400001">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="city">
+                    <i class="fas fa-city"></i>
+                    City
+                  </label>
+                  <input type="text" id="city" name="city" class="form-input" placeholder="Enter city name"
+                    value="Mumbai">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="state">
+                    <i class="fas fa-map"></i>
+                    State/Province
+                  </label>
+                  <input type="text" id="state" name="state" class="form-input" placeholder="Enter state"
+                    value="Maharashtra">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="country">
+                    <i class="fas fa-globe"></i>
+                    Country
+                  </label>
+                  <select id="country" name="country" class="form-select">
+                    <option value="IN" selected>India</option>
+                    <option value="US">United States</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="CA">Canada</option>
+                    <option value="AU">Australia</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-secondary">
+                  <i class="fas fa-times"></i>
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-save"></i>
+                  Update Address
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-
-        <!-- Profile Form -->
-        <form class="profile-form">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="firstName">First Name</label>
-              <input type="text" id="firstName" name="firstName" placeholder="Enter your First Name">
-            </div>
-            <div class="form-group">
-              <label for="lastName">Last Name</label>
-              <input type="text" id="lastName" name="lastName" placeholder="Enter your Last Name">
-            </div>
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" placeholder="Enter your email address">
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="gender">Gender</label>
-              <select id="gender" name="gender" required>
-                <option value="" disabled selected>Select gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Prefer Not to Say</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="mobile">Mobile</label>
-              <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number">
-            </div>
-          </div>
-
-          <div class="form-actions">
-            <button type="submit" class="update-btn">Update</button>
-            <button type="button" class="cancel-btn">Cancel</button>
-          </div>
-        </form>
       </div>
 
-      <!-- Address Information Section -->
-      <div class="profile-card">
-        <h2 class="profile-card-title">Address Information</h2>
+      <!-- Security Section -->
+      <div class="content-section" id="securitySection">
+        <div class="section-grid">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Password & Security</h2>
+              <div class="card-icon">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+            </div>
 
-        <form class="address-form">
-          <div class="form-group">
-            <label for="address">Address</label>
-            <textarea id="address" name="address" rows="4" placeholder="Enter your full Address"></textarea>
+            <form class="form-grid" id="securityForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="oldPassword">
+                    <i class="fas fa-key"></i>
+                    Current Password
+                  </label>
+                  <div class="password-wrapper">
+                    <input type="password" id="oldPassword" name="oldPassword" class="form-input"
+                      placeholder="Enter your current password" required>
+                    <button type="button" class="password-toggle" data-target="oldPassword">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="newPassword">
+                    <i class="fas fa-lock"></i>
+                    New Password
+                  </label>
+                  <div class="password-wrapper">
+                    <input type="password" id="newPassword" name="newPassword" class="form-input"
+                      placeholder="Create a strong new password" required>
+                    <button type="button" class="password-toggle" data-target="newPassword">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="confirmPassword">
+                  <i class="fas fa-shield-alt"></i>
+                  Confirm New Password
+                </label>
+                <div class="password-wrapper">
+                  <input type="password" id="confirmPassword" name="confirmPassword" class="form-input"
+                    placeholder="Re-enter your new password" required>
+                  <button type="button" class="password-toggle" data-target="confirmPassword">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="password-requirements">
+                <h4>
+                  <i class="fas fa-info-circle"></i>
+                  Password Requirements
+                </h4>
+                <div class="requirement">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Minimum 8 characters long</span>
+                </div>
+                <div class="requirement">
+                  <i class="fas fa-check-circle"></i>
+                  <span>At least one uppercase and lowercase letter</span>
+                </div>
+                <div class="requirement">
+                  <i class="fas fa-check-circle"></i>
+                  <span>At least one number (0-9)</span>
+                </div>
+                <div class="requirement">
+                  <i class="fas fa-check-circle"></i>
+                  <span>At least one special character (!@#$%^&*)</span>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-secondary">
+                  <i class="fas fa-times"></i>
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-shield-alt"></i>
+                  Update Password
+                </button>
+              </div>
+            </form>
           </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="postalCode">Postal Code</label>
-              <input type="text" id="postalCode" name="postalCode" placeholder="e.g., 110001">
-            </div>
-            <div class="form-group">
-              <label for="city">City</label>
-              <input type="text" id="city" name="city" placeholder="Enter city name">
-            </div>
-            <div class="form-group">
-              <label for="state">State</label>
-              <input type="text" id="state" name="state" placeholder="Enter state">
-            </div>
-          </div>
-
-          <div class="form-actions">
-            <button type="submit" class="update-btn">Update Address</button>
-            <button type="button" class="cancel-btn">Cancel</button>
-          </div>
-        </form>
+        </div>
       </div>
 
-      <!-- Password Section -->
-      <div class="profile-card">
-        <h2 class="profile-card-title">Password</h2>
+      <!-- Orders Section -->
+      <div class="content-section" id="ordersSection">
+        <div class="section-grid">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Order History</h2>
+              <div class="card-icon">
+                <i class="fas fa-box-open"></i>
+              </div>
+            </div>
 
-        <form class="password-form">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="oldPassword">Old Password</label>
-              <div class="password-input-wrapper">
-                <input type="password" id="oldPassword" name="oldPassword" placeholder="Enter your current password">
-                <button type="button" class="password-toggle" data-target="oldPassword">
-                  <i class="fas fa-eye"></i>
-                </button>
+            <div class="items-grid">
+              <div class="item-card">
+                <div class="item-header">
+                  <div>
+                    <h3 class="item-title">
+                      <i class="fas fa-receipt"></i>
+                      Order #ORD-2024-001
+                    </h3>
+                    <p class="item-date">
+                      <i class="fas fa-calendar"></i>
+                      Placed on January 15, 2024
+                    </p>
+                  </div>
+                  <span class="status-badge delivered">
+                    <i class="fas fa-check-circle"></i>
+                    Delivered
+                  </span>
+                </div>
+
+                <div class="item-content">
+                  <div class="product-display">
+                    <img src="https://via.placeholder.com/90x90/e9b540/ffffff?text=BAG" alt="Premium Leather Bag"
+                      class="product-image">
+                    <div class="product-info">
+                      <h4 class="product-name">Premium Leather Handbag</h4>
+                      <p class="product-price">₹2,999</p>
+                      <p class="product-quantity">Quantity: 1</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="item-actions">
+                  <button class="btn btn-secondary btn-small">
+                    <i class="fas fa-eye"></i>
+                    View Details
+                  </button>
+                  <button class="btn btn-secondary btn-small">
+                    <i class="fas fa-redo"></i>
+                    Reorder
+                  </button>
+                  <button class="btn btn-secondary btn-small">
+                    <i class="fas fa-download"></i>
+                    Invoice
+                  </button>
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label for="newPassword">New Password</label>
-              <div class="password-input-wrapper">
-                <input type="password" id="newPassword" name="newPassword" placeholder="Create a new password">
-                <button type="button" class="password-toggle" data-target="newPassword">
-                  <i class="fas fa-eye"></i>
-                </button>
+
+              <div class="item-card">
+                <div class="item-header">
+                  <div>
+                    <h3 class="item-title">
+                      <i class="fas fa-receipt"></i>
+                      Order #ORD-2024-002
+                    </h3>
+                    <p class="item-date">
+                      <i class="fas fa-calendar"></i>
+                      Placed on January 20, 2024
+                    </p>
+                  </div>
+                  <span class="status-badge processing">
+                    <i class="fas fa-cog fa-spin"></i>
+                    Processing
+                  </span>
+                </div>
+
+                <div class="item-content">
+                  <div class="product-display">
+                    <img src="https://via.placeholder.com/90x90/e9b540/ffffff?text=FOOD" alt="Gourmet Spice Mix"
+                      class="product-image">
+                    <div class="product-info">
+                      <h4 class="product-name">Gourmet Spice Mix Set</h4>
+                      <p class="product-price">₹1,499</p>
+                      <p class="product-quantity">Quantity: 2</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="item-actions">
+                  <button class="btn btn-secondary btn-small">
+                    <i class="fas fa-truck"></i>
+                    Track Order
+                  </button>
+                  <button class="btn btn-danger btn-small">
+                    <i class="fas fa-times"></i>
+                    Cancel Order
+                  </button>
+                </div>
               </div>
-            </div>
-            <div class="form-group">
-              <label for="confirmPassword">Confirm Password</label>
-              <div class="password-input-wrapper">
-                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter new password">
-                <button type="button" class="password-toggle" data-target="confirmPassword">
-                  <i class="fas fa-eye"></i>
-                </button>
+
+              <div class="item-card">
+                <div class="item-header">
+                  <div>
+                    <h3 class="item-title">
+                      <i class="fas fa-receipt"></i>
+                      Order #ORD-2024-003
+                    </h3>
+                    <p class="item-date">
+                      <i class="fas fa-calendar"></i>
+                      Placed on January 25, 2024
+                    </p>
+                  </div>
+                  <span class="status-badge shipped">
+                    <i class="fas fa-shipping-fast"></i>
+                    Shipped
+                  </span>
+                </div>
+
+                <div class="item-content">
+                  <div class="product-display">
+                    <img src="https://via.placeholder.com/90x90/e9b540/ffffff?text=ACC" alt="Premium Accessories"
+                      class="product-image">
+                    <div class="product-info">
+                      <h4 class="product-name">Premium Accessories Bundle</h4>
+                      <p class="product-price">₹3,499</p>
+                      <p class="product-quantity">Quantity: 1</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="item-actions">
+                  <button class="btn btn-secondary btn-small">
+                    <i class="fas fa-truck"></i>
+                    Track Package
+                  </button>
+                  <button class="btn btn-secondary btn-small">
+                    <i class="fas fa-eye"></i>
+                    View Details
+                  </button>
+                </div>
               </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          <div class="password-requirements">
-            <div class="requirement">
-              <i class="fas fa-check-circle"></i>
-              <span>Minimum 8 characters</span>
+      <!-- Addresses Section -->
+      <div class="content-section" id="addressesSection">
+        <div class="section-grid">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Saved Addresses</h2>
+              <div class="card-icon">
+                <i class="fas fa-map-marked-alt"></i>
+              </div>
+              <button class="btn btn-primary btn-small" style="margin-left: auto;">
+                <i class="fas fa-plus"></i>
+                Add Address
+              </button>
             </div>
-            <div class="requirement">
-              <i class="fas fa-check-circle"></i>
-              <span>Use combination of uppercase and lowercase letters</span>
-            </div>
-            <div class="requirement">
-              <i class="fas fa-check-circle"></i>
-              <span>Use at least one digits (0-9)</span>
+
+            <div
+              style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: var(--space-xl);">
+              <div class="item-card">
+                <div class="item-header">
+                  <h3 class="item-title" style="color: var(--primary-gold);">
+                    <i class="fas fa-home"></i>
+                    Home Address
+                  </h3>
+                  <span class="status-badge default">
+                    <i class="fas fa-star"></i>
+                    Default
+                  </span>
+                </div>
+
+                <div class="item-content">
+                  <div class="address-info">
+                    <p class="address-name">
+                      <i class="fas fa-user"></i>
+                      John Doe
+                    </p>
+                    <p class="address-details">
+                      <i class="fas fa-map-marker-alt"></i>
+                      123 Main Street, Apartment 4B<br>
+                      Mumbai, Maharashtra 400001
+                    </p>
+                    <p class="address-phone">
+                      <i class="fas fa-phone"></i>
+                      +91 9876543210
+                    </p>
+                  </div>
+                </div>
+
+                <div class="item-actions">
+                  <button class="btn btn-secondary btn-small">
+                    <i class="fas fa-edit"></i>
+                    Edit
+                  </button>
+                  <button class="btn btn-danger btn-small">
+                    <i class="fas fa-trash"></i>
+                    Delete
+                  </button>
+                </div>
+              </div>
+
+              <div class="item-card">
+                <div class="item-header">
+                  <h3 class="item-title" style="color: var(--primary-gold);">
+                    <i class="fas fa-building"></i>
+                    Office Address
+                  </h3>
+                </div>
+
+                <div class="item-content">
+                  <div class="address-info">
+                    <p class="address-name">
+                      <i class="fas fa-user"></i>
+                      John Doe
+                    </p>
+                    <p class="address-details">
+                      <i class="fas fa-map-marker-alt"></i>
+                      456 Business Park, Floor 12<br>
+                      Bangalore, Karnataka 560001
+                    </p>
+                    <p class="address-phone">
+                      <i class="fas fa-phone"></i>
+                      +91 9876543210
+                    </p>
+                  </div>
+                </div>
+
+                <div class="item-actions">
+                  <button class="btn btn-secondary btn-small">
+                    <i class="fas fa-edit"></i>
+                    Edit
+                  </button>
+                  <button class="btn btn-secondary btn-small">
+                    <i class="fas fa-star"></i>
+                    Set Default
+                  </button>
+                  <button class="btn btn-danger btn-small">
+                    <i class="fas fa-trash"></i>
+                    Delete
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          <div class="form-actions">
-            <button type="submit" class="update-btn">Update Password</button>
-            <button type="button" class="cancel-btn">Cancel</button>
+      <!-- Preferences Section -->
+      <div class="content-section" id="preferencesSection">
+        <div class="section-grid">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title">Account Preferences</h2>
+              <div class="card-icon">
+                <i class="fas fa-cog"></i>
+              </div>
+            </div>
+
+            <form class="form-grid" id="preferencesForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="fas fa-envelope"></i>
+                    Email Notifications
+                  </label>
+                  <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+                    <label
+                      style="display: flex; align-items: center; gap: var(--space-md); cursor: pointer; color: var(--text-secondary);">
+                      <input type="checkbox" checked style="margin: 0; accent-color: var(--primary-gold);">
+                      Order updates and confirmations
+                    </label>
+                    <label
+                      style="display: flex; align-items: center; gap: var(--space-md); cursor: pointer; color: var(--text-secondary);">
+                      <input type="checkbox" checked style="margin: 0; accent-color: var(--primary-gold);">
+                      Promotional offers and discounts
+                    </label>
+                    <label
+                      style="display: flex; align-items: center; gap: var(--space-md); cursor: pointer; color: var(--text-secondary);">
+                      <input type="checkbox" style="margin: 0; accent-color: var(--primary-gold);">
+                      Newsletter and product updates
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">
+                    <i class="fas fa-mobile-alt"></i>
+                    SMS Notifications
+                  </label>
+                  <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+                    <label
+                      style="display: flex; align-items: center; gap: var(--space-md); cursor: pointer; color: var(--text-secondary);">
+                      <input type="checkbox" checked style="margin: 0; accent-color: var(--primary-gold);">
+                      Order status updates
+                    </label>
+                    <label
+                      style="display: flex; align-items: center; gap: var(--space-md); cursor: pointer; color: var(--text-secondary);">
+                      <input type="checkbox" style="margin: 0; accent-color: var(--primary-gold);">
+                      Delivery notifications
+                    </label>
+                    <label
+                      style="display: flex; align-items: center; gap: var(--space-md); cursor: pointer; color: var(--text-secondary);">
+                      <input type="checkbox" style="margin: 0; accent-color: var(--primary-gold);">
+                      Promotional messages
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="language">
+                    <i class="fas fa-language"></i>
+                    Preferred Language
+                  </label>
+                  <select id="language" name="language" class="form-select">
+                    <option value="en" selected>English</option>
+                    <option value="hi">Hindi</option>
+                    <option value="mr">Marathi</option>
+                    <option value="gu">Gujarati</option>
+                    <option value="ta">Tamil</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="currency">
+                    <i class="fas fa-rupee-sign"></i>
+                    Currency
+                  </label>
+                  <select id="currency" name="currency" class="form-select">
+                    <option value="INR" selected>Indian Rupee (₹)</option>
+                    <option value="USD">US Dollar ($)</option>
+                    <option value="EUR">Euro (€)</option>
+                    <option value="GBP">British Pound (£)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-secondary">
+                  <i class="fas fa-times"></i>
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-save"></i>
+                  Save Preferences
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
 
       <!-- Delete Account Section -->
-      <div class="profile-card delete-account-card">
-        <h2 class="profile-card-title">Delete Your Account</h2>
+      <div class="content-section" id="deleteSection">
+        <div class="section-grid">
+          <div class="card warning-card">
+            <div class="card-header">
+              <h2 class="card-title" style="color: #dc2626;">Account Deletion</h2>
+              <div class="card-icon"
+                style="background: linear-gradient(135deg, rgba(220, 38, 38, 0.15) 0%, rgba(220, 38, 38, 0.05) 100%); border-color: rgba(220, 38, 38, 0.2);">
+                <i class="fas fa-exclamation-triangle" style="color: #dc2626;"></i>
+              </div>
+            </div>
 
-        <p class="delete-warning">
-          Deleting your account is permanent and cannot be undone. All your data, order history, and saved addresses
-          will be lost.
-        </p>
+            <div class="warning-message">
+              <i class="fas fa-exclamation-triangle"></i>
+              <h3 class="warning-title">Permanent Account Deletion</h3>
+              <p style="color: var(--text-secondary); margin-bottom: var(--space-md);">
+                <strong>This action cannot be undone.</strong> Deleting your account will permanently remove:
+              </p>
+              <ul style="color: var(--text-muted); text-align: left; margin-bottom: var(--space-lg); line-height: 1.8;">
+                <li>All personal information and profile data</li>
+                <li>Order history and transaction records</li>
+                <li>Saved addresses and payment methods</li>
+                <li>Wishlist items and preferences</li>
+                <li>Account settings and customizations</li>
+              </ul>
+              <p style="color: var(--text-secondary);">
+                If you're having issues with your account, please <a href="#"
+                  style="color: var(--primary-gold); text-decoration: none;">contact our support team</a> first.
+              </p>
+            </div>
 
-        <div class="delete-actions">
-          <button type="button" class="delete-account-btn">
-            Delete My Account
-          </button>
+            <form class="form-grid" style="margin-top: var(--space-xl);">
+              <div class="form-group">
+                <label class="form-label" for="deleteConfirmation" style="color: #dc2626;">
+                  <i class="fas fa-keyboard"></i>
+                  Type "DELETE" to confirm
+                </label>
+                <input type="text" id="deleteConfirmation" name="deleteConfirmation" class="form-input"
+                  placeholder="Type DELETE to confirm account deletion" style="border-color: rgba(220, 38, 38, 0.3);">
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-secondary">
+                  <i class="fas fa-arrow-left"></i>
+                  Keep My Account
+                </button>
+                <button type="submit" class="btn btn-danger" disabled>
+                  <i class="fas fa-trash-alt"></i>
+                  Delete Account Permanently
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
   </main>
 
   <script src="../static/js/profile.js"></script>
-</body>
-
-</html>
