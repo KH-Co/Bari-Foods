@@ -15,6 +15,7 @@
   --text-primary: #ffffff;
   --text-secondary: #F5F5DC;
   --text-muted: #a67c52;
+  --card: #efe0c9;
 
   /* Typography */
   --font-primary: 'Inter', sans-serif;
@@ -442,12 +443,9 @@ body::before {
 }
 
 /* Main Content Area */
-.content-area {
-  min-height: 70vh;
-}
 
 .page-header {
-  margin-bottom: var(--space-3xl);
+  margin: var(--space-3xl);
 }
 
 .breadcrumb {
@@ -584,9 +582,9 @@ body::before {
 }
 
 .card-title {
-  color: var(--primary-gold);
+  color: var(--card);
   font-family: var(--font-secondary);
-  font-size: 1.5rem;
+  font-size: 1.9rem;
   font-weight: 600;
   margin: 0;
   flex: 1;
@@ -627,7 +625,7 @@ body::before {
 .form-label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--primary-gold);
+  color: var(--card);
   letter-spacing: 0.02em;
   display: flex;
   align-items: center;
@@ -1124,11 +1122,11 @@ body::before {
 /* Warning Card for Delete Account */
 .warning-card {
   border-color: rgba(220, 38, 38, 0.2);
-  background: linear-gradient(135deg, rgba(220, 38, 38, 0.05) 0%, rgba(220, 38, 38, 0.02) 100%);
+  background: var(--card-gradient);
 }
 
 .warning-card::before {
-  background: linear-gradient(90deg, #dc2626, #ef4444);
+  background: var(--logo-gradient);
 }
 
 .warning-message {
@@ -1136,7 +1134,7 @@ body::before {
   margin-bottom: var(--space-xl);
   text-align: center;
   padding: var(--space-2xl);
-  background: linear-gradient(135deg, rgba(220, 38, 38, 0.08) 0%, rgba(220, 38, 38, 0.04) 100%);
+  background: var(--card-gradient);
   border-radius: var(--radius-lg);
   border-left: 4px solid #dc2626;
   position: relative;

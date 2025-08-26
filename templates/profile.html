@@ -8,7 +8,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;600;700&display=swap"
     rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/profile.css">
+  <link rel="stylesheet" href="../static/css/profile.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
@@ -38,6 +38,16 @@
       <i class="fas fa-user-circle"></i>
     </div>
   </header>
+
+  <!-- Page Header -->
+  <section class="page-header">
+    <nav class="breadcrumb">
+      <span class="breadcrumb-item">Home</span>
+      <span class="breadcrumb-separator">›</span>
+      <span class="breadcrumb-item active">My Account</span>
+    </nav>
+    <h1 class="page-title">Account Management</h1>
+  </section>
 
   <!-- Main Content -->
   <main class="main-container">
@@ -76,12 +86,6 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link" data-section="preferences">
-              <i class="fas fa-cog"></i>
-              <span>Preferences</span>
-            </a>
-          </li>
-          <li class="nav-item">
             <a href="#" class="nav-link" data-section="delete">
               <i class="fas fa-exclamation-triangle"></i>
               <span>Account Deletion</span>
@@ -93,15 +97,6 @@
 
     <!-- Content Area -->
     <div class="content-area">
-      <!-- Page Header -->
-      <div class="page-header">
-        <nav class="breadcrumb">
-          <span class="breadcrumb-item">Home</span>
-          <span class="breadcrumb-separator">›</span>
-          <span class="breadcrumb-item active">My Account</span>
-        </nav>
-        <h1 class="page-title">Account Management</h1>
-      </div>
 
       <!-- Profile Settings Section -->
       <div class="content-section active" id="profileSection">
@@ -178,22 +173,7 @@
                     <option value="other">Prefer Not to Say</option>
                   </select>
                 </div>
-                <div class="form-group">
-                  <label class="form-label" for="dateOfBirth">
-                    <i class="fas fa-calendar-alt"></i>
-                    Date of Birth
-                  </label>
-                  <input type="date" id="dateOfBirth" name="dateOfBirth" class="form-input" value="1990-01-01">
-                </div>
-              </div>
 
-              <div class="form-group">
-                <label class="form-label" for="bio">
-                  <i class="fas fa-edit"></i>
-                  Bio
-                </label>
-                <textarea id="bio" name="bio" class="form-textarea"
-                  placeholder="Tell us a bit about yourself..."></textarea>
               </div>
 
               <div class="form-actions">
@@ -627,110 +607,6 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Preferences Section -->
-      <div class="content-section" id="preferencesSection">
-        <div class="section-grid">
-          <div class="card">
-            <div class="card-header">
-              <h2 class="card-title">Account Preferences</h2>
-              <div class="card-icon">
-                <i class="fas fa-cog"></i>
-              </div>
-            </div>
-
-            <form class="form-grid" id="preferencesForm">
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">
-                    <i class="fas fa-envelope"></i>
-                    Email Notifications
-                  </label>
-                  <div style="display: flex; flex-direction: column; gap: var(--space-md);">
-                    <label
-                      style="display: flex; align-items: center; gap: var(--space-md); cursor: pointer; color: var(--text-secondary);">
-                      <input type="checkbox" checked style="margin: 0; accent-color: var(--primary-gold);">
-                      Order updates and confirmations
-                    </label>
-                    <label
-                      style="display: flex; align-items: center; gap: var(--space-md); cursor: pointer; color: var(--text-secondary);">
-                      <input type="checkbox" checked style="margin: 0; accent-color: var(--primary-gold);">
-                      Promotional offers and discounts
-                    </label>
-                    <label
-                      style="display: flex; align-items: center; gap: var(--space-md); cursor: pointer; color: var(--text-secondary);">
-                      <input type="checkbox" style="margin: 0; accent-color: var(--primary-gold);">
-                      Newsletter and product updates
-                    </label>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">
-                    <i class="fas fa-mobile-alt"></i>
-                    SMS Notifications
-                  </label>
-                  <div style="display: flex; flex-direction: column; gap: var(--space-md);">
-                    <label
-                      style="display: flex; align-items: center; gap: var(--space-md); cursor: pointer; color: var(--text-secondary);">
-                      <input type="checkbox" checked style="margin: 0; accent-color: var(--primary-gold);">
-                      Order status updates
-                    </label>
-                    <label
-                      style="display: flex; align-items: center; gap: var(--space-md); cursor: pointer; color: var(--text-secondary);">
-                      <input type="checkbox" style="margin: 0; accent-color: var(--primary-gold);">
-                      Delivery notifications
-                    </label>
-                    <label
-                      style="display: flex; align-items: center; gap: var(--space-md); cursor: pointer; color: var(--text-secondary);">
-                      <input type="checkbox" style="margin: 0; accent-color: var(--primary-gold);">
-                      Promotional messages
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label" for="language">
-                    <i class="fas fa-language"></i>
-                    Preferred Language
-                  </label>
-                  <select id="language" name="language" class="form-select">
-                    <option value="en" selected>English</option>
-                    <option value="hi">Hindi</option>
-                    <option value="mr">Marathi</option>
-                    <option value="gu">Gujarati</option>
-                    <option value="ta">Tamil</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="currency">
-                    <i class="fas fa-rupee-sign"></i>
-                    Currency
-                  </label>
-                  <select id="currency" name="currency" class="form-select">
-                    <option value="INR" selected>Indian Rupee (₹)</option>
-                    <option value="USD">US Dollar ($)</option>
-                    <option value="EUR">Euro (€)</option>
-                    <option value="GBP">British Pound (£)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-actions">
-                <button type="button" class="btn btn-secondary">
-                  <i class="fas fa-times"></i>
-                  Cancel
-                </button>
-                <button type="submit" class="btn btn-primary">
-                  <i class="fas fa-save"></i>
-                  Save Preferences
-                </button>
-              </div>
-            </form>
           </div>
         </div>
       </div>

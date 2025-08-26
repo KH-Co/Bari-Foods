@@ -1,4 +1,4 @@
-// Bari Foods Account Management - Complete JavaScript Implementation
+    // Bari Foods Account Management - Complete JavaScript Implementation
 
 class BariAccountManager {
   constructor() {
