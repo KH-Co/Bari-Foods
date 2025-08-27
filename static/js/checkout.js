@@ -1,4 +1,4 @@
-import { catalog } from "/assets/data/catalog.mjs";
+import { catalog } from "../../assets/data/catalog.mjs";
 
 const DELIVERY_BASE = 30.0;
 const FREE_SHIP_THRESHOLD = 499.0;
