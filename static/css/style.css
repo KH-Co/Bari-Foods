@@ -736,15 +736,17 @@ body {
 }
 
 .tags span {
+  text-align: center;
   display: inline-block;
   background: #720500;
   border: 1.5px solid var(--accent-gold);
   color: var(--accent-gold);
   box-shadow: 0 2px 8px rgba(70, 0, 0, 0.18);
-  padding: 12px 24px;
+  padding: 12px 16px;
   border-radius: 22px;
   font-size: 14px;
   font-weight: 600;
+  width: 170px;
   cursor: pointer;
   transition: 0.2s cubic-bezier(.2, .8, .6, 1.2);
   letter-spacing: 1px;
