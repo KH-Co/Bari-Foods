@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>BariFoods - Checkout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../static/css/product.css" />
+  <link rel="stylesheet" href="../static/css/checkout.css" />
+</head>
+
+<body> <!-- Header: logo left, avatar right -->
+  <header class="navbar navbar--brand">
+    <div class="logo-container"> <a href="/" class="brand-link" aria-label="Home"> <img class="logo"
+          src="../assets/img/bari.jpg" alt="BariFoods" /> </a>
+      <h1>BariFoods</h1>
+    </div>
+    <div class="spacer"></div> <button class="avatar-btn" id="profileBtn" aria-label="Profile"> <span class="avatar"
+        id="profileAvatar" aria-hidden="true"></span> </button>
+  </header>
+  <main class="container">
+    <div class="checkout-grid"> <!-- Left: Steps -->
+      <section class="panel">
+        <div class="panel-head">
+          <h2 class="page-title">Checkout</h2>
+          <div class="slot">⏱ Deliver Tomorrow, 8am–10am</div>
+        </div>
+        <!-- Delivery info -->
+        <details class="block" open>
+          <summary class="block-head">
+            <span class="block-title">Delivery info</span>
+            <span class="chev">›</span>
+          </summary>
+          <div class="block-body">
+            <!-- Saved addresses row -->
+            <div class="row-2">
+              <label class="field">
+                <span class="label">Saved addresses</span>
+                <select id="addrSelect"></select>
+              </label>
+              <label class="field">
+                <span class="label">&nbsp;</span>
+                <button id="addAddressBtn" class="btn sm" type="button">+ Add address</button>
+              </label>
+            </div>
+
+            <!-- Address form -->
+            <label class="field">
+              <span class="label">Deliver to</span>
+              <input type="text" id="addrLine" placeholder="Street address" />
+            </label>
+            <div class="row-2">
+              <label class="field">
+                <span class="label">City</span>
+                <input type="text" id="addrCity" />
+              </label>
+              <label class="field">
+                <span class="label">Postal code</span>
+                <input type="text" id="addrZip" />
+              </label>
+            </div>
+            <label class="field">
+              <span class="label">Delivery instructions</span>
+              <textarea id="addrNote" rows="2" placeholder="e.g., Leave at the doorstep"></textarea>
+            </label>
+
+            <div class="row-2">
+              <button id="saveAddressBtn" class="btn sm" type="button">Save address</button>
+              <button id="deleteAddressBtn" class="btn sm" type="button">Delete selected</button>
+            </div>
+          </div>
+        </details>
+
+        <!-- Payment -->
+        <details class="block" open>
+          <summary class="block-head">
+            <span class="block-title">Payment method</span>
+            <span class="chev">›</span>
+          </summary>
+          <div class="block-body">
+            <div class="pay-list" id="payList">
+              <label class="radio-item">
+                <input type="radio" name="pay" value="card" />
+                <span>Card</span>
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="pay" value="upi" />
+                <span>UPI</span>
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="pay" value="cod" />
+                <span>Cash on Delivery</span>
+              </label>
+            </div>
+
+            <!-- Card form (shown only when Card selected) -->
+            <div id="cardForm" class="row-2 hidden">
+              <label class="field">
+                <span class="label">Card number</span>
+                <input type="text" id="cardNumber" inputmode="numeric" placeholder="4111 1111 1111 1111" />
+              </label>
+              <label class="field">
+                <span class="label">Name on card</span>
+                <input type="text" id="cardName" placeholder="Full name" />
+              </label>
+              <label class="field">
+                <span class="label">Expiry</span>
+                <input type="text" id="cardExpiry" placeholder="MM/YY" />
+              </label>
+              <label class="field">
+                <span class="label">CVV</span>
+                <input type="password" id="cardCvv" inputmode="numeric" placeholder="***" />
+              </label>
+            </div>
+
+            <!-- UPI form (shown only when UPI selected) -->
+            <div id="upiForm" class="row-2 hidden">
+              <label class="field">
+                <span class="label">UPI ID</span>
+                <input type="text" id="upiId" placeholder="name@bank" />
+              </label>
+              <div></div>
+            </div>
+          </div>
+        </details>
+
+        <!-- Review order -->
+        <details class="block" open>
+          <summary class="block-head">
+            <span class="block-title">Review order</span>
+            <span class="chev">›</span>
+          </summary>
+          <div class="block-body">
+            <ul id="reviewList" class="review-list"></ul>
+          </div>
+        </details>
+      </section>
+
+      <!-- Right: Summary -->
+      <aside class="summary">
+        <div class="summary-card">
+          <h3>Order Summary</h3>
+
+          <div class="row">
+            <span>Items total</span>
+            <strong id="sumItems">₹ 0.00</strong>
+          </div>
+          <div class="row">
+            <span>Delivery fee</span>
+            <span id="sumDelivery">₹ 0.00</span>
+          </div>
+          <div class="row">
+            <span>Service fee</span>
+            <span id="sumService">₹ 0.00</span>
+          </div>
+
+          <hr />
+          <div class="row grand">
+            <span>Total</span>
+            <strong id="sumTotal">₹ 0.00</strong>
+          </div>
+          <button id="placeOrder" class="primary">Place Order</button>
+          <p class="tiny">By placing this order, you agree to our Terms and Conditions.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="footer-bottom">
+    <div class="footer-bottom-content">
+      <p>© 2025 Bari Foods | All rights reserved</p>
+    </div>
+  </footer>
+  <script type="module" src="../static/js/checkout.js"></script>
+  <script src="../static/js/header.js" defer></script>
+</body>
+
+</html>
