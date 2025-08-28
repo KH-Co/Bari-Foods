@@ -32,7 +32,7 @@
     </nav>
 
     <div class="icons">
-      <a href=""><i class="fas fa-shopping-cart cart-icon"></i></a>
+      <a href="../templates/cart.html"><i class="fas fa-shopping-cart cart-icon"></i></a>
       <a href="../templates/profile.html"><i class="fas fa-user-circle user-icon"></i></a>
     </div>
   </header>
@@ -99,47 +99,15 @@
         <p class="section-description">Handcrafted with love, seasoned with tradition</p>
       </div>
 
-      <div class="product-grid">
-        <!-- Card 1 -->
-        <article class="product-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="card-inner">
-            <img class="pack" src="../assets/products-img/p1.png" alt="Chatka Mix pack">
-            <h3 class="product-name">Chatka Mix</h3>
-            <p class="product-description">A perfect blend of crispy ingredients</p>
-            <p class="product-price">₹ 180.00</p>
-            <button class="add-to-cart-btn">
-              <i class="fas fa-cart-plus"></i> Add to Cart
-            </button>
+      <div class="pop-carousel" id="popCarousel" aria-roledescription="carousel"> <button class="pop-nav pop-prev"
+          id="popPrev" aria-label="Previous" hidden>‹</button>
+        <div class="pop-viewport" id="popViewport">
+          <div class="pop-track" id="popTrack">
+            <!-- JS injects slides (cards) here -->
           </div>
-        </article>
+        </div>
 
-        <!-- Card 2 -->
-        <article class="product-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="card-inner">
-            <div class="product-badge popular">Popular</div>
-            <img class="pack" src="../assets/products-img/p2.png" alt="Prem Bhujia pack">
-            <h3 class="product-name">Prem Bhujia</h3>
-            <p class="product-description">Traditional spicy gram flour strands</p>
-            <p class="product-price">₹ 99.00</p>
-            <button class="add-to-cart-btn">
-              <i class="fas fa-cart-plus"></i> Add to Cart
-            </button>
-          </div>
-        </article>
-
-        <!-- Card 3 -->
-        <article class="product-card" data-aos="fade-up" data-aos-delay="300">
-          <div class="card-inner">
-            <div class="product-badge new">New</div>
-            <img class="pack" src="../assets/products-img/p3.png" alt="Lahsun Sev pack">
-            <h3 class="product-name">Lahsun Sev</h3>
-            <p class="product-description">Garlic-infused crispy sev delight</p>
-            <p class="product-price">₹ 199.00</p>
-            <button class="add-to-cart-btn">
-              <i class="fas fa-cart-plus"></i> Add to Cart
-            </button>
-          </div>
-        </article>
+        <button class="pop-nav pop-next" id="popNext" aria-label="Next" hidden>›</button>
       </div>
 
       <!-- View All Products CTA -->
@@ -302,6 +270,8 @@
       </div>
     </div>
   </footer>
+
+  <script type="module" src="../static/js/script.js"></script>
 
 </body>
 

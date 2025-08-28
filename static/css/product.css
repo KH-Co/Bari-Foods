@@ -174,9 +174,12 @@ body {
 .icons {
   display: flex;
   gap: 25px;
-  color: var(--primary-gold);
   cursor: pointer;
   font-size: 25px;
+}
+
+.icons a i {
+  color: var(--primary-gold);
 }
 
 .icons i {
@@ -185,10 +188,6 @@ body {
   transition: var(--transition-fast);
   padding: 8px;
   border-radius: 50%;
-}
-
-.icons i:hover {
-  transform: translateY(-2px);
 }
 
 /* Page */
