@@ -54,6 +54,7 @@ body {
   display: flex;
   align-items: center;
   gap: 15px;
+  text-decoration: none;
 }
 .logo {
   width: clamp(35px, 5vw, 45px);
@@ -69,6 +70,7 @@ body {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: 3px;
+  text-decoration: none;
 }
 .brand-link {
   display: inline-flex;
