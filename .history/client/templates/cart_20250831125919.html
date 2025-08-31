@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>BariFoods - Cart</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Theme + page CSS -->
+  <link rel="stylesheet" href="../static/css/product.css" />
+  <link rel="stylesheet" href="../static/css/cart.css" />
+
+  <link href='https://cdn.boxicons.com' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body> <!-- Header: logo left, avatar right -->
+  <header class="navbar navbar--brand">
+    <div class="logo-container"> <a href="index.html" class="brand-link" aria-label="Home"> <img class="logo"
+          src="../assets/img/bari.jpg" alt="BariFoods" /> </a>
+      <h1>BARI FOODS</h1>
+    </div>
+    <div class="spacer"></div> <button class="avatar-btn" id="profileBtn" aria-label="Profile"> <span class="avatar"
+        id="profileAvatar" aria-hidden="true"></span> </button>
+  </header>
+  <main class="container">
+    <!-- Back button ABOVE the title -->
+    <div class="utility-row"> 
+      <button id="navBack" class="nav-back" type="button" aria-label="Go back"> <i class="fa-solid fa-chevron-left"></i> </button>
+    </div>
+    <!-- Title with Customer ID on the RIGHT -->
+    <div class="title-row">
+      <h2 class="page-title">Your Cart</h2>
+      <div class="customer-chip" id="customerChip" title="Unique Customer ID">
+        <div class="cid-top">Customer ID</div>
+        <div class="cid-val" id="customerIdText">BF-000000</div>
+      </div>
+    </div>
+
+    <div class="cart-grid">
+      <!-- Left: Items -->
+      <section class="cart-panel">
+        <div class="panel-head">
+          <h3>Items</h3>
+          <button id="clearCartBtn" class="link danger">Clear all</button>
+        </div>
+
+        <ul id="cartList" class="cart-list"></ul>
+
+        <!-- Empty state -->
+        <div id="emptyState" class="empty hidden">
+          <p class="empty-title">Your cart is empty.</p>
+          <p class="empty-sub">Add items to get started.</p>
+          <a class="btn browse-btn" href="products.html">Browse products</a>
+        </div>
+      </section>
+
+      <!-- Right: Summary -->
+      <aside class="summary-panel">
+        <div class="free-ship hidden" id="freeShipBanner"></div>
+
+        <div class="summary-card">
+          <h3>Order Summary</h3>
+
+          <div class="row">
+            <span>Items total</span>
+            <strong id="itemsTotal">₹ 0.00</strong>
+          </div>
+
+          <div class="row">
+            <span>Delivery fee</span>
+            <span id="deliveryFee">₹ 0.00</span>
+          </div>
+
+          <hr />
+
+          <div class="row grand">
+            <span>Total</span>
+            <strong id="grandTotal">₹ 0.00</strong>
+          </div>
+
+          <button id="checkoutBtn" class="primary">Go to Checkout</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="footer-bottom">
+    <div class="footer-bottom-content">
+      <p>© 2025 Bari Foods | All rights reserved</p>
+    </div>
+  </footer> <!-- Scripts -->
+
+
+  <script type="module" src="../static/js/cart.js"></script>
+  <script src="../static/js/header.js" defer></script>
+  <script>
+    // Back button behavior (now above title) 
+    (function () {
+      const btn = document.getElementById('navBackBtn');
+      if (!btn) return; btn.addEventListener('click', () => {
+        if (history.length > 1) history.back(); else location.href = 'products.html';
+      });
+    })();
+
+    // Customer ID hydrate 
+    (function () {
+      const el = document.getElementById('customerIdText');
+      if (!el) return;
+      let uid = localStorage.getItem('userId');
+      if (!uid) {
+        uid = 'BF-' + Math.random().toString(36).slice(2, 8).toUpperCase();
+        localStorage.setItem('userId', uid);
+      }
+      el.textContent = uid;
+    })(); 
+  </script>
+</body>
+
+</html>

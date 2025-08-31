@@ -12,6 +12,10 @@
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href='https://cdn.boxicons.com' rel='stylesheet'>
+
+  <!-- Preload critical images -->
+  <link rel="preload" as="image" href="../assets/img/hero-img.png">
+  <link rel="preload" as="image" href="../assets/img/bari.jpg">
 </head>
 
 <body>
@@ -32,8 +36,13 @@
     </nav>
 
     <div class="icons">
-      <a href=""><i class="fas fa-shopping-cart cart-icon"></i></a>
-      <a href="../templates/profile.html"><i class="fas fa-user-circle user-icon"></i></a>
+      <a href="../templates/cart.html" aria-label="Shopping Cart">
+        <i class="fas fa-shopping-cart cart-icon"></i>
+        <span id="cartCount" class="count">0</span>
+      </a>
+      <a href="../templates/profile.html" aria-label="User Profile">
+        <i class="fas fa-user-circle user-icon"></i>
+      </a>
     </div>
   </header>
 
@@ -78,12 +87,12 @@
       </div>
 
       <div class="hero-image">
-        <img src="../assets/img/hero-img.png" alt="Bari Foods Model">
+        <img src="../assets/img/hero-img.png" alt="Bari Foods Model" loading="eager">
         <div class="wave-decoration">
-          <img src="../assets/img/hero-bottom.png" alt="Wave Design">
+          <img src="../assets/img/hero-bottom.png" alt="Wave Design" loading="lazy">
         </div>
         <div class="camel-icon">
-          <img src="../../assets/img/camel.png" alt="Camel Icon">
+          <img src="../../assets/img/camel.png" alt="Camel Icon" loading="lazy">
         </div>
       </div>
 
@@ -91,62 +100,60 @@
 
     <!-- Popular Products Section -->
     <section class="popular-section" id="popular">
-      <img src="../assets/img/top-right.png" alt="" class="corner-img" />
+      <img src="../assets/img/top-right.png" alt="Decorative Corner" class="corner-img" loading="lazy" />
 
       <div class="popular-headings">
         <h3 class="section-subtitle">CUSTOMER FAVORITES</h3>
         <h1 class="section-title">Popular Products</h1>
-        <p class="section-description">Handcrafted with love, seasoned with tradition</p>
+        <p class="section-description">Handcrafted with love, seasoned with tradition — discover the flavors that keep
+          our customers coming back for more</p>
       </div>
 
-      <div class="product-grid">
-        <!-- Card 1 -->
-        <article class="product-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="card-inner">
-            <img class="pack" src="../assets/products-img/p1.png" alt="Chatka Mix pack">
-            <h3 class="product-name">Chatka Mix</h3>
-            <p class="product-description">A perfect blend of crispy ingredients</p>
-            <p class="product-price">₹ 180.00</p>
-            <button class="add-to-cart-btn">
-              <i class="fas fa-cart-plus"></i> Add to Cart
-            </button>
-          </div>
-        </article>
+      <!-- Enhanced Carousel -->
+      <div class="pop-carousel" id="popCarousel" aria-roledescription="carousel" aria-label="Popular Products Carousel">
+        <button class="pop-nav pop-prev" id="popPrev" aria-label="Previous products" hidden>
+          <i class="fas fa-chevron-left"></i>
+        </button>
 
-        <!-- Card 2 -->
-        <article class="product-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="card-inner">
-            <div class="product-badge popular">Popular</div>
-            <img class="pack" src="../assets/products-img/p2.png" alt="Prem Bhujia pack">
-            <h3 class="product-name">Prem Bhujia</h3>
-            <p class="product-description">Traditional spicy gram flour strands</p>
-            <p class="product-price">₹ 99.00</p>
-            <button class="add-to-cart-btn">
-              <i class="fas fa-cart-plus"></i> Add to Cart
-            </button>
+        <div class="pop-viewport" id="popViewport" role="region" aria-live="polite">
+          <div class="pop-track" id="popTrack">
+            <!-- Products will be dynamically injected here by JavaScript -->
+            <div class="loading-state" style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 400px;
+              color: var(--warm-gold);
+              font-size: 18px;
+              font-family: var(--font-primary);
+            ">
+              <i class="fas fa-spinner fa-spin" style="margin-right: 12px;"></i>
+              Loading delicious products...
+            </div>
           </div>
-        </article>
+        </div>
 
-        <!-- Card 3 -->
-        <article class="product-card" data-aos="fade-up" data-aos-delay="300">
-          <div class="card-inner">
-            <div class="product-badge new">New</div>
-            <img class="pack" src="../assets/products-img/p3.png" alt="Lahsun Sev pack">
-            <h3 class="product-name">Lahsun Sev</h3>
-            <p class="product-description">Garlic-infused crispy sev delight</p>
-            <p class="product-price">₹ 199.00</p>
-            <button class="add-to-cart-btn">
-              <i class="fas fa-cart-plus"></i> Add to Cart
-            </button>
-          </div>
-        </article>
+        <button class="pop-nav pop-next" id="popNext" aria-label="Next products" hidden>
+          <i class="fas fa-chevron-right"></i>
+        </button>
       </div>
 
-      <!-- View All Products CTA -->
+      <!-- Enhanced View All CTA -->
       <div class="view-all-cta">
         <a href="products.html" class="btn-outline">
-          View All Products <i class="fas fa-arrow-right"></i>
+          <i class="fas fa-grid-3x3" style="margin-right: 8px;"></i>
+          Explore All Products
+          <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
         </a>
+        <p style="
+          margin-top: 16px;
+          color: var(--light-cream);
+          opacity: 0.8;
+          font-size: 14px;
+          font-style: italic;
+        ">
+          Over 50+ authentic Rajasthani snacks await you
+        </p>
       </div>
     </section>
 
@@ -171,7 +178,7 @@
       </div>
 
       <div class="heritage-image">
-        <img src="../assets/img/history-img.png" alt="Rajasthani Food">
+        <img src="../assets/img/history-img.png" alt="Rajasthani Food Heritage" loading="lazy">
       </div>
 
     </section>
@@ -181,9 +188,9 @@
       <div class="services-header">
         <div class="header-content">
           <div class="header-mascot">
-            <img src="../assets/img/char4.png" alt="Rajasthani Mascot" class="mascot-left">
+            <img src="../assets/img/char4.png" alt="Rajasthani Mascot" class="mascot-left" loading="lazy">
             <h3 class="section-subtitle">OUR STORY & SERVICES</h3>
-            <img src="../assets/img/char3.png" alt="Rajasthani Mascot" class="mascot-right">
+            <img src="../assets/img/char3.png" alt="Rajasthani Mascot" class="mascot-right" loading="lazy">
           </div>
           <h1 class="section-title">Savor the Essence of Rajasthani Heritage</h1>
           <p class="section-description">
@@ -227,9 +234,9 @@
         <h2>Ready to Experience Royal Flavors?</h2>
         <p>Join thousands of satisfied customers who trust Bari Foods for authentic Rajasthani snacks</p>
         <div class="cta-buttons">
-          <a href="#popular" class="btn-primary large">
-            <i class="fas fa-shopping-cart"></i>
-            Order Now
+          <a href="mailto:barifoods.in@gmail.com" class="btn-primary large">
+            <i class="fa-solid fa-envelope"></i>
+            Mail Us
           </a>
           <a href="tel:+919582489966" class="btn-outline large">
             <i class="fas fa-phone"></i>
@@ -302,6 +309,8 @@
       </div>
     </div>
   </footer>
+
+  <script type="module" src="../static/js/script.js"></script>
 
 </body>
 

@@ -31,8 +31,9 @@
     </nav>
 
     <div class="icons">
-      <i class="fas fa-shopping-cart cart-icon"></i>
-      <i class="fas fa-user-circle user-icon"></i>
+      <a href="cart.html"><i class="fas fa-shopping-cart cart-icon"></i></a>
+      <button class="avatar-btn" id="profileBtn" aria-label="Profile"> <span class="avatar"
+        id="profileAvatar" aria-hidden="true"></span> </button>
     </div>
   </header>
 
@@ -144,8 +145,8 @@
         <div class="footer-column">
           <h4>Information</h4>
           <ul>
-            <li><a href="index.html#about">About Us</a></li>
-            <li><a href="index.html#services">Our Services</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#services">Our Services</a></li>
             <li><a href="#">FAQs</a></li>
           </ul>
         </div>
@@ -182,7 +183,8 @@
     </div>
   </footer>
 
-  <script src="../static/js/products.js" defer></script>
+  <script type="module" src="../static/js/products.js" defer></script>
+  <script src="../static/js/header.js"></script>
 </body>
 
 </html>
