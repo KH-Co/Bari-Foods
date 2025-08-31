@@ -10,28 +10,33 @@
 </head>
 
 <body> <!-- Header: logo left, avatar right -->
+<<<<<<< HEAD
   <header class="navbar navbar--brand">
     <div class="logo-container"> <a href="/" class="brand-link" aria-label="Home"> <img class="logo"
           src="../assets/img/bari.jpg" alt="BariFoods" /> </a>
       <h1>BARI FOODS</h1>
+=======
+  <header class="navbar--brand">
+    <div class="logo-container"> <a href="index.html" class="brand-link" aria-label="Home"> <img class="logo"
+          src="../assets/img/bari.jpg" alt="" /> </a>
+      <h1 src="index.html">BariFoods</h1>
+>>>>>>> 0c0572ec6c7a67da8559855f21d2d49631e48c71
     </div>
     <div class="spacer"></div> <button class="avatar-btn" id="profileBtn" aria-label="Profile"> <span class="avatar"
-        id="profileAvatar" aria-hidden="true"></span> </button>
+        id="profileAvatar"></span> </button>
   </header>
   <main class="container">
-    <div class="checkout-grid"> <!-- Left: Steps -->
+    <div class="checkout-grid">
       <section class="panel">
         <div class="panel-head">
           <h2 class="page-title">Checkout</h2>
         </div>
-        <!-- Delivery info -->
         <details class="block" open>
           <summary class="block-head">
             <span class="block-title">Delivery info</span>
-            <span class="chev">›</span>
+            <span>›</span>
           </summary>
           <div class="block-body">
-            <!-- Saved addresses row -->
             <div class="row-2">
               <label class="field">
                 <span class="label">Saved addresses</span>
@@ -43,24 +48,23 @@
               </label>
             </div>
 
-            <!-- Address form -->
             <label class="field">
               <span class="label">Deliver to</span>
-              <input type="text" id="addrLine" placeholder="Street address" />
+              <input id="addrLine" type="text" placeholder="Street, area, building" />
             </label>
             <div class="row-2">
               <label class="field">
                 <span class="label">City</span>
-                <input type="text" id="addrCity" />
+                <input id="addrCity" type="text" />
               </label>
               <label class="field">
                 <span class="label">Postal code</span>
-                <input type="text" id="addrZip" />
+                <input id="addrZip" type="text" inputmode="numeric" />
               </label>
             </div>
             <label class="field">
               <span class="label">Delivery instructions</span>
-              <textarea id="addrNote" rows="2" placeholder="e.g., Leave at the doorstep"></textarea>
+              <textarea id="addrNote" rows="2" placeholder="e.g., Leave at the door"></textarea>
             </label>
 
             <div class="row-2">
@@ -70,60 +74,61 @@
           </div>
         </details>
 
-        <!-- Payment -->
         <details class="block" open>
           <summary class="block-head">
             <span class="block-title">Payment method</span>
-            <span class="chev">›</span>
+            <span>›</span>
           </summary>
           <div class="block-body">
             <div class="pay-list" id="payList">
               <label class="radio-item">
+<<<<<<< HEAD
                 <input type="radio" name="pay" value="card" />
                 <span>RazorPay</span>
+=======
+                <input type="radio" name="pay" value="card" /> <span>Card</span>
               </label>
               <label class="radio-item">
-                <input type="radio" name="pay" value="cod" />
-                <span>Cash on Delivery</span>
+                <input type="radio" name="pay" value="upi" /> <span>UPI</span>
+>>>>>>> 0c0572ec6c7a67da8559855f21d2d49631e48c71
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="pay" value="cod" /> <span>Cash on Delivery</span>
               </label>
             </div>
 
-            <!-- Card form (shown only when Card selected) -->
-            <div id="cardForm" class="row-2 hidden">
+            <div id="cardForm" class="row-2 hidden" aria-live="polite">
               <label class="field">
                 <span class="label">Card number</span>
-                <input type="text" id="cardNumber" inputmode="numeric" placeholder="4111 1111 1111 1111" />
+                <input id="cardNumber" type="text" inputmode="numeric" placeholder="4111 1111 1111 1111" />
               </label>
               <label class="field">
                 <span class="label">Name on card</span>
-                <input type="text" id="cardName" placeholder="Full name" />
+                <input id="cardName" type="text" placeholder="Full name" />
               </label>
               <label class="field">
                 <span class="label">Expiry</span>
-                <input type="text" id="cardExpiry" placeholder="MM/YY" />
+                <input id="cardExpiry" type="text" placeholder="MM/YY" />
               </label>
               <label class="field">
                 <span class="label">CVV</span>
-                <input type="password" id="cardCvv" inputmode="numeric" placeholder="***" />
+                <input id="cardCvv" type="password" inputmode="numeric" placeholder="***" />
               </label>
             </div>
 
-            <!-- UPI form (shown only when UPI selected) -->
-            <div id="upiForm" class="row-2 hidden">
+            <div id="upiForm" class="row-2 hidden" aria-live="polite">
               <label class="field">
                 <span class="label">UPI ID</span>
-                <input type="text" id="upiId" placeholder="name@bank" />
+                <input id="upiId" type="text" placeholder="name@bank" />
               </label>
-              <div></div>
             </div>
           </div>
         </details>
 
-        <!-- Review order -->
         <details class="block" open>
           <summary class="block-head">
             <span class="block-title">Review order</span>
-            <span class="chev">›</span>
+            <span>›</span>
           </summary>
           <div class="block-body">
             <ul id="reviewList" class="review-list"></ul>
@@ -131,38 +136,23 @@
         </details>
       </section>
 
-      <!-- Right: Summary -->
       <aside class="summary">
         <div class="summary-card">
           <h3>Order Summary</h3>
-
-          <div class="row">
-            <span>Items total</span>
-            <strong id="sumItems">₹ 0.00</strong>
-          </div>
-          <div class="row">
-            <span>Delivery fee</span>
-            <span id="sumDelivery">₹ 0.00</span>
-          </div>
-          <div class="row">
-            <span>Service fee</span>
-            <span id="sumService">₹ 0.00</span>
-          </div>
-
+          <div class="row"><span>Items total</span><strong id="sumItems">₹ 0.00</strong></div>
+          <div class="row"><span>Delivery fee</span><span id="sumDelivery">₹ 0.00</span></div>
+          <div class="row"><span>Service fee</span><span id="sumService">₹ 0.00</span></div>
           <hr />
-          <div class="row grand">
-            <span>Total</span>
-            <strong id="sumTotal">₹ 0.00</strong>
-          </div>
-          <button id="placeOrder" class="primary">Place Order</button>
-          <p class="tiny">By placing this order, you agree to our Terms and Conditions.</p>
+          <div class="row grand"><span>Total</span><strong id="sumTotal">₹ 0.00</strong></div>
+          <button id="placeOrder" class="primary" type="button">Place Order</button>
+          <p class="tiny">By placing this order, you agree to our Terms.</p>
         </div>
       </aside>
     </div>
   </main>
   <footer class="footer-bottom">
     <div class="footer-bottom-content">
-      <p>© 2025 Bari Foods | All rights reserved</p>
+      <p>© BariFoods</p>
     </div>
   </footer>
   <script type="module" src="../static/js/checkout.js"></script>

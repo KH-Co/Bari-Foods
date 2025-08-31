@@ -149,5 +149,22 @@ if (checkoutBtn) {
   });
 }
 
+(function wireBackButton(){
+const btn = document.getElementById("navBack");
+if (!btn) return;
+
+btn.addEventListener("click", ()=>{
+// If there is meaningful history, go back; else go to a safe fallback page.
+const hasHistory = (window.history.length > 1);
+if (hasHistory) {
+// Avoid navigating back to same-origin anchors only; still safe for typical flows.
+window.history.back();
+} else {
+// Fallback destination for the Cart page:
+window.location.href = "products.html";
+}
+});
+})();
+
 // Initial render
 render();

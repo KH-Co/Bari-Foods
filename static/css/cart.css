@@ -133,27 +133,52 @@ body {
 
 /* Back button row (above title) */
 .utility-row {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-top: 6px;
+display: flex;
+align-items: center;
+justify-content: flex-start;
+margin-top: 6px;
+margin-bottom: 8px; /* ensures breathing room above title */
 }
+
 .nav-back {
-  appearance: none;
-  border: 1px solid rgba(233, 181, 64, 0.35);
-  background: rgba(255, 255, 255, 0.06);
-  color: #f6e3c8;
-  padding: 8px 14px;
-  border-radius: 999px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: filter 0.2s ease, transform 0.06s ease;
+appearance: none;
+border: 1px solid rgba(0, 0, 0, 0);
+background: rgba(0, 0, 0, 0);
+color: #f6e3c8;
+padding: 8px 14px;
+border-radius: 999px;
+cursor: pointer;
+font-weight: 600;
+letter-spacing: .2px;
+transition: filter .18s ease, transform .06s ease, background .18s ease, border-color .18s ease;
+display: inline-flex;
+align-items: center;
+gap: 8px;
 }
+
+.nav-back::before{
+font-weight: 700;
+opacity: .95;
+}
+
 .nav-back:hover {
-  filter: brightness(1.05);
+filter: brightness(1.05);
+background: rgba(0, 0, 0, 0.1);
+border-color: rgba(0, 0, 0, 0);
 }
+
 .nav-back:active {
-  transform: translateY(1px);
+transform: translateY(1px);
+}
+
+.nav-back:focus-visible{
+outline: 2px solid rgba(233,181,64,.6);
+outline-offset: 2px;
+box-shadow: 0 0 0 2px rgba(255,255,255,.12);
+}
+
+@media (max-width: 480px){
+.nav-back { padding: 8px 12px; }
 }
 
 /* Title row with Customer ID aligned right */

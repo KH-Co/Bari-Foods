@@ -7,7 +7,7 @@ export const catalog = [
     weight: "1 kg",
     tag: "rajasthani",
     rating: 3.0,
-    images: ["/assets/products-img/p1.png","/assets/products-img/p3.png"],
+    images: ["/assets/products-img/p1.png","/assets/products-img/p3.png", "/assets/products-img/p2.png"],
     description: "Spicy chat masala mixture with low oil content and coconut oil base."
   },
   {
