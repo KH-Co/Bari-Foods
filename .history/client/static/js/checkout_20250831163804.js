@@ -11,9 +11,6 @@ const placeOrderBtn = document.getElementById("placeOrder");
 
 // Address DOM
 const addrSelect = document.getElementById("addrSelect");
-const addAddressBtn = document.getElementById("addAddressBtn");
-const saveAddressBtn = document.getElementById("saveAddressBtn");
-const deleteAddressBtn = document.getElementById("deleteAddressBtn");
 const addrLine = document.getElementById("addrLine");
 const addrCity = document.getElementById("addrCity");
 const addrZip = document.getElementById("addrZip");
@@ -27,8 +24,8 @@ const upiForm = document.getElementById("upiForm");
 // State
 const state = {
   cartItems: [],
-  addresses: [],
-  selectedAddress: null,
+  userProfile: null,
+  address: null,
   payment: "cod"
 };
 
@@ -39,27 +36,10 @@ async function fetchCartData() {
   return res.json();
 }
 
-async function fetchAddresses() {
-  const res = await fetch(`${BASE_URL}/api/addresses/`);
-  if (!res.ok) throw new Error("Failed to fetch addresses");
+async function fetchUserProfile() {
+  const res = await fetch(`${BASE_URL}/api/users/profile/`);
+  if (!res.ok) throw new Error("Failed to fetch user profile");
   return res.json();
-}
-
-async function saveAddress(address, isNew) {
-  const method = isNew ? "POST" : "PUT";
-  const url = isNew ? `${BASE_URL}/api/addresses/` : `${BASE_URL}/api/addresses/${address.id}/`;
-  const res = await fetch(url, {
-    method: method,
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(address)
-  });
-  if (!res.ok) throw new Error("Failed to save address");
-  return res.json();
-}
-
-async function deleteAddress(id) {
-  const res = await fetch(`${BASE_URL}/api/addresses/${id}/`, { method: "DELETE" });
-  if (!res.ok) throw new Error("Failed to delete address");
 }
 
 async function placeOrder() {
@@ -115,41 +95,10 @@ function render() {
 }
 
 // ---- Address helpers ----
-function hydrateAddressSelect(){
-  if (addrSelect) {
-    addrSelect.innerHTML = state.addresses.length
-    ? state.addresses.map(a=><option value="${a.id}">${a.label || a.line || "Address"}</option>).join("")
-    : `<option value="-1">No saved addresses</option>`;
-  }
-}
-
-function selectAddress(id){
-    state.selectedAddress = state.addresses.find(a => String(a.id) === String(id));
-    fillAddressForm(state.selectedAddress);
-}
-
-function fillAddressForm(a){
-    if (!a) { // Clear form if no address selected
-        addrLine.value = "";
-        addrCity.value = "";
-        addrZip.value = "";
-        addrNote.value = "";
-    } else {
-        addrLine.value = a.line || "";
-        addrCity.value = a.city || "";
-        addrZip.value = a.zip || "";
-        addrNote.value = a.note || "";
-    }
-}
-
-function readAddressForm(){
-    return {
-        label: `${(addrCity.value || "Address")} - ${(addrZip.value || "")}`.trim(),
-        line: addrLine.value.trim(),
-        city: addrCity.value.trim(),
-        zip: addrZip.value.trim(),
-        note: addrNote.value.trim()
-    };
+function fillAddressForm(a) {
+  if (addrLine) addrLine.value = a?.address || "";
+  // The backend user profile has a single 'address' field, not separate line/city/zip
+  // So we'll fill the main address field and assume a simple model
 }
 
 // ---- Payment UI ----
@@ -162,8 +111,15 @@ function applyPaymentUI() {
 // ---- Init ----
 (async function init() {
   try {
-    state.cartItems = await fetchCartData();
-    state.addresses = await fetchAddresses();
+    const cartData = await fetchCartData();
+    state.cartItems = cartData;
+
+    const userProfileData = await fetchUserProfile();
+    state.userProfile = userProfileData;
+    state.address = userProfileData.address;
+
+    // Fill address form with fetched data
+    fillAddressForm(state.userProfile);
     
     // Set up payment UI
     const radios = payList.querySelectorAll('input[name="pay"]');
@@ -178,63 +134,6 @@ function applyPaymentUI() {
     });
     applyPaymentUI();
 
-    // Address logic
-    if (state.addresses.length > 0) {
-      hydrateAddressSelect();
-      selectAddress(state.addresses[0].id); // Select first address by default
-    } else {
-      hydrateAddressSelect();
-    }
-    
-    if (addrSelect) addrSelect.addEventListener("change", e => selectAddress(e.target.value));
-
-    if (addAddressBtn) addAddressBtn.addEventListener("click", () => {
-      const blank = { label:"New address", line:"", city:"", zip:"", note:"" };
-      state.addresses.push(blank);
-      hydrateAddressSelect();
-      selectAddress(state.addresses[state.addresses.length - 1].id);
-      addrLine.focus();
-    });
-
-    if (saveAddressBtn) {
-      saveAddressBtn.addEventListener("click", async () => {
-          const payload = readAddressForm();
-          const isNew = !state.selectedAddress;
-
-          try {
-              const savedAddress = await saveAddress(payload, isNew);
-              alert("Address saved successfully!");
-              state.addresses = await fetchAddresses(); // Re-fetch to get the new ID
-              hydrateAddressSelect();
-              selectAddress(savedAddress.id);
-          } catch (err) {
-              alert(err.message);
-          }
-      });
-    }
-
-    if (deleteAddressBtn) {
-        deleteAddressBtn.addEventListener("click", async () => {
-            if (!state.selectedAddress) {
-                alert("No address selected to delete.");
-                return;
-            }
-            try {
-                await deleteAddress(state.selectedAddress.id);
-                alert("Address deleted successfully!");
-                state.addresses = await fetchAddresses();
-                hydrateAddressSelect();
-                if (state.addresses.length > 0) {
-                    selectAddress(state.addresses[0].id);
-                } else {
-                    fillAddressForm(null);
-                }
-            } catch (err) {
-                alert(err.message);
-            }
-        });
-    }
-
     // Place order button logic
     if (placeOrderBtn) {
       placeOrderBtn.addEventListener("click", async () => {
@@ -244,9 +143,10 @@ function applyPaymentUI() {
         }
 
         try {
+          // Place the order via API
           const orderResponse = await placeOrder();
           alert(`Order placed successfully! Order ID: ${orderResponse.id}`);
-          window.location.href = '/order-confirmation.html';
+          window.location.href = '/order-confirmation.html'; // Redirect
         } catch (err) {
           alert(err.message);
         }

@@ -7,10 +7,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth.models import User 
 from django.contrib.auth import authenticate, login
 from django.db import transaction
-from .models import (Product, UserProfile, CartItem,Order,OrderItem,Address)
-from .serializers import (
-    AddressSerializer, 
-    )
+from .models import (Product, UserProfile, CartItem,Order,OrderItem)
 
 from .serializers import (
     ProductSerializer,

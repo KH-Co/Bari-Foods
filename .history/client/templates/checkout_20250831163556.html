@@ -10,10 +10,17 @@
 </head>
 
 <body> <!-- Header: logo left, avatar right -->
+<<<<<<< HEAD
   <header class="navbar navbar--brand">
     <div class="logo-container"> <a href="/" class="brand-link" aria-label="Home"> <img class="logo"
           src="../assets/img/bari.jpg" alt="BariFoods" /> </a>
       <h1>BARI FOODS</h1>
+=======
+  <header class="navbar--brand">
+    <div class="logo-container"> <a href="index.html" class="brand-link" aria-label="Home"> <img class="logo"
+          src="../assets/img/bari.jpg" alt="" /> </a>
+      <h1 src="index.html">BariFoods</h1>
+>>>>>>> 0c0572ec6c7a67da8559855f21d2d49631e48c71
     </div>
     <div class="spacer"></div> <button class="avatar-btn" id="profileBtn" aria-label="Profile"> <span class="avatar"
         id="profileAvatar"></span> </button>
@@ -75,8 +82,10 @@
           <div class="block-body">
             <div class="pay-list" id="payList">
               <label class="radio-item">
-                <input type="radio" name="pay" value="card" />
-                <span>RazorPay</span>
+                <input type="radio" name="pay" value="card" /> <span>Card</span>
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="pay" value="upi" /> <span>UPI</span>
               </label>
               <label class="radio-item">
                 <input type="radio" name="pay" value="cod" /> <span>Cash on Delivery</span>
