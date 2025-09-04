@@ -389,6 +389,10 @@ body {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
+.btn-outline:hover i{
+  transform: translateX(5px);
+  transition: transform ease-in 0.2s;
+}
 
 .btn-primary.large,
 .btn-outline.large {
@@ -1682,8 +1686,7 @@ body {
 a:focus,
 button:focus,
 input:focus {
-  outline: 2px solid var(--primary-gold);
-  outline-offset: 2px;
+  outline: none;
 }
 
 /* High Contrast Mode Support */

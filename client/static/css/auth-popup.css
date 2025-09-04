@@ -96,6 +96,12 @@ body {
   border: 1px solid rgba(233, 181, 64, 0.1);
   transform: scale(0.8) translateY(50px);
   transition: all var(--transition-normal);
+  -ms-overflow-style: none;
+  scrollbar-width: none; 
+}
+
+.auth-container::-webkit-scrollbar {
+  display: none;
 }
 
 .auth-modal.active .auth-container {
@@ -372,70 +378,6 @@ body {
 
 .auth-btn.primary:active {
   transform: translateY(0);
-}
-
-/* Divider */
-.auth-divider {
-  display: flex;
-  align-items: center;
-  margin: 24px 0 20px;
-  text-align: center;
-}
-
-.auth-divider::before,
-.auth-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: rgba(233, 181, 64, 0.2);
-}
-
-.auth-divider span {
-  padding: 0 16px;
-  color: var(--warm-gold);
-  font-size: 14px;
-  font-weight: 500;
-  background: linear-gradient(145deg, #ffffff 0%, #fefcf8 100%);
-}
-
-/* Social Buttons */
-.social-buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.social-btn {
-  padding: 12px 16px;
-  border: 2px solid rgba(233, 181, 64, 0.2);
-  border-radius: var(--radius-md);
-  background: white;
-  color: #2d1810;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all var(--transition-normal);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-family: var(--font-primary);
-}
-
-.social-btn:hover {
-  border-color: var(--primary-gold);
-  background: rgba(233, 181, 64, 0.05);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
-}
-
-.social-btn.google i {
-  color: #db4437;
-}
-
-.social-btn.facebook i {
-  color: #4267B2;
 }
 
 /* Auth Switch */

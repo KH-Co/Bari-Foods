@@ -646,10 +646,6 @@ class EnhancedAuthModal {
     document.getElementById('loginFormElement').addEventListener('submit', (e) => this.handleLogin(e));
     document.getElementById('signupFormElement').addEventListener('submit', (e) => this.handleSignup(e));
 
-    // Social login buttons
-    document.querySelectorAll('.social-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => this.handleSocialLogin(e));
-    });
   }
 
   initPasswordToggles() {
@@ -950,56 +946,6 @@ class EnhancedAuthModal {
     } catch (error) {
       this.setButtonError(submitBtn, 'Signup Failed');
       this.showErrorMessage('Account creation failed. Please try again.');
-    }
-  }
-
-  async handleSocialLogin(e) {
-    const provider = e.currentTarget.classList.contains('google') ? 'Google' : 'Facebook';
-    const btn = e.currentTarget;
-
-    // Loading state
-    btn.style.opacity = '0.7';
-    btn.style.pointerEvents = 'none';
-    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Connecting...`;
-
-    try {
-      // Simulate social login
-      await this.simulateAPICall(1500);
-
-      // Success
-      btn.innerHTML = `<i class="fas fa-check"></i> Connected!`;
-      btn.style.background = 'rgba(39, 174, 96, 0.1)';
-      btn.style.borderColor = '#27ae60';
-      btn.style.color = '#27ae60';
-
-      this.showSuccessMessage(`Successfully signed in with ${provider}!`);
-
-      // Mock user data
-      const userData = {
-        firstName: 'User',
-        lastName: 'Name',
-        email: `user@${provider.toLowerCase()}.com`,
-        loggedIn: true,
-        provider: provider
-      };
-
-      sessionStorage.setItem('user', JSON.stringify(userData));
-
-      setTimeout(() => {
-        this.hide();
-        this.handleSuccessfulAuth(userData);
-      }, 1500);
-
-    } catch (error) {
-      btn.innerHTML = `<i class="fas fa-times"></i> Failed`;
-      btn.style.background = 'rgba(231, 76, 60, 0.1)';
-      btn.style.borderColor = '#e74c3c';
-      btn.style.color = '#e74c3c';
-
-      setTimeout(() => {
-        btn.style = '';
-        btn.innerHTML = `<i class="fab fa-${provider.toLowerCase()}"></i> ${provider}`;
-      }, 2000);
     }
   }
 
