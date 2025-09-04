@@ -5,6 +5,9 @@ const track = document.getElementById("popTrack");
 const prevBtn = document.getElementById("popPrev");
 const nextBtn = document.getElementById("popNext");
 
+// Authentication Modal Integration
+let authModalInstance = null;
+
 // Cart storage helpers
 function loadCartLS() {
   try {
@@ -134,6 +137,17 @@ function wireEvents() {
     const btn = e.target.closest(".home-add-btn");
     if (!btn) return;
 
+    // Check if user is logged in before adding to cart
+    const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
+    if (!userData.loggedIn) {
+      // Show auth modal if not logged in
+      if (authModalInstance) {
+        authModalInstance.show();
+        authModalInstance.showLoginMessage('Please sign in to add items to your cart');
+        return;
+      }
+    }
+
     // Prevent double clicks
     if (btn.disabled) return;
     btn.disabled = true;
@@ -218,7 +232,6 @@ let pages = 1;
 let perPage = 3;
 let slideW = 0;
 let isAnimating = false;
-
 
 function layout() {
   const total = popular.length;
@@ -317,4 +330,859 @@ function addScrollAnimations() {
   });
 }
 
+// Initialize cart count on page load
+function initCartCount() {
+  const cartItems = loadCartLS();
+  const totalCount = Object.values(cartItems).reduce((sum, qty) => sum + qty, 0);
+  const badge = document.getElementById("cartCount");
+  if (badge) {
+    badge.textContent = totalCount;
+  }
+}
+
+// Update user interface based on login status
+function updateUIForUser(userData) {
+  const userIcon = document.querySelector('.user-icon');
+  const profileTrigger = document.getElementById('profileTrigger');
+
+  if (userData && userData.loggedIn) {
+    // Update profile icon to show logged in state
+    if (userIcon) {
+      userIcon.style.color = '#e9b540';
+      userIcon.title = `Welcome, ${userData.firstName || 'User'}!`;
+    }
+
+    // Update profile link behavior for logged in users
+    if (profileTrigger) {
+      profileTrigger.href = '../templates/profile.html';
+      profileTrigger.onclick = null; // Remove auth modal trigger
+    }
+  } else {
+    // Reset to default state
+    if (userIcon) {
+      userIcon.style.color = '';
+      userIcon.title = 'Sign In';
+    }
+  }
+}
+
+// Enhanced Auth Modal class with additional features
+class EnhancedAuthModal {
+  constructor() {
+    // Wait for DOM to be ready before initializing
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => this.init());
+    } else {
+      this.init();
+    }
+  }
+
+  init() {
+    // Check if auth modal elements exist
+    if (!document.getElementById('authModal')) {
+      console.warn('Auth modal elements not found');
+      return;
+    }
+
+    this.modal = document.getElementById('authModal');
+    this.overlay = document.getElementById('authOverlay');
+    this.closeBtn = document.getElementById('authClose');
+    this.loginForm = document.getElementById('loginForm');
+    this.signupForm = document.getElementById('signupForm');
+    this.showLoginBtn = document.getElementById('showLogin');
+    this.showSignupBtn = document.getElementById('showSignup');
+
+    this.bindEvents();
+    this.initPasswordToggles();
+    this.initFormValidation();
+    this.initProfileTrigger();
+
+    // Check existing login status
+    this.checkLoginStatus();
+  }
+
+  initProfileTrigger() {
+    const profileTrigger = document.getElementById('profileTrigger');
+    if (profileTrigger) {
+      profileTrigger.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        // Check if user is logged in
+        const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
+        if (userData.loggedIn) {
+          // Redirect to profile page or show profile dropdown
+          this.showProfileMenu(userData);
+        } else {
+          // Show auth modal
+          this.show();
+        }
+      });
+    }
+  }
+
+  showProfileMenu(userData) {
+    // Create a simple profile dropdown/menu
+    const existingMenu = document.getElementById('profileMenu');
+    if (existingMenu) {
+      existingMenu.remove();
+    }
+
+    const menu = document.createElement('div');
+    menu.id = 'profileMenu';
+    menu.innerHTML = `
+      <div style="
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: linear-gradient(145deg, #ffffff 0%, #fefcf8 100%);
+        border: 2px solid #e9b540;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        z-index: 9998;
+        min-width: 200px;
+        font-family: var(--font-primary, 'Poppins', sans-serif);
+      ">
+        <div style="
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 16px;
+          padding-bottom: 16px;
+          border-bottom: 1px solid rgba(233, 181, 64, 0.2);
+        ">
+          <i class="fas fa-user-circle" style="font-size: 24px; color: #e9b540;"></i>
+          <div>
+            <div style="font-weight: 600; color: #2d1810; font-size: 14px;">
+              ${userData.firstName || 'User'} ${userData.lastName || ''}
+            </div>
+            <div style="font-size: 12px; color: #a67c52; opacity: 0.8;">
+              ${userData.email || ''}
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <a href="../templates/profile.html" style="
+            color: #2d1810;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          " onmouseover="this.style.background='rgba(233, 181, 64, 0.1)'" 
+             onmouseout="this.style.background='transparent'">
+            <i class="fas fa-user"></i>
+            My Profile
+          </a>
+          <a href="../templates/orders.html" style="
+            color: #2d1810;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          " onmouseover="this.style.background='rgba(233, 181, 64, 0.1)'" 
+             onmouseout="this.style.background='transparent'">
+            <i class="fas fa-shopping-bag"></i>
+            My Orders
+          </a>
+          <button onclick="window.authModalInstance.logout()" style="
+            background: none;
+            border: none;
+            color: #831500;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+          " onmouseover="this.style.background='rgba(131, 21, 0, 0.1)'" 
+             onmouseout="this.style.background='transparent'">
+            <i class="fas fa-sign-out-alt"></i>
+            Sign Out
+          </button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(menu);
+
+    // Close menu when clicking outside
+    const closeMenu = (e) => {
+      if (!menu.contains(e.target) && !e.target.closest('#profileTrigger')) {
+        menu.remove();
+        document.removeEventListener('click', closeMenu);
+      }
+    };
+
+    setTimeout(() => {
+      document.addEventListener('click', closeMenu);
+    }, 100);
+  }
+
+  logout() {
+    // Clear session
+    sessionStorage.removeItem('user');
+
+    // Update UI
+    updateUIForUser(null);
+
+    // Remove profile menu if open
+    const profileMenu = document.getElementById('profileMenu');
+    if (profileMenu) {
+      profileMenu.remove();
+    }
+
+    // Show logout toast
+    this.showLogoutToast();
+  }
+
+  showLogoutToast() {
+    const toast = document.createElement('div');
+    toast.innerHTML = `
+      <div style="
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: linear-gradient(135deg, #e9b540 0%, #f7d2c4 100%);
+        color: #2d1810;
+        padding: 16px 24px;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        font-weight: 600;
+        font-size: 14px;
+        z-index: 10000;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-primary, 'Poppins', sans-serif);
+      ">
+        <i class="fas fa-sign-out-alt" style="color: #2d1810;"></i>
+        Successfully signed out
+      </div>
+    `;
+
+    document.body.appendChild(toast);
+    const toastElement = toast.firstElementChild;
+
+    // Animate in
+    setTimeout(() => {
+      toastElement.style.transform = 'translateX(0)';
+    }, 10);
+
+    // Animate out and remove
+    setTimeout(() => {
+      toastElement.style.transform = 'translateX(100%)';
+      setTimeout(() => {
+        document.body.removeChild(toast);
+      }, 300);
+    }, 3000);
+  }
+
+  checkLoginStatus() {
+    const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
+    updateUIForUser(userData.loggedIn ? userData : null);
+  }
+
+  showLoginMessage(message) {
+    // Show a message prompting user to login
+    const activeForm = document.querySelector('.auth-form.active .form');
+    if (activeForm) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'info-message';
+      messageDiv.style.cssText = `
+        background: rgba(233, 181, 64, 0.1);
+        color: #e9b540;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 16px;
+        border: 1px solid rgba(233, 181, 64, 0.2);
+        text-align: center;
+      `;
+      messageDiv.textContent = message;
+      activeForm.insertBefore(messageDiv, activeForm.firstChild);
+
+      // Remove message after 5 seconds
+      setTimeout(() => {
+        if (messageDiv.parentNode) {
+          messageDiv.remove();
+        }
+      }, 5000);
+    }
+  }
+
+  bindEvents() {
+    // Close modal
+    this.closeBtn.addEventListener('click', () => this.hide());
+    this.overlay.addEventListener('click', () => this.hide());
+
+    // ESC key to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.modal.classList.contains('active')) {
+        this.hide();
+      }
+    });
+
+    // Form switching
+    this.showSignupBtn.addEventListener('click', () => this.switchToSignup());
+    this.showLoginBtn.addEventListener('click', () => this.switchToLogin());
+
+    // Form submissions
+    document.getElementById('loginFormElement').addEventListener('submit', (e) => this.handleLogin(e));
+    document.getElementById('signupFormElement').addEventListener('submit', (e) => this.handleSignup(e));
+
+    // Social login buttons
+    document.querySelectorAll('.social-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => this.handleSocialLogin(e));
+    });
+  }
+
+  initPasswordToggles() {
+    const toggles = ['loginPasswordToggle', 'signupPasswordToggle', 'confirmPasswordToggle'];
+
+    toggles.forEach(toggleId => {
+      const toggle = document.getElementById(toggleId);
+      if (toggle) {
+        toggle.addEventListener('click', () => {
+          const input = toggle.previousElementSibling;
+          const icon = toggle.querySelector('i');
+
+          if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'fas fa-eye-slash';
+          } else {
+            input.type = 'password';
+            icon.className = 'fas fa-eye';
+          }
+        });
+      }
+    });
+  }
+
+  initFormValidation() {
+    // Real-time validation
+    const inputs = document.querySelectorAll('.form input');
+    inputs.forEach(input => {
+      input.addEventListener('blur', () => this.validateInput(input));
+      input.addEventListener('input', () => this.clearError(input));
+    });
+
+    // Password confirmation validation
+    const confirmPassword = document.getElementById('confirmPassword');
+    const signupPassword = document.getElementById('signupPassword');
+
+    if (confirmPassword && signupPassword) {
+      confirmPassword.addEventListener('input', () => {
+        this.validatePasswordMatch(signupPassword, confirmPassword);
+      });
+    }
+  }
+
+  validateInput(input) {
+    const wrapper = input.closest('.input-wrapper');
+    const existingError = wrapper.parentNode.querySelector('.error-message');
+
+    // Remove existing error
+    if (existingError) {
+      existingError.remove();
+    }
+
+    let isValid = true;
+    let errorMessage = '';
+
+    // Email validation
+    if (input.type === 'email') {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(input.value)) {
+        isValid = false;
+        errorMessage = 'Please enter a valid email address';
+      }
+    }
+
+    // Phone validation
+    if (input.type === 'tel') {
+      const phoneRegex = /^[+]?[\d\s\-\(\)]{10,}$/;
+      if (!phoneRegex.test(input.value)) {
+        isValid = false;
+        errorMessage = 'Please enter a valid phone number';
+      }
+    }
+
+    // Password strength validation
+    if (input.id === 'signupPassword') {
+      if (input.value.length < 8) {
+        isValid = false;
+        errorMessage = 'Password must be at least 8 characters';
+      }
+    }
+
+    // Required field validation
+    if (input.hasAttribute('required') && !input.value.trim()) {
+      isValid = false;
+      errorMessage = 'This field is required';
+    }
+
+    // Update UI
+    if (isValid) {
+      wrapper.classList.remove('error');
+    } else {
+      wrapper.classList.add('error');
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.textContent = errorMessage;
+      wrapper.parentNode.appendChild(errorDiv);
+    }
+
+    return isValid;
+  }
+
+  validatePasswordMatch(password, confirmPassword) {
+    const wrapper = confirmPassword.closest('.input-wrapper');
+    const existingError = wrapper.parentNode.querySelector('.error-message');
+
+    if (existingError) {
+      existingError.remove();
+    }
+
+    if (password.value !== confirmPassword.value && confirmPassword.value) {
+      wrapper.classList.add('error');
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.textContent = 'Passwords do not match';
+      wrapper.parentNode.appendChild(errorDiv);
+      return false;
+    } else {
+      wrapper.classList.remove('error');
+      return true;
+    }
+  }
+
+  clearError(input) {
+    const wrapper = input.closest('.input-wrapper');
+    const errorMessage = wrapper.parentNode.querySelector('.error-message');
+
+    if (errorMessage) {
+      errorMessage.remove();
+    }
+    wrapper.classList.remove('error');
+  }
+
+  show() {
+    this.modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Focus management
+    setTimeout(() => {
+      const firstInput = this.modal.querySelector('.auth-form.active input');
+      if (firstInput) firstInput.focus();
+    }, 300);
+  }
+
+  hide() {
+    this.modal.classList.remove('active');
+    document.body.style.overflow = '';
+    this.resetForms();
+  }
+
+  switchToSignup() {
+    this.loginForm.classList.remove('active');
+    this.signupForm.classList.add('active');
+    this.resetForms();
+
+    // Focus first input
+    setTimeout(() => {
+      const firstInput = this.signupForm.querySelector('input');
+      if (firstInput) firstInput.focus();
+    }, 100);
+  }
+
+  switchToLogin() {
+    this.signupForm.classList.remove('active');
+    this.loginForm.classList.add('active');
+    this.resetForms();
+
+    // Focus first input
+    setTimeout(() => {
+      const firstInput = this.loginForm.querySelector('input');
+      if (firstInput) firstInput.focus();
+    }, 100);
+  }
+
+  resetForms() {
+    // Clear all form inputs
+    document.querySelectorAll('.form input').forEach(input => {
+      input.value = '';
+      this.clearError(input);
+    });
+
+    // Reset checkboxes
+    document.querySelectorAll('.form input[type="checkbox"]').forEach(checkbox => {
+      checkbox.checked = false;
+    });
+
+    // Reset buttons
+    document.querySelectorAll('.auth-btn').forEach(btn => {
+      btn.classList.remove('loading', 'success');
+      btn.disabled = false;
+      btn.style.background = '';
+      const span = btn.querySelector('span');
+      if (span) {
+        if (btn.closest('#loginForm')) {
+          span.textContent = 'Sign In';
+        } else if (btn.closest('#signupForm')) {
+          span.textContent = 'Create Account';
+        }
+      }
+    });
+
+    // Clear messages
+    document.querySelectorAll('.success-message, .error-message, .info-message').forEach(msg => msg.remove());
+  }
+
+  async handleLogin(e) {
+    e.preventDefault();
+
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    const rememberMe = document.getElementById('rememberMe').checked;
+    const submitBtn = e.target.querySelector('.auth-btn');
+
+    // Validate inputs
+    if (!this.validateForm('login')) return;
+
+    // Loading state
+    this.setButtonLoading(submitBtn, 'Signing In...');
+
+    try {
+      // Simulate API call
+      await this.simulateAPICall();
+
+      // Success
+      this.setButtonSuccess(submitBtn, 'Welcome Back!');
+      this.showSuccessMessage('Successfully signed in!');
+
+      // Store user session
+      const userData = {
+        email,
+        firstName: email.split('@')[0], // Simple name extraction
+        loggedIn: true
+      };
+
+      if (rememberMe) {
+        localStorage.setItem('user', JSON.stringify(userData));
+      } else {
+        sessionStorage.setItem('user', JSON.stringify(userData));
+      }
+
+      setTimeout(() => {
+        this.hide();
+        this.handleSuccessfulAuth(userData);
+      }, 1500);
+
+    } catch (error) {
+      this.setButtonError(submitBtn, 'Sign In Failed');
+      this.showErrorMessage('Invalid email or password. Please try again.');
+    }
+  }
+
+  async handleSignup(e) {
+    e.preventDefault();
+
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const email = document.getElementById('signupEmail').value;
+    const phone = document.getElementById('phoneNumber').value;
+    const password = document.getElementById('signupPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const agreeTerms = document.getElementById('agreeTerms').checked;
+    const submitBtn = e.target.querySelector('.auth-btn');
+
+    // Validate inputs
+    if (!this.validateForm('signup')) return;
+
+    // Additional validation
+    if (!agreeTerms) {
+      this.showErrorMessage('Please agree to the Terms & Conditions');
+      return;
+    }
+
+    // Loading state
+    this.setButtonLoading(submitBtn, 'Creating Account...');
+
+    try {
+      // Simulate API call
+      await this.simulateAPICall(2000);
+
+      // Success
+      this.setButtonSuccess(submitBtn, 'Account Created!');
+      this.showSuccessMessage('Account created successfully! Welcome to Bari Foods!');
+
+      // Store user session
+      const userData = {
+        firstName,
+        lastName,
+        email,
+        phone,
+        loggedIn: true
+      };
+      sessionStorage.setItem('user', JSON.stringify(userData));
+
+      setTimeout(() => {
+        this.hide();
+        this.handleSuccessfulAuth(userData);
+      }, 1500);
+
+    } catch (error) {
+      this.setButtonError(submitBtn, 'Signup Failed');
+      this.showErrorMessage('Account creation failed. Please try again.');
+    }
+  }
+
+  async handleSocialLogin(e) {
+    const provider = e.currentTarget.classList.contains('google') ? 'Google' : 'Facebook';
+    const btn = e.currentTarget;
+
+    // Loading state
+    btn.style.opacity = '0.7';
+    btn.style.pointerEvents = 'none';
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Connecting...`;
+
+    try {
+      // Simulate social login
+      await this.simulateAPICall(1500);
+
+      // Success
+      btn.innerHTML = `<i class="fas fa-check"></i> Connected!`;
+      btn.style.background = 'rgba(39, 174, 96, 0.1)';
+      btn.style.borderColor = '#27ae60';
+      btn.style.color = '#27ae60';
+
+      this.showSuccessMessage(`Successfully signed in with ${provider}!`);
+
+      // Mock user data
+      const userData = {
+        firstName: 'User',
+        lastName: 'Name',
+        email: `user@${provider.toLowerCase()}.com`,
+        loggedIn: true,
+        provider: provider
+      };
+
+      sessionStorage.setItem('user', JSON.stringify(userData));
+
+      setTimeout(() => {
+        this.hide();
+        this.handleSuccessfulAuth(userData);
+      }, 1500);
+
+    } catch (error) {
+      btn.innerHTML = `<i class="fas fa-times"></i> Failed`;
+      btn.style.background = 'rgba(231, 76, 60, 0.1)';
+      btn.style.borderColor = '#e74c3c';
+      btn.style.color = '#e74c3c';
+
+      setTimeout(() => {
+        btn.style = '';
+        btn.innerHTML = `<i class="fab fa-${provider.toLowerCase()}"></i> ${provider}`;
+      }, 2000);
+    }
+  }
+
+  validateForm(type) {
+    let isValid = true;
+    const form = type === 'login' ? this.loginForm : this.signupForm;
+    const inputs = form.querySelectorAll('input[required]');
+
+    inputs.forEach(input => {
+      if (!this.validateInput(input)) {
+        isValid = false;
+      }
+    });
+
+    // Special validation for signup
+    if (type === 'signup') {
+      const password = document.getElementById('signupPassword');
+      const confirmPassword = document.getElementById('confirmPassword');
+
+      if (!this.validatePasswordMatch(password, confirmPassword)) {
+        isValid = false;
+      }
+    }
+
+    return isValid;
+  }
+
+  setButtonLoading(btn, text) {
+    btn.classList.add('loading');
+    btn.disabled = true;
+    const span = btn.querySelector('span');
+    if (span) span.textContent = text;
+  }
+
+  setButtonSuccess(btn, text) {
+    btn.classList.remove('loading');
+    btn.classList.add('success');
+    const span = btn.querySelector('span');
+    if (span) span.textContent = text;
+  }
+
+  setButtonError(btn, text) {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    btn.style.background = 'rgba(231, 76, 60, 0.9)';
+    const span = btn.querySelector('span');
+    if (span) span.textContent = text;
+
+    setTimeout(() => {
+      btn.style.background = '';
+      btn.disabled = false;
+      if (span) {
+        span.textContent = btn.closest('#loginForm') ? 'Sign In' : 'Create Account';
+      }
+    }, 3000);
+  }
+
+  showSuccessMessage(message) {
+    // Remove existing messages
+    document.querySelectorAll('.success-message, .error-message, .info-message').forEach(msg => msg.remove());
+
+    const activeForm = document.querySelector('.auth-form.active .form');
+    const successDiv = document.createElement('div');
+    successDiv.className = 'success-message';
+    successDiv.textContent = message;
+    activeForm.insertBefore(successDiv, activeForm.firstChild);
+  }
+
+  showErrorMessage(message) {
+    // Remove existing messages
+    document.querySelectorAll('.success-message, .error-message, .info-message').forEach(msg => msg.remove());
+
+    const activeForm = document.querySelector('.auth-form.active .form');
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.style.cssText = `
+      background: rgba(231, 76, 60, 0.1);
+      color: #e74c3c;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      border: 1px solid rgba(231, 76, 60, 0.2);
+    `;
+    errorDiv.textContent = message;
+    activeForm.insertBefore(errorDiv, activeForm.firstChild);
+  }
+
+  handleSuccessfulAuth(userData) {
+    // Update UI to show logged in state
+    updateUIForUser(userData);
+
+    // Show welcome toast
+    this.showWelcomeToast(userData.firstName || 'User');
+  }
+
+  showWelcomeToast(name) {
+    const toast = document.createElement('div');
+    toast.innerHTML = `
+      <div style="
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: linear-gradient(135deg, #e9b540 0%, #f7d2c4 100%);
+        color: #2d1810;
+        padding: 16px 24px;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        font-weight: 600;
+        font-size: 14px;
+        z-index: 10000;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-primary, 'Poppins', sans-serif);
+      ">
+        <i class="fas fa-user-check" style="color: #2d1810;"></i>
+        Welcome back, ${name}!
+      </div>
+    `;
+
+    document.body.appendChild(toast);
+    const toastElement = toast.firstElementChild;
+
+    // Animate in
+    setTimeout(() => {
+      toastElement.style.transform = 'translateX(0)';
+    }, 10);
+
+    // Animate out and remove
+    setTimeout(() => {
+      toastElement.style.transform = 'translateX(100%)';
+      setTimeout(() => {
+        document.body.removeChild(toast);
+      }, 300);
+    }, 4000);
+  }
+
+  simulateAPICall(delay = 1000) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        // Simulate 90% success rate
+        if (Math.random() > 0.1) {
+          resolve();
+        } else {
+          reject(new Error('API Error'));
+        }
+      }, delay);
+    });
+  }
+}
+
+// Initialize everything when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize cart count
+  initCartCount();
+
+  // Initialize auth modal
+  authModalInstance = new EnhancedAuthModal();
+
+  // Make auth modal globally accessible
+  window.authModalInstance = authModalInstance;
+
+  // Initialize navbar scroll effect
+  initNavbarScrollEffect();
+});
+
+// Navbar scroll effect
+function initNavbarScrollEffect() {
+  const navbar = document.querySelector('.navbar');
+  if (navbar) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  }
+}
+
+// Initialize and render the carousel
 render();

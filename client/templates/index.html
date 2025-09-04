@@ -7,6 +7,7 @@
   <title>Bari Foods - Authentic Rajasthani Snacks</title>
   <link rel="stylesheet" href="../static/css/style.css">
   <link rel="stylesheet" href="../static/css/root.css">
+  <link rel="stylesheet" href="../static/css/auth-popup.css">
   <link
     href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
@@ -40,7 +41,7 @@
         <i class="fas fa-shopping-cart cart-icon"></i>
         <span id="cartCount" class="count">0</span>
       </a>
-      <a href="../templates/profile.html" aria-label="User Profile">
+      <a href="#" id="profileTrigger" aria-label="User Profile">
         <i class="fas fa-user-circle user-icon"></i>
       </a>
     </div>
@@ -92,7 +93,7 @@
           <img src="../assets/img/hero-bottom.png" alt="Wave Design" loading="lazy">
         </div>
         <div class="camel-icon">
-          <img src="../../assets/img/camel.png" alt="Camel Icon" loading="lazy">
+          <img src="../assets/img/camel.png" alt="Camel Icon" loading="lazy">
         </div>
       </div>
 
@@ -297,8 +298,6 @@
             <li class="address">Jaipur, RJ 302001</li>
           </ul>
         </div>
-
-
       </div>
     </div>
 
@@ -309,6 +308,177 @@
       </div>
     </div>
   </footer>
+
+  <!-- Authentication Modal -->
+  <div class="auth-modal" id="authModal">
+    <div class="auth-overlay" id="authOverlay"></div>
+    <div class="auth-container">
+      <button class="auth-close" id="authClose" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <!-- Login Form -->
+      <div class="auth-form login-form active" id="loginForm">
+        <div class="auth-header">
+          <div class="auth-logo">
+            <img src="../assets/img/bari.jpg" alt="Bari Foods">
+            <h2>Welcome Back</h2>
+          </div>
+          <p class="auth-subtitle">Sign in to your account</p>
+        </div>
+
+        <form class="form" id="loginFormElement">
+          <div class="input-group">
+            <div class="input-wrapper">
+              <i class="fas fa-envelope input-icon"></i>
+              <input type="email" id="loginEmail" placeholder="Email Address" required>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-wrapper">
+              <i class="fas fa-lock input-icon"></i>
+              <input type="password" id="loginPassword" placeholder="Password" required autocomplete="current-password">
+              <button type="button" class="password-toggle" id="loginPasswordToggle">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-options">
+            <label class="checkbox-wrapper">
+              <input type="checkbox" id="rememberMe">
+              <span class="checkmark"></span>
+              Remember me
+            </label>
+            <a href="#" class="forgot-link">Forgot Password?</a>
+          </div>
+
+          <button type="submit" class="auth-btn primary">
+            <span>Sign In</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+
+          <div class="auth-divider">
+            <span>or continue with</span>
+          </div>
+
+          <div class="social-buttons">
+            <button type="button" class="social-btn google">
+              <i class="fab fa-google"></i>
+              Google
+            </button>
+            <button type="button" class="social-btn facebook">
+              <i class="fab fa-facebook-f"></i>
+              Facebook
+            </button>
+          </div>
+
+          <p class="auth-switch">
+            Don't have an account?
+            <button type="button" class="switch-btn" id="showSignup">Create Account</button>
+          </p>
+        </form>
+      </div>
+
+      <!-- Signup Form -->
+      <div class="auth-form signup-form" id="signupForm">
+        <div class="auth-header">
+          <div class="auth-logo">
+            <img src="../assets/img/bari.jpg" alt="Bari Foods">
+            <h2>Join Bari Foods</h2>
+          </div>
+          <p class="auth-subtitle">Create your account to get started</p>
+        </div>
+
+        <form class="form" id="signupFormElement">
+          <div class="input-row">
+            <div class="input-group">
+              <div class="input-wrapper">
+                <i class="fas fa-user input-icon"></i>
+                <input type="text" id="firstName" placeholder="First Name" required>
+              </div>
+            </div>
+            <div class="input-group">
+              <div class="input-wrapper">
+                <i class="fas fa-user input-icon"></i>
+                <input type="text" id="lastName" placeholder="Last Name" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-wrapper">
+              <i class="fas fa-envelope input-icon"></i>
+              <input type="email" id="signupEmail" placeholder="Email Address" required>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-wrapper">
+              <i class="fas fa-phone input-icon"></i>
+              <input type="tel" id="phoneNumber" placeholder="Phone Number" required>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-wrapper">
+              <i class="fas fa-lock input-icon"></i>
+              <input type="password" id="signupPassword" placeholder="Create Password" required
+                autocomplete="new-password">
+              <button type="button" class="password-toggle" id="signupPasswordToggle">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-wrapper">
+              <i class="fas fa-lock input-icon"></i>
+              <input type="password" id="confirmPassword" placeholder="Confirm Password" required
+                autocomplete="new-password">
+              <button type="button" class="password-toggle" id="confirmPasswordToggle">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-options">
+            <label class="checkbox-wrapper">
+              <input type="checkbox" id="agreeTerms" required>
+              <span class="checkmark"></span>
+              I agree to the <a href="#" class="terms-link">Terms & Conditions</a>
+            </label>
+          </div>
+
+          <button type="submit" class="auth-btn primary">
+            <span>Create Account</span>
+            <i class="fas fa-user-plus"></i>
+          </button>
+
+          <div class="auth-divider">
+            <span>or continue with</span>
+          </div>
+
+          <div class="social-buttons">
+            <button type="button" class="social-btn google">
+              <i class="fab fa-google"></i>
+              Google
+            </button>
+            <button type="button" class="social-btn facebook">
+              <i class="fab fa-facebook-f"></i>
+              Facebook
+            </button>
+          </div>
+
+          <p class="auth-switch">
+            Already have an account?
+            <button type="button" class="switch-btn" id="showLogin">Sign In</button>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
 
   <script type="module" src="../static/js/script.js"></script>
 
