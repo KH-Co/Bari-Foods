@@ -1,4 +1,4 @@
-:root {
+n:root {
   --bg-gradient: linear-gradient(to right, #021120 0%, #641807 100%);
   --logo-gradient: linear-gradient(180deg, #e9b540 0%, #f7d2c4 100%);
 
@@ -191,33 +191,22 @@ body {
   width: 100%;
 }
 
-.icons {
-  display: flex;
-  gap: 25px;
-  cursor: pointer;
-  font-size: 25px;
+.icons a {
+  position: relative;
+  display: inline-block;
 }
 
 .icons a i {
   color: var(--primary-gold);
 }
-
 .icons i {
   font-size: clamp(20px, 3vw, 26px);
   cursor: pointer;
-  transition: var(--transition-fast);
-  padding: 8px;
-  border-radius: 50%;
 }
-
-.icons i:hover {
-  transform: translateY(-2px);
-}
-
 .count {
   position: absolute;
-  top: 2rem;
-  right: 7.25rem;
+  top: -8px;
+  right: -8px;
   background: var(--button-primary);
   color: var(--light-cream);
   border-radius: 50%;
@@ -229,6 +218,7 @@ body {
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  z-index: 10;
 }
 
 /* HERO - SECTION */
