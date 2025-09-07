@@ -191,7 +191,14 @@ body {
   width: 100%;
 }
 
-.icons a {
+.icons {
+  display: flex;
+  gap: 25px;
+  cursor: pointer;
+  font-size: 25px;
+}
+
+
   position: relative;
   display: inline-block;
 }
@@ -213,8 +220,8 @@ body {
 
 .count {
   position: absolute;
-  top: -1px;
-  right: -1px;
+  top: -8px;
+  right: -8px;
   background: var(--button-primary);
   color: var(--light-cream);
   border-radius: 50%;

@@ -207,7 +207,7 @@ body {
   border-radius: 50%;
 }
 
-.icons i:hover {
+.icons .count i:hover {
   transform: translateY(-2px);
 }
 

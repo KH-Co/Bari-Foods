@@ -213,8 +213,8 @@ body {
 
 .count {
   position: absolute;
-  top: -1px;
-  right: -1px;
+  top: -8px;
+  right: -8px;
   background: var(--button-primary);
   color: var(--light-cream);
   border-radius: 50%;

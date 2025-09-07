@@ -1,4 +1,4 @@
-
+import { catalog } from "../../assets/data/catalog.mjs";
 
 const viewport = document.getElementById("popViewport");
 const track = document.getElementById("popTrack");
@@ -1195,44 +1195,25 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchPopularProducts();
 });
 
-
 function fetchPopularProducts() {
-    fetch('http://127.0.0.1:8000/api/products/')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(products => {
-            const popularProductsContainer = document.getElementById('popular-products');
-            if (popularProductsContainer) {
-                popularProductsContainer.innerHTML = ''; // Clear existing content
-
-                // Display the first 8 products from the list
-                const productsToDisplay = products.slice(0, 8);
-
-                productsToDisplay.forEach(product => {
-                    const productCard = `
-                        <div class="product-card">
-                            <img src="${product.image}" alt="${product.name}">
-                            <h3>${product.name}</h3>
-                            <p>₹${product.price}</p>
-                            <button onclick="addToCart(${product.id})">Add to Cart</button>
-                        </div>
-                    `;
-                    popularProductsContainer.innerHTML += productCard;
-                });
-            }
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
-}
-
-function addToCart(productId) {
-    // Implement your existing logic for adding a product to the cart
-    console.log("Add to cart button clicked for product ID:", productId);
+  fetch('http://127.0.0.1:8000/api/products/popular/')
+    .then(response => response.json())
+    .then(products => {
+      const popularProductsContainer = document.getElementById('popular-products');
+      popularProductsContainer.innerHTML = '';
+      products.forEach(product => {
+        const productCard = `
+                    <div class="product-card">
+                        <img src="${product.image}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p>₹${product.price}</p>
+                        <button onclick="addToCart(${product.id})">Add to Cart</button>
+                    </div>
+                `;
+        popularProductsContainer.innerHTML += productCard;
+      });
+    })
+    .catch(error => console.error('Error fetching popular products:', error));
 }
 
 // Navbar scroll effect
