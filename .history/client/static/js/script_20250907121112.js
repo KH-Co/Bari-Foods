@@ -1,5 +1,8 @@
 import { catalog } from "../../assets/data/catalog.mjs";
 
+const BASE_URL = "http://127.0.0.1:8000";
+let totalProducts = [];
+
 const viewport = document.getElementById("popViewport");
 const track = document.getElementById("popTrack");
 const prevBtn = document.getElementById("popPrev");
@@ -406,16 +409,12 @@ class EnhancedAuthModal {
     if (profileTrigger) {
       profileTrigger.addEventListener('click', (e) => {
         e.preventDefault();
-
-        // Check if user is logged in
         const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
         if (userData.loggedIn) {
-          // Redirect to profile page or show profile dropdown
-          this.showProfileMenu(userData);
+        this.showProfileMenu(userData);
         } else {
-          // Show auth modal
-          this.show();
-        }
+        this.show(); // 'this' is correct here because it's in the class method
+      }
       });
     }
   }
@@ -689,168 +688,8 @@ class EnhancedAuthModal {
     }
   }
 
-  validateInput(input) {
-    const wrapper = input.closest('.input-wrapper');
-    const existingError = wrapper.parentNode.querySelector('.error-message');
-
-    // Remove existing error
-    if (existingError) {
-      existingError.remove();
-    }
-
-    let isValid = true;
-    let errorMessage = '';
-
-    // Email validation
-    if (input.type === 'email') {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(input.value)) {
-        isValid = false;
-        errorMessage = 'Please enter a valid email address';
-      }
-    }
-
-    // Phone validation
-    if (input.type === 'tel') {
-      const phoneRegex = /^[+]?[\d\s\-\(\)]{10,}$/;
-      if (!phoneRegex.test(input.value)) {
-        isValid = false;
-        errorMessage = 'Please enter a valid phone number';
-      }
-    }
-
-    // Password strength validation
-    if (input.id === 'signupPassword') {
-      if (input.value.length < 8) {
-        isValid = false;
-        errorMessage = 'Password must be at least 8 characters';
-      }
-    }
-
-    // Required field validation
-    if (input.hasAttribute('required') && !input.value.trim()) {
-      isValid = false;
-      errorMessage = 'This field is required';
-    }
-
-    // Update UI
-    if (isValid) {
-      wrapper.classList.remove('error');
-    } else {
-      wrapper.classList.add('error');
-      const errorDiv = document.createElement('div');
-      errorDiv.className = 'error-message';
-      errorDiv.textContent = errorMessage;
-      wrapper.parentNode.appendChild(errorDiv);
-    }
-
-    return isValid;
-  }
-
-  validatePasswordMatch(password, confirmPassword) {
-    const wrapper = confirmPassword.closest('.input-wrapper');
-    const existingError = wrapper.parentNode.querySelector('.error-message');
-
-    if (existingError) {
-      existingError.remove();
-    }
-
-    if (password.value !== confirmPassword.value && confirmPassword.value) {
-      wrapper.classList.add('error');
-      const errorDiv = document.createElement('div');
-      errorDiv.className = 'error-message';
-      errorDiv.textContent = 'Passwords do not match';
-      wrapper.parentNode.appendChild(errorDiv);
-      return false;
-    } else {
-      wrapper.classList.remove('error');
-      return true;
-    }
-  }
-
+// This method now safely clears errors
   clearError(input) {
-    const wrapper = input.closest('.input-wrapper');
-    const errorMessage = wrapper.parentNode.querySelector('.error-message');
-
-    if (errorMessage) {
-      errorMessage.remove();
-    }
-    wrapper.classList.remove('error');
-  }
-
-  show() {
-    this.modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-
-    // Focus management
-    setTimeout(() => {
-      const firstInput = this.modal.querySelector('.auth-form.active input');
-      if (firstInput) firstInput.focus();
-    }, 300);
-  }
-
-  hide() {
-    this.modal.classList.remove('active');
-    document.body.style.overflow = '';
-    this.resetForms();
-  }
-
-  switchToSignup() {
-    this.loginForm.classList.remove('active');
-    this.signupForm.classList.add('active');
-    this.resetForms();
-
-    // Focus first input
-    setTimeout(() => {
-      const firstInput = this.signupForm.querySelector('input');
-      if (firstInput) firstInput.focus();
-    }, 100);
-  }
-
-  switchToLogin() {
-    this.signupForm.classList.remove('active');
-    this.loginForm.classList.add('active');
-    this.resetForms();
-
-    // Focus first input
-    setTimeout(() => {
-      const firstInput = this.loginForm.querySelector('input');
-      if (firstInput) firstInput.focus();
-    }, 100);
-  }
-
-  resetForms() {
-    // Clear all form inputs
-    document.querySelectorAll('.form input').forEach(input => {
-      input.value = '';
-      this.clearError(input);
-    });
-
-    // Reset checkboxes
-    document.querySelectorAll('.form input[type="checkbox"]').forEach(checkbox => {
-      checkbox.checked = false;
-    });
-
-    // Reset buttons
-    document.querySelectorAll('.auth-btn').forEach(btn => {
-      btn.classList.remove('loading', 'success');
-      btn.disabled = false;
-      btn.style.background = '';
-      const span = btn.querySelector('span');
-      if (span) {
-        if (btn.closest('#loginForm')) {
-          span.textContent = 'Sign In';
-        } else if (btn.closest('#signupForm')) {
-          span.textContent = 'Create Account';
-        }
-      }
-    });
-
-    // Clear messages
-    document.querySelectorAll('.success-message, .error-message, .info-message').forEach(msg => msg.remove());
-  }
-  // This method now safely clears errors
-clearError(input) {
     const wrapper = input.closest('.input-wrapper');
     if (!wrapper) {
         return; // Prevents the error if wrapper is null
@@ -862,7 +701,7 @@ clearError(input) {
     wrapper.classList.remove('error');
 }
 
-// This method now safely validates inputs
+  // This method now safely validates inputs
   validateInput(input) {
     const wrapper = input.closest('.input-wrapper');
     if (!wrapper) {
