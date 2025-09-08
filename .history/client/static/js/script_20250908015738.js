@@ -113,28 +113,29 @@ async function fetchPopular() {
     const json = await res.json();
     const items = json.results || json.products || json.data || json || [];
 
-    const normalized = items.map(item => {
-    const p = item.product || {};  // extract the nested product
+    const normalized = items.map(p => {
+      // Name: try multiple common fields
+      const name = p.name 
 
-    const name = p.name || p.title || "Unnamed product";
-    const images = p.image || "/assets/img/placeholder.png";
-    const price = Number(p.price ?? 0);
-    const rating = Number(p.rating ?? null);
-    const weight = p.weight || "";
-    const description = p.description || "";
+      // Image: pick first from array or fallback
+      const images = Array.isArray(p.images) 
+        ? (p.images[0] || "/assets/img/placeholder.png") 
+        : (p.image || p.image_url || p.imageUrl || "/assets/img/placeholder.png");
 
-    return {
-      id: p.id ?? item.id ?? name,
-      name,
-      images,
-      price,
-      rating,
-      weight,
-      description,
-      _raw: item
-    };
-  });
-    
+      // Price
+      const price = Number(p.price ?? p.cost ?? p.sell_price ?? 0);
+
+      // Rating
+      const rating = typeof p.rating === "number" 
+        ? p.rating 
+        : (p.avg_rating ?? null);
+
+      // Weight/description
+      const weight = p.weight || p.size || p.package_weight || p.description || "";
+      const description = p.description || p.short_description || "";
+
+      return { id: p.id ?? p.pk ?? p._id ?? p.slug ?? name, name, images, price, rating, weight, description, _raw: p };
+    });
 
     // Filter items with valid rating, fallback to first 12 if none
     const withRating = normalized.filter(x => typeof x.rating === "number" && x.rating > 0)

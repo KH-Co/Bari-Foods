@@ -196,6 +196,7 @@ body {
   gap: 25px;
   cursor: pointer;
   font-size: 25px;
+  
 }
 
 .icons a i {
@@ -214,10 +215,6 @@ body {
   transform: translateY(-2px);
 }
 
-.icons a {
-  position: relative;
-  display: inline-block;
-}
 .count {
   position: absolute;
   top: -5px;
