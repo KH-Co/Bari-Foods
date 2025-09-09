@@ -1,3 +1,5 @@
+import { catalog } from "../../assets/data/catalog.mjs";
+
 const viewport = document.getElementById("popViewport");
 const track = document.getElementById("popTrack");
 const prevBtn = document.getElementById("popPrev");
@@ -5,8 +7,6 @@ const nextBtn = document.getElementById("popNext");
 
 // Authentication Modal Integration
 let authModalInstance = null;
-
-
 
 // Cart storage helpers
 function loadCartLS() {
@@ -90,67 +90,10 @@ function showAddToCartToast() {
   }, 2500);
 }
 
-
-//  API-driven popular
-let popular = [];
-let eventsBound = false;
-
-
-
-async function fetchPopular() {
-  const API_URL = "http://127.0.0.1:8000/api/featured-products/"; 
-  if (track) track.innerHTML = `<div class="pop-loading" style="padding:20px;">Loading popular items…</div>`;
-
-  try {
-    const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
-    const token = userData?.token || userData?.access || null;
-    const headers = { "Content-Type": "application/json" };
-    if (token) headers["Authorization"] = `Bearer ${token}`;
-
-    const res = await fetch(API_URL, { method: "GET", headers });
-    if (!res.ok) throw new Error(`API returned ${res.status}`);
-
-    const json = await res.json();
-    const items = json.results || json.products || json.data || json || [];
-
-    const normalized = items.map(item => {
-    const p = item.product || {};  // extract the nested product
-
-    const name = p.name || p.title || "Unnamed product";
-    const images = p.image || "/assets/img/placeholder.png";
-    const price = Number(p.price ?? 0);
-    const rating = Number(p.rating ?? null);
-    const weight = p.weight || "";
-    const description = p.description || "";
-
-    return {
-      id: p.id ?? item.id ?? name,
-      name,
-      images,
-      price,
-      rating,
-      weight,
-      description,
-      _raw: item
-    };
-  });
-    
-
-    // Filter items with valid rating, fallback to first 12 if none
-    const withRating = normalized.filter(x => typeof x.rating === "number" && x.rating > 0)
-                                .sort((a,b) => (b.rating || 0) - (a.rating || 0));
-
-    popular = withRating.length ? withRating : normalized.slice(0, 12);
-
-    render();
-  } catch (err) {
-    console.error("Failed to fetch popular products:", err);
-    if (track) {
-      track.innerHTML = `<div class="pop-error" style="padding:20px;color:#831500;">Unable to load popular products. Try again later.</div>`;
-    }
-  }
-}
-
+// Choose popular by rating desc; keep only items with rating defined
+const popular = [...catalog]
+  .filter((p) => typeof p.rating === "number" && p.rating > 0)
+  .sort((a, b) => (b.rating || 0) - (a.rating || 0));
 
 function cardHTML(p) {
   const img = (p.images && p.images) || "/assets/img/placeholder.png";
@@ -189,8 +132,6 @@ function render() {
 }
 
 function wireEvents() {
-  if (eventsBound) return; // prevent duplicate event listeners on re-render
-  eventsBound = true;
   // Add to Cart with improved UX
   track.addEventListener("click", (e) => {
     const btn = e.target.closest(".home-add-btn");
@@ -398,7 +339,6 @@ function initCartCount() {
     badge.textContent = totalCount;
   }
 }
-
 
 // Update user interface based on login status
 function updateUIForUser(userData) {
@@ -1249,9 +1189,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize navbar scroll effect
   initNavbarScrollEffect();
-
-  // Fetch popular products from API and render carousel
-  fetchPopular();
 });
 
 // Navbar scroll effect

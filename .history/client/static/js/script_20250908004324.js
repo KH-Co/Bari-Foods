@@ -1,3 +1,4 @@
+const BASE_URL = "http://127.0.0.1:8000";
 const viewport = document.getElementById("popViewport");
 const track = document.getElementById("popTrack");
 const prevBtn = document.getElementById("popPrev");
@@ -5,9 +6,7 @@ const nextBtn = document.getElementById("popNext");
 
 // Authentication Modal Integration
 let authModalInstance = null;
-
-
-
+let totalProducts = [];
 // Cart storage helpers
 function loadCartLS() {
   try {
@@ -91,106 +90,69 @@ function showAddToCartToast() {
 }
 
 
-//  API-driven popular
-let popular = [];
-let eventsBound = false;
-
-
-
-async function fetchPopular() {
-  const API_URL = "http://127.0.0.1:8000/api/featured-products/"; 
-  if (track) track.innerHTML = `<div class="pop-loading" style="padding:20px;">Loading popular items…</div>`;
-
-  try {
-    const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
-    const token = userData?.token || userData?.access || null;
-    const headers = { "Content-Type": "application/json" };
-    if (token) headers["Authorization"] = `Bearer ${token}`;
-
-    const res = await fetch(API_URL, { method: "GET", headers });
-    if (!res.ok) throw new Error(`API returned ${res.status}`);
-
-    const json = await res.json();
-    const items = json.results || json.products || json.data || json || [];
-
-    const normalized = items.map(item => {
-    const p = item.product || {};  // extract the nested product
-
-    const name = p.name || p.title || "Unnamed product";
-    const images = p.image || "/assets/img/placeholder.png";
-    const price = Number(p.price ?? 0);
-    const rating = Number(p.rating ?? null);
-    const weight = p.weight || "";
-    const description = p.description || "";
-
-    return {
-      id: p.id ?? item.id ?? name,
-      name,
-      images,
-      price,
-      rating,
-      weight,
-      description,
-      _raw: item
-    };
-  });
-    
-
-    // Filter items with valid rating, fallback to first 12 if none
-    const withRating = normalized.filter(x => typeof x.rating === "number" && x.rating > 0)
-                                .sort((a,b) => (b.rating || 0) - (a.rating || 0));
-
-    popular = withRating.length ? withRating : normalized.slice(0, 12);
-
-    render();
-  } catch (err) {
-    console.error("Failed to fetch popular products:", err);
-    if (track) {
-      track.innerHTML = `<div class="pop-error" style="padding:20px;color:#831500;">Unable to load popular products. Try again later.</div>`;
-    }
-  }
-}
-
-
-function cardHTML(p) {
-  const img = (p.images && p.images) || "/assets/img/placeholder.png";
-  const rating = p.rating ? '★'.repeat(Math.floor(p.rating)) : '';
-
+function cardHTML(fp) {
+  const p = fp.product;
+  const img = p.image ? `${BASE_URL}${p.image}` : "/assets/img/placeholder.png";
+  const rating = p.rating ? '★'.repeat(Math.round(p.rating)) : '';
+  const price = parseFloat(p.price).toFixed(2);
+  const uniqueId = p.id;
+  
   return `
-    <div class="pop-slide"> 
-      <div class="home-product-card" data-product-id="${p.id}"> 
+    <div class="pop-slide">
+      <div class="home-product-card" data-product-id="${uniqueId}">
         <div class="home-prod-img">
           <img src="${img}" alt="${p.name}" loading="lazy">
-        </div> 
-        <div class="home-prod-details"> 
-          <div class="home-prod-title">${p.name}</div> 
+        </div>
+        <div class="home-prod-details">
+          <div class="home-prod-title">${p.name}</div>
           <div class="home-prod-desc">${p.weight || p.description || ""}</div>
           ${rating ? `<div class="home-prod-rating" style="color: #e9b540; font-size: 14px; margin: 8px 0;">${rating}</div>` : ''}
-          <div class="home-prod-meta"> 
-            <div class="home-prod-price">₹${(+p.price).toFixed(2)}</div> 
-            <button class="home-add-btn" data-id="${p.id}" type="button">
+          <div class="home-prod-meta">
+            <div class="home-prod-price">₹${price}</div>
+            <button class="home-add-btn" data-id="${uniqueId}" type="button">
               <i class="fas fa-cart-plus" style="font-size: 12px;"></i>
               Add to Cart
-            </button> 
-          </div> 
-        </div> 
-      </div> 
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   `;
 }
 
-function render() {
-  track.innerHTML = popular.map(cardHTML).join("");
-  wireEvents();
-  layout();
 
-  // Add intersection observer for animations
-  addScrollAnimations();
+async function fetchAndRenderPopularProducts() {
+    const popTrack = document.getElementById("popTrack");
+    if (!popTrack) return;
+
+    try {
+        const response = await fetch(`${BASE_URL}/api/featured-products/`);
+        if (!response.ok) throw new Error('Network response was not ok');
+        
+        const featuredProducts = await response.json();
+        totalProducts = featuredProducts.map(fp => fp.product);
+        
+        popTrack.innerHTML = '';
+        popTrack.innerHTML = featuredProducts.slice(0, 6).map(cardHTML).join("");
+        
+        renderCarousel();
+        addScrollAnimations();
+        wireEvents();
+        
+    } catch (error) {
+        console.error("Error fetching products:", error);
+        popTrack.innerHTML = `<p style="text-align:center; color: red;">Failed to load products. Please check the backend server.</p>`;
+    }
 }
 
+function renderCarousel() {
+    layout();
+    updateNavButtons();
+}
+
+
+
 function wireEvents() {
-  if (eventsBound) return; // prevent duplicate event listeners on re-render
-  eventsBound = true;
   // Add to Cart with improved UX
   track.addEventListener("click", (e) => {
     const btn = e.target.closest(".home-add-btn");
@@ -398,7 +360,6 @@ function initCartCount() {
     badge.textContent = totalCount;
   }
 }
-
 
 // Update user interface based on login status
 function updateUIForUser(userData) {
@@ -910,28 +871,28 @@ class EnhancedAuthModal {
     document.querySelectorAll('.success-message, .error-message, .info-message').forEach(msg => msg.remove());
   }
   // This method now safely clears errors
-clearError(input) {
+  clearError(input) {
     const wrapper = input.closest('.input-wrapper');
     if (!wrapper) {
-        return; // Prevents the error if wrapper is null
+      return; // Prevents the error if wrapper is null
     }
     const errorMessage = wrapper.parentNode.querySelector('.error-message');
     if (errorMessage) {
-        errorMessage.remove();
+      errorMessage.remove();
     }
     wrapper.classList.remove('error');
-}
+  }
 
-// This method now safely validates inputs
+  // This method now safely validates inputs
   validateInput(input) {
     const wrapper = input.closest('.input-wrapper');
     if (!wrapper) {
-        return true; // Prevents error if wrapper is null
+      return true; // Prevents error if wrapper is null
     }
     const existingError = wrapper.parentNode.querySelector('.error-message');
 
     if (existingError) {
-        existingError.remove();
+      existingError.remove();
     }
 
     let isValid = true;
@@ -939,44 +900,44 @@ clearError(input) {
 
     // Email validation
     if (input.type === 'email') {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(input.value)) {
-            isValid = false;
-            errorMessage = 'Please enter a valid email address';
-        }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(input.value)) {
+        isValid = false;
+        errorMessage = 'Please enter a valid email address';
+      }
     }
 
     // Phone validation
     if (input.type === 'tel') {
-        const phoneRegex = /^[+]?[\d\s\-\(\)]{10,}$/;
-        if (!phoneRegex.test(input.value)) {
-            isValid = false;
-            errorMessage = 'Please enter a valid phone number';
-        }
+      const phoneRegex = /^[+]?[\d\s\-\(\)]{10,}$/;
+      if (!phoneRegex.test(input.value)) {
+        isValid = false;
+        errorMessage = 'Please enter a valid phone number';
+      }
     }
 
     // Password strength validation
     if (input.id === 'signupPassword') {
-        if (input.value.length < 8) {
-            isValid = false;
-            errorMessage = 'Password must be at least 8 characters';
-        }
+      if (input.value.length < 8) {
+        isValid = false;
+        errorMessage = 'Password must be at least 8 characters';
+      }
     }
 
     // Required field validation
     if (input.hasAttribute('required') && !input.value.trim()) {
-        isValid = false;
-        errorMessage = 'This field is required';
+      isValid = false;
+      errorMessage = 'This field is required';
     }
 
     if (isValid) {
-        wrapper.classList.remove('error');
+      wrapper.classList.remove('error');
     } else {
-        wrapper.classList.add('error');
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.textContent = errorMessage;
-        wrapper.parentNode.appendChild(errorDiv);
+      wrapper.classList.add('error');
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.textContent = errorMessage;
+      wrapper.parentNode.appendChild(errorDiv);
     }
 
     return isValid;
@@ -1001,31 +962,31 @@ clearError(input) {
       const response = await fetch('http://127.0.0.1:8000/api/users/login/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username:email, password }),
-    });
-    
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.detail || 'Login failed. Invalid credentials.');
-    }
+        body: JSON.stringify({ username: email, password }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Login failed. Invalid credentials.');
+      }
 
       // Store user session
-    const userData = await response.json();
+      const userData = await response.json();
       this.setButtonSuccess(submitBtn, 'Welcome Back!');
       this.showSuccessMessage('Successfully signed in!');
 
       // Store user session details from the API response
-    sessionStorage.setItem('user', JSON.stringify({ ...userData, loggedIn: true }));
+      sessionStorage.setItem('user', JSON.stringify({ ...userData, loggedIn: true }));
 
-    setTimeout(() => {
+      setTimeout(() => {
         this.hide();
-      // Reload the page to apply the new authenticated state
+        // Reload the page to apply the new authenticated state
         window.location.reload();
       }, 1500);
 
     } catch (error) {
-        this.setButtonError(submitBtn, 'Sign In Failed');
-        this.showErrorMessage(error.message);
+      this.setButtonError(submitBtn, 'Sign In Failed');
+      this.showErrorMessage(error.message);
     }
   }
 
@@ -1056,30 +1017,31 @@ clearError(input) {
     try {
       //api call
       const response = await fetch('http://127.0.0.1:8000/api/users/register/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        first_name: firstName, 
-        last_name: lastName, 
-        email,
-        username: email,  // Assuming username is the email
-        phone,
-        password }),
-    });
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+          email,
+          username: email,  // Assuming username is the email
+          phone,
+          password
+        }),
+      });
 
-    if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.detail || 'Account creation failed.');
-    }
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Account creation failed.');
+      }
 
-    this.setButtonSuccess(submitBtn, 'Account Created!');
-    this.showSuccessMessage('Account created successfully! You can now sign in.');
+      this.setButtonSuccess(submitBtn, 'Account Created!');
+      this.showSuccessMessage('Account created successfully! You can now sign in.');
 
-    setTimeout(() => {
-    this.switchToLogin(); // Switch to the login form
-    }, 1500);
+      setTimeout(() => {
+        this.switchToLogin(); // Switch to the login form
+      }, 1500);
     } catch (error) {
-      this.setButtonError(submitBtn, 'Signup Failed');  
+      this.setButtonError(submitBtn, 'Signup Failed');
       this.showErrorMessage(error.message);
     }
   }
@@ -1249,10 +1211,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize navbar scroll effect
   initNavbarScrollEffect();
-
-  // Fetch popular products from API and render carousel
-  fetchPopular();
+  // Fetch and render popular products
+  fetchAndRenderPopularProducts();
 });
+
+
 
 // Navbar scroll effect
 function initNavbarScrollEffect() {
@@ -1268,5 +1231,3 @@ function initNavbarScrollEffect() {
   }
 }
 
-// Initialize and render the carousel
-render();

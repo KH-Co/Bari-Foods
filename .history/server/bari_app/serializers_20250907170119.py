@@ -1,20 +1,13 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Product , UserProfile,CartItem, Order, OrderItem,Address,FeaturedProduct
+from .models import Product , UserProfile,CartItem, Order, OrderItem,Address
 
 class ProductSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(use_url=True)
     
     class Meta:
         model = Product
-        fields = '__all__'  
-        
-class FeaturedProductSerializer(serializers.ModelSerializer):
-    product = ProductSerializer(read_only=True)
-
-    class Meta:
-        model = FeaturedProduct
-        fields = ('id', 'product', 'is_active')
+        fields = '__all__'   
         
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:

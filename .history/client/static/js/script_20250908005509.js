@@ -1,14 +1,14 @@
+
+const BASE_URL = "http://127.0.0.1:8000";
 const viewport = document.getElementById("popViewport");
 const track = document.getElementById("popTrack");
 const prevBtn = document.getElementById("popPrev");
 const nextBtn = document.getElementById("popNext");
 
-// Authentication Modal Integration
 let authModalInstance = null;
+let totalProducts = [];
 
-
-
-// Cart storage helpers
+// --- Helper functions for toasts and cart badge ---
 function loadCartLS() {
   try {
     return JSON.parse(localStorage.getItem("cartItems")) || {};
@@ -21,269 +21,133 @@ function saveCartLS(o) {
   localStorage.setItem("cartItems", JSON.stringify(o));
 }
 
-function addToCart(id, qty = 1) {
-  const items = loadCartLS();
-  items[id] = (items[id] || 0) + qty;
-  saveCartLS(items);
-
-  // Update cart badge with animation
-  const badge = document.getElementById("cartCount");
-  if (badge) {
-    const newCount = Object.values(items).reduce((s, q) => s + q, 0);
-    badge.textContent = newCount;
-
-    // Add success feedback animation
-    badge.style.transform = "scale(1.3)";
-    badge.style.color = "#e9b540";
-    setTimeout(() => {
-      badge.style.transform = "scale(1)";
-      badge.style.color = "";
-    }, 200);
+async function addToCart(productId, qty = 1) {
+  try {
+    const response = await fetch(`${BASE_URL}/api/cart/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ product_id: productId, quantity: qty }),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Failed to add item to cart.');
+    }
+    const items = loadCartLS();
+    items[productId] = (items[productId] || 0) + qty;
+    saveCartLS(items);
+    showAddToCartToast();
+    return true;
+  } catch (error) {
+    console.error("Error adding to cart:", error);
+    showErrorToast(error.message);
+    return false;
   }
-
-  // Show toast notification
-  showAddToCartToast();
 }
 
 function showAddToCartToast() {
-  // Create toast element
   const toast = document.createElement('div');
   toast.innerHTML = `
     <div style="
-      position: fixed;
-      top: 100px;
-      right: 20px;
-      background: linear-gradient(135deg, #e9b540 0%, #f7d2c4 100%);
-      color: #2d1810;
-      padding: 16px 24px;
-      border-radius: 12px;
+      position: fixed; top: 100px; right: 20px;
+      background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+      color: white; padding: 16px 24px; border-radius: 12px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-      font-weight: 600;
-      font-size: 14px;
-      z-index: 10000;
-      transform: translateX(100%);
-      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--font-primary, 'Poppins', sans-serif);
+      font-weight: 600; font-size: 14px; z-index: 10000;
+      transform: translateX(100%); transition: transform 0.3s ease-out;
+      display: flex; align-items: center; gap: 8px;
     ">
-      <i class="fas fa-check-circle" style="color: #2d1810;"></i>
+      <i class="fas fa-check-circle"></i>
       Added to cart successfully!
     </div>
   `;
-
   document.body.appendChild(toast);
   const toastElement = toast.firstElementChild;
-
-  // Animate in
-  setTimeout(() => {
-    toastElement.style.transform = 'translateX(0)';
-  }, 10);
-
-  // Animate out and remove
-  setTimeout(() => {
-    toastElement.style.transform = 'translateX(100%)';
-    setTimeout(() => {
-      document.body.removeChild(toast);
-    }, 300);
-  }, 2500);
+  setTimeout(() => { toastElement.style.transform = 'translateX(0)'; }, 10);
+  setTimeout(() => { document.body.removeChild(toast); }, 2500);
 }
 
-
-//  API-driven popular
-let popular = [];
-let eventsBound = false;
-
-
-
-async function fetchPopular() {
-  const API_URL = "http://127.0.0.1:8000/api/featured-products/"; 
-  if (track) track.innerHTML = `<div class="pop-loading" style="padding:20px;">Loading popular items…</div>`;
-
-  try {
-    const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
-    const token = userData?.token || userData?.access || null;
-    const headers = { "Content-Type": "application/json" };
-    if (token) headers["Authorization"] = `Bearer ${token}`;
-
-    const res = await fetch(API_URL, { method: "GET", headers });
-    if (!res.ok) throw new Error(`API returned ${res.status}`);
-
-    const json = await res.json();
-    const items = json.results || json.products || json.data || json || [];
-
-    const normalized = items.map(item => {
-    const p = item.product || {};  // extract the nested product
-
-    const name = p.name || p.title || "Unnamed product";
-    const images = p.image || "/assets/img/placeholder.png";
-    const price = Number(p.price ?? 0);
-    const rating = Number(p.rating ?? null);
-    const weight = p.weight || "";
-    const description = p.description || "";
-
-    return {
-      id: p.id ?? item.id ?? name,
-      name,
-      images,
-      price,
-      rating,
-      weight,
-      description,
-      _raw: item
-    };
-  });
-    
-
-    // Filter items with valid rating, fallback to first 12 if none
-    const withRating = normalized.filter(x => typeof x.rating === "number" && x.rating > 0)
-                                .sort((a,b) => (b.rating || 0) - (a.rating || 0));
-
-    popular = withRating.length ? withRating : normalized.slice(0, 12);
-
-    render();
-  } catch (err) {
-    console.error("Failed to fetch popular products:", err);
-    if (track) {
-      track.innerHTML = `<div class="pop-error" style="padding:20px;color:#831500;">Unable to load popular products. Try again later.</div>`;
-    }
-  }
+function showErrorToast(message) {
+  const toast = document.createElement('div');
+  toast.innerHTML = `
+    <div style="
+      position: fixed; top: 100px; right: 20px;
+      background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+      color: white; padding: 16px 24px; border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      font-weight: 600; font-size: 14px; z-index: 10000;
+      transform: translateX(100%); transition: transform 0.3s ease-out;
+      display: flex; align-items: center; gap: 8px;
+    ">
+      <i class="fas fa-times-circle"></i>
+      ${message}
+    </div>
+  `;
+  document.body.appendChild(toast);
+  const toastElement = toast.firstElementChild;
+  setTimeout(() => { toastElement.style.transform = 'translateX(0)'; }, 10);
+  setTimeout(() => { document.body.removeChild(toast); }, 2500);
 }
 
-
-function cardHTML(p) {
-  const img = (p.images && p.images) || "/assets/img/placeholder.png";
-  const rating = p.rating ? '★'.repeat(Math.floor(p.rating)) : '';
-
+// **UPDATED** - This function creates the HTML from API data
+function cardHTML(fp) {
+  const p = fp.product;
+  const img = p.image ? `${BASE_URL}${p.image}` : "/assets/img/placeholder.png";
+  const rating = p.rating ? '★'.repeat(Math.round(p.rating)) : '';
+  const price = parseFloat(p.price).toFixed(2);
+  const uniqueId = p.id;
+  
   return `
-    <div class="pop-slide"> 
-      <div class="home-product-card" data-product-id="${p.id}"> 
+    <div class="pop-slide">
+      <div class="home-product-card" data-product-id="${uniqueId}">
         <div class="home-prod-img">
           <img src="${img}" alt="${p.name}" loading="lazy">
-        </div> 
-        <div class="home-prod-details"> 
-          <div class="home-prod-title">${p.name}</div> 
+        </div>
+        <div class="home-prod-details">
+          <div class="home-prod-title">${p.name}</div>
           <div class="home-prod-desc">${p.weight || p.description || ""}</div>
           ${rating ? `<div class="home-prod-rating" style="color: #e9b540; font-size: 14px; margin: 8px 0;">${rating}</div>` : ''}
-          <div class="home-prod-meta"> 
-            <div class="home-prod-price">₹${(+p.price).toFixed(2)}</div> 
-            <button class="home-add-btn" data-id="${p.id}" type="button">
+          <div class="home-prod-meta">
+            <div class="home-prod-price">₹${price}</div>
+            <button class="home-add-btn" data-id="${uniqueId}" type="button">
               <i class="fas fa-cart-plus" style="font-size: 12px;"></i>
               Add to Cart
-            </button> 
-          </div> 
-        </div> 
-      </div> 
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   `;
 }
 
-function render() {
-  track.innerHTML = popular.map(cardHTML).join("");
-  wireEvents();
-  layout();
+// **UPDATED** - Main function to fetch and render popular products
+async function fetchAndRenderPopularProducts() {
+    const popTrack = document.getElementById("popTrack");
+    if (!popTrack) return;
 
-  // Add intersection observer for animations
-  addScrollAnimations();
+    try {
+        const response = await fetch(`${BASE_URL}/api/featured-products/`);
+        if (!response.ok) throw new Error('Network response was not ok');
+        
+        const featuredProducts = await response.json();
+        totalProducts = featuredProducts.map(fp => fp.product);
+        
+        popTrack.innerHTML = '';
+        popTrack.innerHTML = featuredProducts.slice(0, 6).map(cardHTML).join("");
+        
+        renderCarousel();
+        addScrollAnimations();
+        wireEvents();
+        
+    } catch (error) {
+        console.error("Error fetching products:", error);
+        popTrack.innerHTML = `<p style="text-align:center; color: red;">Failed to load products. Please check the backend server.</p>`;
+    }
 }
 
-function wireEvents() {
-  if (eventsBound) return; // prevent duplicate event listeners on re-render
-  eventsBound = true;
-  // Add to Cart with improved UX
-  track.addEventListener("click", (e) => {
-    const btn = e.target.closest(".home-add-btn");
-    if (!btn) return;
-
-    // Check if user is logged in before adding to cart
-    const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
-    if (!userData.loggedIn) {
-      // Show auth modal if not logged in
-      if (authModalInstance) {
-        authModalInstance.show();
-        authModalInstance.showLoginMessage('Please sign in to add items to your cart');
-        return;
-      }
-    }
-
-    // Prevent double clicks
-    if (btn.disabled) return;
-    btn.disabled = true;
-
-    // Button loading state
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
-    btn.style.opacity = '0.7';
-
-    // Simulate API delay for better UX
-    setTimeout(() => {
-      addToCart(btn.dataset.id, 1);
-
-      // Reset button
-      btn.innerHTML = '<i class="fas fa-check"></i> Added!';
-      btn.style.background = 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)';
-
-      setTimeout(() => {
-        btn.innerHTML = originalText;
-        btn.style.background = '';
-        btn.style.opacity = '';
-        btn.disabled = false;
-      }, 1000);
-    }, 300);
-  });
-
-  // Carousel controls with smooth navigation
-  prevBtn.addEventListener("click", () => {
-    if (!isAnimating) slide(-1);
-  });
-
-  nextBtn.addEventListener("click", () => {
-    if (!isAnimating) slide(1);
-  });
-
-  // Keyboard navigation
-  document.addEventListener("keydown", (e) => {
-    if (e.target.closest('.pop-carousel')) {
-      if (e.key === "ArrowLeft" && !isAnimating) slide(-1);
-      if (e.key === "ArrowRight" && !isAnimating) slide(1);
-    }
-  });
-
-  // Touch/Swipe support
-  let startX = 0;
-  let isDragging = false;
-
-  track.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].clientX;
-    isDragging = true;
-  });
-
-  track.addEventListener("touchmove", (e) => {
-    if (!isDragging) return;
-    e.preventDefault();
-  });
-
-  track.addEventListener("touchend", (e) => {
-    if (!isDragging || isAnimating) return;
-
-    const endX = e.changedTouches[0].clientX;
-    const diff = startX - endX;
-
-    if (Math.abs(diff) > 50) {
-      if (diff > 0) slide(1);
-      else slide(-1);
-    }
-
-    isDragging = false;
-  });
-
-  // Resize handler with debounce
-  let resizeTimeout;
-  window.addEventListener("resize", () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(layout, 150);
-  });
+// --- Carousel Logic (Unchanged) ---
+function renderCarousel() {
+    layout();
+    updateNavButtons();
 }
 
 let page = 0;
@@ -293,142 +157,125 @@ let slideW = 0;
 let isAnimating = false;
 
 function layout() {
-  const total = popular.length;
+    // **UPDATED** - Use totalProducts here instead of the old 'popular' array
+    const total = totalProducts.length;
+    if (!track || !viewport) return;
+    const vpWidth = viewport.clientWidth;
+    
+    if (vpWidth < 640) perPage = 1;
+    else if (vpWidth < 1024) perPage = 2;
+    else perPage = 3;
+    
+    pages = Math.max(1, Math.ceil(total / perPage));
+    const gap = vpWidth < 640 ? 12 : 18;
+    slideW = Math.floor((vpWidth - gap * (perPage - 1)) / perPage);
 
-  // Responsive slides per page
-  const vpWidth = viewport.clientWidth;
-  if (vpWidth < 640) perPage = 1;
-  else if (vpWidth < 1024) perPage = 2;
-  else perPage = 3;
-
-  pages = Math.max(1, Math.ceil(total / perPage));
-
-  const gap = vpWidth < 640 ? 12 : 18;
-  slideW = Math.floor((vpWidth - gap * (perPage - 1)) / perPage);
-
-  // Apply widths and gaps with smooth transitions
-  const slides = track.querySelectorAll(".pop-slide");
-  slides.forEach((s, i) => {
-    s.style.minWidth = slideW + "px";
-    s.style.maxWidth = slideW + "px";
-    s.style.marginRight = (i + 1) % perPage !== 0 ? gap + "px" : "0px";
-  });
-
-  // Update navigation visibility
-  const needsNav = total > perPage;
-  prevBtn.hidden = !needsNav;
-  nextBtn.hidden = !needsNav;
-
-  // Update button states
-  updateNavButtons();
-
-  // Clamp page and apply transform
-  page = Math.min(page, pages - 1);
-  applyTransform();
+    const slides = track.querySelectorAll(".pop-slide");
+    slides.forEach((s, i) => {
+        s.style.minWidth = slideW + "px";
+        s.style.maxWidth = slideW + "px";
+        s.style.marginRight = (i + 1) % perPage !== 0 ? gap + "px" : "0px";
+    });
+    
+    const needsNav = total > perPage;
+    if (prevBtn) prevBtn.hidden = !needsNav;
+    if (nextBtn) nextBtn.hidden = !needsNav;
+    
+    page = Math.min(page, pages - 1);
+    applyTransform();
 }
 
 function updateNavButtons() {
-  if (prevBtn && nextBtn) {
-    prevBtn.style.opacity = page === 0 ? "0.5" : "1";
-    nextBtn.style.opacity = page === pages - 1 ? "0.5" : "1";
-
-    prevBtn.style.cursor = page === 0 ? "not-allowed" : "pointer";
-    nextBtn.style.cursor = page === pages - 1 ? "not-allowed" : "pointer";
-  }
+    if (prevBtn && nextBtn) {
+        prevBtn.style.opacity = page === 0 ? "0.5" : "1";
+        nextBtn.style.opacity = page === pages - 1 ? "0.5" : "1";
+        prevBtn.style.cursor = page === 0 ? "not-allowed" : "pointer";
+        nextBtn.style.cursor = page === pages - 1 ? "not-allowed" : "pointer";
+    }
 }
 
 function applyTransform() {
-  const gap = viewport.clientWidth < 640 ? 12 : 18;
-  const x = -page * (slideW * perPage + gap * (perPage - 1));
-  track.style.transform = `translateX(${x}px)`;
+    const gap = viewport.clientWidth < 640 ? 12 : 18;
+    const x = -page * (slideW * perPage + gap * (perPage - 1));
+    track.style.transform = `translateX(${x}px)`;
 }
 
 function slide(dir) {
-  if (isAnimating) return;
-
-  const newPage = page + dir;
-  if (newPage < 0 || newPage >= pages) return;
-
-  isAnimating = true;
-  page = newPage;
-
-  // Add smooth animation class
-  track.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-
-  applyTransform();
-  updateNavButtons();
-
-  // Reset animation lock
-  setTimeout(() => {
-    isAnimating = false;
-  }, 400);
+    if (isAnimating) return;
+    const newPage = page + dir;
+    if (newPage < 0 || newPage >= pages) return;
+    
+    isAnimating = true;
+    page = newPage;
+    
+    if (track) track.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    
+    applyTransform();
+    updateNavButtons();
+    setTimeout(() => { isAnimating = false; }, 400);
 }
 
 function addScrollAnimations() {
-  // Intersection Observer for scroll animations
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: "0px 0px -50px 0px"
-  };
+    const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+            }
+        });
+    }, observerOptions);
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = "1";
-        entry.target.style.transform = "translateY(0)";
-      }
+    document.querySelectorAll('.home-product-card').forEach((card, index) => {
+        card.style.opacity = "0";
+        card.style.transform = "translateY(30px)";
+        card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+        observer.observe(card);
     });
-  }, observerOptions);
-
-  // Observe product cards
-  document.querySelectorAll('.home-product-card').forEach((card, index) => {
-    card.style.opacity = "0";
-    card.style.transform = "translateY(30px)";
-    card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
-    observer.observe(card);
-  });
 }
 
-// Initialize cart count on page load
-function initCartCount() {
-  const cartItems = loadCartLS();
-  const totalCount = Object.values(cartItems).reduce((sum, qty) => sum + qty, 0);
-  const badge = document.getElementById("cartCount");
-  if (badge) {
-    badge.textContent = totalCount;
-  }
+function wireEvents() {
+    const homeAddBtns = track.querySelectorAll(".home-add-btn");
+    homeAddBtns.forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const productId = btn.dataset.id;
+            if (!productId) return;
+            
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            btn.disabled = true;
+
+            const success = await addToCart(productId, 1);
+            
+            if (success) {
+                btn.innerHTML = '<i class="fas fa-check"></i> Added!';
+            } else {
+                btn.innerHTML = originalText;
+            }
+
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 1500);
+        });
+    });
+
+    if (prevBtn) prevBtn.addEventListener("click", () => { if (!isAnimating) slide(-1); });
+    if (nextBtn) nextBtn.addEventListener("click", () => { if (!isAnimating) slide(1); });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.target.closest('.pop-carousel')) {
+            if (e.key === "ArrowLeft" && !isAnimating) slide(-1);
+            if (e.key === "ArrowRight" && !isAnimating) slide(1);
+        }
+    });
 }
 
-
-// Update user interface based on login status
-function updateUIForUser(userData) {
-  const userIcon = document.querySelector('.user-icon');
-  const profileTrigger = document.getElementById('profileTrigger');
-
-  if (userData && userData.loggedIn) {
-    // Update profile icon to show logged in state
-    if (userIcon) {
-      userIcon.style.color = '#e9b540';
-      userIcon.title = `Welcome, ${userData.firstName || 'User'}!`;
-    }
-
-    // Update profile link behavior for logged in users
-    if (profileTrigger) {
-      profileTrigger.href = '../templates/profile.html';
-      profileTrigger.onclick = null; // Remove auth modal trigger
-    }
-  } else {
-    // Reset to default state
-    if (userIcon) {
-      userIcon.style.color = '';
-      userIcon.title = 'Sign In';
-    }
-  }
-}
-
-// Enhanced Auth Modal class with additional features
+// **NEW** - This is the corrected `EnhancedAuthModal` class
 class EnhancedAuthModal {
-  constructor() {
+    // ... all methods including fixed clearError, validateInput, and API calls
+    constructor() {
     // Wait for DOM to be ready before initializing
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => this.init());
@@ -910,28 +757,28 @@ class EnhancedAuthModal {
     document.querySelectorAll('.success-message, .error-message, .info-message').forEach(msg => msg.remove());
   }
   // This method now safely clears errors
-clearError(input) {
+  clearError(input) {
     const wrapper = input.closest('.input-wrapper');
     if (!wrapper) {
-        return; // Prevents the error if wrapper is null
+      return; // Prevents the error if wrapper is null
     }
     const errorMessage = wrapper.parentNode.querySelector('.error-message');
     if (errorMessage) {
-        errorMessage.remove();
+      errorMessage.remove();
     }
     wrapper.classList.remove('error');
-}
+  }
 
-// This method now safely validates inputs
+  // This method now safely validates inputs
   validateInput(input) {
     const wrapper = input.closest('.input-wrapper');
     if (!wrapper) {
-        return true; // Prevents error if wrapper is null
+      return true; // Prevents error if wrapper is null
     }
     const existingError = wrapper.parentNode.querySelector('.error-message');
 
     if (existingError) {
-        existingError.remove();
+      existingError.remove();
     }
 
     let isValid = true;
@@ -939,44 +786,44 @@ clearError(input) {
 
     // Email validation
     if (input.type === 'email') {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(input.value)) {
-            isValid = false;
-            errorMessage = 'Please enter a valid email address';
-        }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(input.value)) {
+        isValid = false;
+        errorMessage = 'Please enter a valid email address';
+      }
     }
 
     // Phone validation
     if (input.type === 'tel') {
-        const phoneRegex = /^[+]?[\d\s\-\(\)]{10,}$/;
-        if (!phoneRegex.test(input.value)) {
-            isValid = false;
-            errorMessage = 'Please enter a valid phone number';
-        }
+      const phoneRegex = /^[+]?[\d\s\-\(\)]{10,}$/;
+      if (!phoneRegex.test(input.value)) {
+        isValid = false;
+        errorMessage = 'Please enter a valid phone number';
+      }
     }
 
     // Password strength validation
     if (input.id === 'signupPassword') {
-        if (input.value.length < 8) {
-            isValid = false;
-            errorMessage = 'Password must be at least 8 characters';
-        }
+      if (input.value.length < 8) {
+        isValid = false;
+        errorMessage = 'Password must be at least 8 characters';
+      }
     }
 
     // Required field validation
     if (input.hasAttribute('required') && !input.value.trim()) {
-        isValid = false;
-        errorMessage = 'This field is required';
+      isValid = false;
+      errorMessage = 'This field is required';
     }
 
     if (isValid) {
-        wrapper.classList.remove('error');
+      wrapper.classList.remove('error');
     } else {
-        wrapper.classList.add('error');
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.textContent = errorMessage;
-        wrapper.parentNode.appendChild(errorDiv);
+      wrapper.classList.add('error');
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.textContent = errorMessage;
+      wrapper.parentNode.appendChild(errorDiv);
     }
 
     return isValid;
@@ -1001,31 +848,31 @@ clearError(input) {
       const response = await fetch('http://127.0.0.1:8000/api/users/login/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username:email, password }),
-    });
-    
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.detail || 'Login failed. Invalid credentials.');
-    }
+        body: JSON.stringify({ username: email, password }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Login failed. Invalid credentials.');
+      }
 
       // Store user session
-    const userData = await response.json();
+      const userData = await response.json();
       this.setButtonSuccess(submitBtn, 'Welcome Back!');
       this.showSuccessMessage('Successfully signed in!');
 
       // Store user session details from the API response
-    sessionStorage.setItem('user', JSON.stringify({ ...userData, loggedIn: true }));
+      sessionStorage.setItem('user', JSON.stringify({ ...userData, loggedIn: true }));
 
-    setTimeout(() => {
+      setTimeout(() => {
         this.hide();
-      // Reload the page to apply the new authenticated state
+        // Reload the page to apply the new authenticated state
         window.location.reload();
       }, 1500);
 
     } catch (error) {
-        this.setButtonError(submitBtn, 'Sign In Failed');
-        this.showErrorMessage(error.message);
+      this.setButtonError(submitBtn, 'Sign In Failed');
+      this.showErrorMessage(error.message);
     }
   }
 
@@ -1056,30 +903,31 @@ clearError(input) {
     try {
       //api call
       const response = await fetch('http://127.0.0.1:8000/api/users/register/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        first_name: firstName, 
-        last_name: lastName, 
-        email,
-        username: email,  // Assuming username is the email
-        phone,
-        password }),
-    });
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+          email,
+          username: email,  // Assuming username is the email
+          phone,
+          password
+        }),
+      });
 
-    if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.detail || 'Account creation failed.');
-    }
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Account creation failed.');
+      }
 
-    this.setButtonSuccess(submitBtn, 'Account Created!');
-    this.showSuccessMessage('Account created successfully! You can now sign in.');
+      this.setButtonSuccess(submitBtn, 'Account Created!');
+      this.showSuccessMessage('Account created successfully! You can now sign in.');
 
-    setTimeout(() => {
-    this.switchToLogin(); // Switch to the login form
-    }, 1500);
+      setTimeout(() => {
+        this.switchToLogin(); // Switch to the login form
+      }, 1500);
     } catch (error) {
-      this.setButtonError(submitBtn, 'Signup Failed');  
+      this.setButtonError(submitBtn, 'Signup Failed');
       this.showErrorMessage(error.message);
     }
   }
@@ -1223,50 +1071,38 @@ clearError(input) {
   }
 
   simulateAPICall(delay = 1000) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // Simulate 90% success rate
-        if (Math.random() > 0.1) {
-          resolve();
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          // Simulate 90% success rate
+          if (Math.random() > 0.1) {
+            resolve();
+          } else {
+            reject(new Error('API Error'));
+          }
+        }, delay);
+      });
+  }
+} 
+
+
+// **NEW** - Update user interface based on login status
+function updateUIForUser(userData) {
+    const userIcon = document.querySelector('.user-icon');
+    if (userIcon) {
+        if (userData && userData.loggedIn) {
+            userIcon.style.color = '#e9b540';
+            userIcon.title = `Welcome, ${userData.first_name || userData.username}!`;
         } else {
-          reject(new Error('API Error'));
+            userIcon.style.color = '';
+            userIcon.title = 'Sign In';
         }
-      }, delay);
-    });
-  }
+    }
 }
 
-// Initialize everything when DOM is ready
+// **NEW** - Initialize everything when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize cart count
-  initCartCount();
-
-  // Initialize auth modal
-  authModalInstance = new EnhancedAuthModal();
-
-  // Make auth modal globally accessible
-  window.authModalInstance = authModalInstance;
-
-  // Initialize navbar scroll effect
-  initNavbarScrollEffect();
-
-  // Fetch popular products from API and render carousel
-  fetchPopular();
+    initCartCount();
+    authModalInstance = new EnhancedAuthModal();
+    window.authModalInstance = authModalInstance;
+    fetchAndRenderPopularProducts();
 });
-
-// Navbar scroll effect
-function initNavbarScrollEffect() {
-  const navbar = document.querySelector('.navbar');
-  if (navbar) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 100) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    });
-  }
-}
-
-// Initialize and render the carousel
-render();

@@ -96,52 +96,49 @@ let popular = [];
 let eventsBound = false;
 
 
-
 async function fetchPopular() {
-  const API_URL = "http://127.0.0.1:8000/api/featured-products/"; 
+  const API_URL = "http://127.0.0.1:8000/api/featured-products/"; // <-- replace with your API
+  // show a basic loader
   if (track) track.innerHTML = `<div class="pop-loading" style="padding:20px;">Loading popular items…</div>`;
 
   try {
-    const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
-    const token = userData?.token || userData?.access || null;
-    const headers = { "Content-Type": "application/json" };
-    if (token) headers["Authorization"] = `Bearer ${token}`;
+    // Optional: include auth token if your API requires it
+    // ✅ Fetch and render Popular Products
+fetch("http://127.0.0.1:8000/api/popular-products/")   // <-- your Django API endpoint
+  .then(res => res.json())
+  .then(products => {
+    const carouselTrack = document.querySelector(".carousel-track");
+    carouselTrack.innerHTML = ""; // clear before adding
 
-    const res = await fetch(API_URL, { method: "GET", headers });
-    if (!res.ok) throw new Error(`API returned ${res.status}`);
+    products.forEach(item => {
+      const product = item.product; // ✅ nested product object
 
-    const json = await res.json();
-    const items = json.results || json.products || json.data || json || [];
+      const itemElement = document.createElement("div");
+      itemElement.classList.add("carousel-item");
 
-    const normalized = items.map(item => {
-    const p = item.product || {};  // extract the nested product
+      itemElement.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" class="product-image" />
+        <h3 class="product-title">${product.name}</h3>
+        <p class="product-price">₹${product.price}</p>
+        <button class="add-to-cart-btn"
+          onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.image}')">
+          🛒 Add to Cart
+        </button>
+      `;
 
-    const name = p.name || p.title || "Unnamed product";
-    const images = p.image || "/assets/img/placeholder.png";
-    const price = Number(p.price ?? 0);
-    const rating = Number(p.rating ?? null);
-    const weight = p.weight || "";
-    const description = p.description || "";
+      carouselTrack.appendChild(itemElement);
+    });
 
-    return {
-      id: p.id ?? item.id ?? name,
-      name,
-      images,
-      price,
-      rating,
-      weight,
-      description,
-      _raw: item
-    };
-  });
-    
-
-    // Filter items with valid rating, fallback to first 12 if none
+   
+  
+    // Keep items that have numeric rating > 0 (same behaviour as old code)
     const withRating = normalized.filter(x => typeof x.rating === "number" && x.rating > 0)
                                 .sort((a,b) => (b.rating || 0) - (a.rating || 0));
 
+    // If none have rating, fallback to first N products (so UI isn't empty)
     popular = withRating.length ? withRating : normalized.slice(0, 12);
 
+    // Render the carousel now that popular is populated
     render();
   } catch (err) {
     console.error("Failed to fetch popular products:", err);

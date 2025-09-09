@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.auth.models import User 
 from django.contrib.auth import authenticate, login
 from django.db import transaction
-from .models import (Product, UserProfile, CartItem,Order,OrderItem,Address,FeaturedProduct)
+from .models import (Product, UserProfile, CartItem,Order,OrderItem,Address)
 from .serializers import (
     ProductSerializer,
     UserProfileSerializer,
@@ -18,7 +18,6 @@ from .serializers import (
     OrderItemSerializer,
     OrderSerializer,
     AddressSerializer,
-    FeaturedProductSerializer
 )
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
@@ -27,10 +26,9 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
     permission_classes = [AllowAny] 
     
-class FeaturedProductListAPIView(generics.ListAPIView):
-    queryset = FeaturedProduct.objects.filter(is_active=True)
-    serializer_class = FeaturedProductSerializer
-    permission_classes = [AllowAny]
+class PopularProductList(generics.ListAPIView):
+    queryset = Product.objects.filter(tag='popular') 
+    serializer_class = ProductSerializer
 
 class ProductDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
