@@ -9,7 +9,6 @@ class ProfileManager {
     this.bindEvents();
     this.setupPasswordStrength();
     this.setupFormValidation();
-    this.setupImageUpload();
     this.setupDeleteConfirmation();
     this.loadUserData();
   }
@@ -18,9 +17,8 @@ class ProfileManager {
   bindEvents() {
     // Sidebar toggle
     const menuToggle = document.getElementById('menuToggle');
-    const sidebar = document.getElementById('sidebar');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
     const sidebarClose = document.getElementById('sidebarClose');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
 
     menuToggle?.addEventListener('click', () => this.toggleSidebar());
     sidebarClose?.addEventListener('click', () => this.closeSidebar());
@@ -56,30 +54,14 @@ class ProfileManager {
       this.updatePassword();
     });
 
-    document.getElementById('preferencesForm')?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      this.savePreferences();
-    });
-
     document.getElementById('deleteAccountForm')?.addEventListener('submit', (e) => {
       e.preventDefault();
       this.deleteAccount();
     });
 
-    // Profile picture upload
-    document.querySelector('.btn:has(.fa-upload)')?.addEventListener('click', () => {
-      this.uploadProfilePicture();
-    });
-
     // Address management
-    document.querySelectorAll('.add-address, .btn:has(.fa-plus)').forEach(button => {
+    document.querySelectorAll('.add-address').forEach(button => {
       button.addEventListener('click', () => this.addAddress());
-    });
-
-    // Real-time search functionality
-    const searchInput = document.querySelector('.product-search input');
-    searchInput?.addEventListener('input', (e) => {
-      this.handleSearch(e.target.value);
     });
 
     // Escape key handler
@@ -94,7 +76,7 @@ class ProfileManager {
   toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
-    
+
     sidebar.classList.toggle('active');
     overlay.classList.toggle('active');
     document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
@@ -103,7 +85,7 @@ class ProfileManager {
   closeSidebar() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
-    
+
     sidebar.classList.remove('active');
     overlay.classList.remove('active');
     document.body.style.overflow = '';
@@ -127,7 +109,7 @@ class ProfileManager {
     document.querySelectorAll('.nav-link').forEach(link => {
       link.classList.remove('active');
     });
-    
+
     const activeLink = document.querySelector(`[data-section="${sectionName}"]`);
     if (activeLink) {
       activeLink.classList.add('active');
@@ -142,14 +124,17 @@ class ProfileManager {
     }
 
     // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   }
 
   // Update page title dynamically
   updatePageTitle(sectionName) {
     const pageTitle = document.querySelector('.page-title-section h1');
     const pageSubtitle = document.querySelector('.page-subtitle');
-    
+
     const sectionTitles = {
       profile: {
         title: 'Personal Information',
@@ -166,10 +151,6 @@ class ProfileManager {
       addresses: {
         title: 'Delivery Addresses',
         subtitle: 'Manage your saved delivery locations'
-      },
-      preferences: {
-        title: 'Preferences & Settings',
-        subtitle: 'Customize your experience and notifications'
       },
       delete: {
         title: 'Delete Account',
@@ -226,7 +207,7 @@ class ProfileManager {
     requirements.forEach((req, index) => {
       const checkNames = ['length', 'uppercase', 'number', 'special'];
       const isValid = checks[checkNames[index]];
-      
+
       req.classList.toggle('satisfied', isValid);
       const icon = req.querySelector('i');
       icon.className = isValid ? 'fas fa-check-circle' : 'fas fa-times-circle';
@@ -384,10 +365,10 @@ class ProfileManager {
       // Reset button
       submitBtn.innerHTML = originalText;
       submitBtn.disabled = false;
-      
+
       // Update profile display
       this.updateProfileDisplay(data);
-      
+
       this.showNotification('Profile updated successfully!', 'success');
     }, 1500);
   }
@@ -396,7 +377,7 @@ class ProfileManager {
     // Update sidebar profile info
     const profileName = document.querySelector('.profile-info h3');
     const profileEmail = document.querySelector('.profile-info p');
-    
+
     if (profileName) {
       profileName.textContent = `${data.firstName} ${data.lastName}`;
     }
@@ -442,127 +423,28 @@ class ProfileManager {
       submitBtn.innerHTML = originalText;
       submitBtn.disabled = false;
       form.reset();
-      
+
       // Reset password strength display
       const strengthFill = document.querySelector('.strength-fill');
       const strengthText = document.querySelector('.strength-text');
       strengthFill.style.width = '0%';
       strengthFill.className = 'strength-fill';
       strengthText.textContent = 'Password strength';
-      
+
       this.showNotification('Password updated successfully!', 'success');
     }, 1500);
-  }
-
-  // Preferences Management
-  savePreferences() {
-    const form = document.getElementById('preferencesForm');
-    const formData = new FormData(form);
-    
-    // Collect toggle states
-    const toggles = form.querySelectorAll('input[type="checkbox"]');
-    toggles.forEach(toggle => {
-      formData.set(toggle.name || 'notification', toggle.checked);
-    });
-
-    // Show loading state
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-    submitBtn.disabled = true;
-
-    setTimeout(() => {
-      submitBtn.innerHTML = originalText;
-      submitBtn.disabled = false;
-      this.showNotification('Preferences saved successfully!', 'success');
-    }, 1000);
-  }
-
-  // Image Upload Management
-  setupImageUpload() {
-    // Create hidden file input
-    this.fileInput = document.createElement('input');
-    this.fileInput.type = 'file';
-    this.fileInput.accept = 'image/*';
-    this.fileInput.style.display = 'none';
-    document.body.appendChild(this.fileInput);
-
-    // Handle file selection
-    this.fileInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        this.handleImageUpload(file);
-      }
-    });
-
-    // Profile picture click handler
-    const profilePicture = document.querySelector('.profile-picture-large');
-    profilePicture?.addEventListener('click', () => {
-      this.uploadProfilePicture();
-    });
-  }
-
-  uploadProfilePicture() {
-    this.fileInput.click();
-  }
-
-  handleImageUpload(file) {
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      this.showNotification('Please select a valid image file', 'error');
-      return;
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      this.showNotification('Image size must be less than 5MB', 'error');
-      return;
-    }
-
-    // Show loading state
-    const profilePicture = document.querySelector('.profile-picture-large img');
-    const overlay = document.querySelector('.picture-overlay');
-    
-    if (overlay) {
-      overlay.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-      overlay.style.opacity = '1';
-    }
-
-    // Create FileReader to preview image
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      // Update profile picture
-      if (profilePicture) {
-        profilePicture.src = e.target.result;
-      }
-      
-      // Update sidebar avatar
-      const sidebarAvatar = document.querySelector('.profile-avatar');
-      if (sidebarAvatar) {
-        sidebarAvatar.src = e.target.result;
-      }
-
-      // Simulate upload delay
-      setTimeout(() => {
-        if (overlay) {
-          overlay.style.opacity = '0';
-          overlay.innerHTML = '<i class="fas fa-camera"></i>';
-        }
-        this.showNotification('Profile picture updated successfully!', 'success');
-      }, 1500);
-    };
-
-    reader.readAsDataURL(file);
   }
 
   // Address Management
   addAddress() {
     const modal = this.createAddressModal();
     document.body.appendChild(modal);
-    
+
     // Show modal with animation
     setTimeout(() => {
-      modal.classList.add('active');
+      modal.style.opacity = '1';
+      modal.style.visibility = 'visible';
+      modal.querySelector('.modal-content').style.transform = 'scale(1) translateY(0)';
     }, 10);
   }
 
@@ -668,15 +550,6 @@ class ProfileManager {
     const modalBody = modal.querySelector('.modal-body');
     modalBody.style.cssText = `padding: var(--space-6);`;
 
-    // Add active state styles
-    modal.classList.add = function(className) {
-      if (className === 'active') {
-        this.style.opacity = '1';
-        this.style.visibility = 'visible';
-        modalContent.style.transform = 'scale(1) translateY(0)';
-      }
-    };
-
     // Event handlers
     const closeModal = () => {
       modal.style.opacity = '0';
@@ -702,11 +575,11 @@ class ProfileManager {
 
   saveAddress(formData) {
     const data = Object.fromEntries(formData);
-    
+
     // Create new address element
     const addressesGrid = document.querySelector('.addresses-grid');
     const addButton = addressesGrid?.querySelector('.add-address');
-    
+
     const newAddress = document.createElement('div');
     newAddress.className = 'address-item';
     newAddress.innerHTML = `
@@ -777,20 +650,12 @@ class ProfileManager {
         }, 3000);
       }
     );
-    
+
     document.body.appendChild(confirmModal);
-    setTimeout(() => confirmModal.classList.add('active'), 10);
-  }
-
-  // Search Functionality
-  handleSearch(query) {
-    if (query.length < 2) return;
-
-    // Simulate search results
-    console.log(`Searching for: ${query}`);
-    
-    // You can implement actual search logic here
-    // For now, just log the search query
+    setTimeout(() => {
+      confirmModal.style.opacity = '1';
+      confirmModal.style.visibility = 'visible';
+    }, 10);
   }
 
   // Notification System
@@ -845,17 +710,19 @@ class ProfileManager {
     }, 10);
 
     // Auto hide after 5 seconds
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       this.hideNotification(notification);
     }, 5000);
 
     // Close button handler
     notification.querySelector('.notification-close')?.addEventListener('click', () => {
+      clearTimeout(timeoutId);
       this.hideNotification(notification);
     });
   }
 
   hideNotification(notification) {
+    if (!notification) return;
     notification.style.transform = 'translateX(100%)';
     setTimeout(() => notification.remove(), 300);
   }
@@ -918,8 +785,3 @@ class ProfileManager {
 document.addEventListener('DOMContentLoaded', () => {
   new ProfileManager();
 });
-
-// Export for module usage
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = ProfileManager;
-}
