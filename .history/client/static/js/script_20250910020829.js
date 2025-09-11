@@ -45,7 +45,6 @@ function addToCart(id, qty = 1) {
   showAddToCartToast();
 }
 
-
 function showAddToCartToast() {
   // Create toast element
   const toast = document.createElement('div');

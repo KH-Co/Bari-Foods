@@ -21,8 +21,6 @@ from .serializers import (
     FeaturedProductSerializer
 )
 
-from rest_framework_simplejwt.tokens import RefreshToken
-
 class ProductListCreateAPIView(generics.ListCreateAPIView):
 
     queryset = Product.objects.all() # Changed to .all() to allow creation
@@ -58,15 +56,8 @@ class UserLoginAPIView(APIView):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            # ✅ Generate tokens instead of using login()
-            refresh = RefreshToken.for_user(user)
-            
-            return Response({
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-                'user': UserSerializer(user).data # Optionally return user data
-            }, status=status.HTTP_200_OK)
-            
+            login(request, user)
+            return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
         return Response({"detail": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
 
 class UserProfileAPIView(generics.RetrieveUpdateAPIView):

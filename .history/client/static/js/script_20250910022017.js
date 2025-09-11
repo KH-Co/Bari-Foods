@@ -46,6 +46,43 @@ function addToCart(id, qty = 1) {
 }
 
 
+
+const loginForm = document.getElementById('login-form');
+
+// Add an event listener for the 'submit' event
+loginForm.addEventListener('submit', async (event) => {
+    // ✅ This is the most important line. It stops the page from reloading.
+    event.preventDefault(); 
+
+    // Now, the rest of your fetch logic can run without interruption
+    const formData = new FormData(loginForm);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+        const response = await fetch('http://127.0.0.1:8000/api/users/login/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        
+        const result = await response.json();
+        
+        if (result.access) {
+            localStorage.setItem('authToken', result.access);
+            window.location.href = '/cart.html'; // Redirect AFTER storing the token
+        } else {
+            alert('Login failed: ' + (result.detail || 'Invalid credentials'));
+        }
+
+    } catch (error) {
+        console.error('Login error:', error);
+    }
+});
+
+
+
 function showAddToCartToast() {
   // Create toast element
   const toast = document.createElement('div');

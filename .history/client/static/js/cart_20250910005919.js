@@ -19,7 +19,7 @@ let currentCart = [];
 
 // Auth
 function getToken() {
-  return localStorage.getItem("authToken");
+  return localStorage.getItem("accessToken");
 }
 
 async function authFetch(url, options = {}) {
@@ -79,7 +79,7 @@ function render() {
           </div>
           <div class="item-price">${fmt(p.price)}</div>
           <div class="stepper">
-            <button class="dec" aria-label="Decrease">-</button>
+            <button class="dec" aria-label="Decrease">−</button>
             <span class="qty">${qty}</span>
             <button class="inc" aria-label="Increase">+</button>
           </div>

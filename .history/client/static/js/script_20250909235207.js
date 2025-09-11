@@ -7,6 +7,18 @@ const nextBtn = document.getElementById("popNext");
 let authModalInstance = null;
 
 
+const BASE_URL = "http://127.0.0.1:8000";
+const token = localStorage.getItem("accessToken"); // store this after login
+
+async function authFetch(url, options = {}) {
+  const headers = options.headers || {};
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+  return fetch(url, { ...options, headers });
+}
+
+
 
 // Cart storage helpers
 function loadCartLS() {
@@ -44,7 +56,6 @@ function addToCart(id, qty = 1) {
   // Show toast notification
   showAddToCartToast();
 }
-
 
 function showAddToCartToast() {
   // Create toast element

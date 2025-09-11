@@ -226,7 +226,7 @@ async function addToCart(id, qty) {
         "Content-Type": "application/json",
         Authorization: `JWT ${token}` // change to `JWT` if your backend requires
       },
-      body: JSON.stringify({ product_id: p.id, quantity: qty }),
+      body: JSON.stringify({ product_id: p.id, quantity: quantity }),
     });
 
     if (!response.ok) {
@@ -237,10 +237,10 @@ async function addToCart(id, qty) {
 
     // Update localStorage cart for badge
     let localCart = JSON.parse(localStorage.getItem("cart")) || {};
-    localCart[id] = (localCart[id] || 0) + qty;
+    localCart[id] = (localCart[id] || 0) + quantity;
     localStorage.setItem("cart", JSON.stringify(localCart));
 
-    toast(`${p.name} ×${qty} added to cart`);
+    toast(`${p.name} ×${quantity} added to cart`);
     updateBadge();
   } catch (error) {
     console.error("Error adding to cart:", error);

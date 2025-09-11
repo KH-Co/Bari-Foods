@@ -21,8 +21,6 @@ from .serializers import (
     FeaturedProductSerializer
 )
 
-from rest_framework_simplejwt.tokens import RefreshToken
-
 class ProductListCreateAPIView(generics.ListCreateAPIView):
 
     queryset = Product.objects.all() # Changed to .all() to allow creation
