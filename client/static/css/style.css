@@ -859,7 +859,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-  gap: clamp(32px, 6vw, 64px);
+  gap: clamp(32px, 6vw, 60px);
   box-shadow: var(--shadow-xl);
   position: relative;
   background: transparent;
@@ -969,7 +969,6 @@ body {
   flex: 0 0 360px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
 }
 
 .heritage-image img {
@@ -978,6 +977,7 @@ body {
   border-radius: 16px;
   box-shadow: 0 6px 28px rgba(45, 20, 10, 0.35), 0 2px 18px rgba(0, 0, 0, 0.08);
   object-fit: cover;
+  margin-left: 0;
 }
 
 /* SERVICES */
