@@ -113,7 +113,9 @@ function render() {
 // API calls
 async function fetchCart() {
   try {
-    const response = await authFetch(`${BASE_URL}/api/cart/`);
+    const response = await authFetch(`${BASE_URL}/api/cart/`,{
+      headers: {"authorization": `Bearer ${sessionStorage.getItem("token")}`},
+    });
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     return await response.json();
   } catch (err) {

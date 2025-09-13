@@ -20,7 +20,7 @@ function productCardHTML(p) {
   const imageUrl = p.image || "../assets/products-img/default.png";
 
   return `
-    <article class="card" data-id="${p.id}" tabindex="0" aria-label="${p.name}">
+    <article class="card" data-id="${uniqueId}" tabindex="0" aria-label="${p.name}">
       <div class="img-wrap">
         <img src="${imageUrl}" alt="${p.name}">
       </div>
@@ -208,25 +208,21 @@ btnFav.addEventListener("click", () => {
   renderGrid();
 });
 
-/* Add to Cart */
+/* Cart + Favorites */
+const cart = new Map();
 async function addToCart(id, qty) {
   const p = state.products.find(x => (x.id || x.name) === id);
   if (!p) return;
 
   try {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      toast("Login required to add to cart", "error");
-      return;
-    }
-
+    const token = localStorage.getItem("accessToken"); // stored at login
     const response = await fetch(`${BASE_URL}/api/cart/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `JWT ${token}` // change to `JWT` if your backend requires
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
       },
-      body: JSON.stringify({ product_id: p.id, quantity: qty }),
+      body: JSON.stringify({ product_id: id, quantity: qty }),
     });
 
     if (!response.ok) {
@@ -234,19 +230,15 @@ async function addToCart(id, qty) {
       throw new Error(err.detail || `Failed: ${response.status}`);
     }
 
-
-    // Update localStorage cart for badge
-    let localCart = JSON.parse(localStorage.getItem("cart")) || {};
-    localCart[id] = (localCart[id] || 0) + qty;
-    localStorage.setItem("cart", JSON.stringify(localCart));
-
+    const data = await response.json();
     toast(`${p.name} ×${qty} added to cart`);
-    updateBadge();
+    updateBadge(); // update cart badge count
   } catch (error) {
     console.error("Error adding to cart:", error);
-    toast("Could not add item to cart", "error");
+    toast("Login required to add to cart", "error");
   }
 }
+
 
 function toggleFavorite(id) {
   if (state.favorites.has(id)) state.favorites.delete(id);

@@ -19,7 +19,7 @@ let currentCart = [];
 
 // Auth
 function getToken() {
-  return localStorage.getItem("authToken");
+  return localStorage.getItem("accessToken");
 }
 
 async function authFetch(url, options = {}) {

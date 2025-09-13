@@ -19,14 +19,14 @@ let currentCart = [];
 
 // Auth
 function getToken() {
-  return localStorage.getItem("authToken");
+  return localStorage.getItem("accessToken");
 }
 
 async function authFetch(url, options = {}) {
   const headers = options.headers || {};
   const token = getToken();
   if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
+    headers["Authorization"] = `Token ${token}`;
   }
   return fetch(url, { ...options, headers });
 }

@@ -20,7 +20,7 @@ function productCardHTML(p) {
   const imageUrl = p.image || "../assets/products-img/default.png";
 
   return `
-    <article class="card" data-id="${p.id}" tabindex="0" aria-label="${p.name}">
+    <article class="card" data-id="${uniqueId}" tabindex="0" aria-label="${p.name}">
       <div class="img-wrap">
         <img src="${imageUrl}" alt="${p.name}">
       </div>
@@ -224,9 +224,9 @@ async function addToCart(id, qty) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `JWT ${token}` // change to `JWT` if your backend requires
+        Authorization: `Bearer ${token}` // change to `JWT` if your backend requires
       },
-      body: JSON.stringify({ product_id: p.id, quantity: qty }),
+      body: JSON.stringify({ product_id: id, quantity: qty }),
     });
 
     if (!response.ok) {
@@ -234,6 +234,7 @@ async function addToCart(id, qty) {
       throw new Error(err.detail || `Failed: ${response.status}`);
     }
 
+    const data = await response.json();
 
     // Update localStorage cart for badge
     let localCart = JSON.parse(localStorage.getItem("cart")) || {};

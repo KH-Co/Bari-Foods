@@ -15,21 +15,21 @@ const grandTotalEl = document.getElementById("grandTotal");
 const freeShipBanner = document.getElementById("freeShipBanner");
 const checkoutBtn = document.getElementById("checkoutBtn");
 
-let currentCart = [];
+let currentCart = []; // Store the fetched cart data
 
 // Auth
-function getToken() {
-  return localStorage.getItem("authToken");
-}
+const token = localStorage.getItem("accessToken"); // store this after login
 
 async function authFetch(url, options = {}) {
   const headers = options.headers || {};
-  const token = getToken();
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
   return fetch(url, { ...options, headers });
 }
+
+
+
 
 // Utilities
 function fmt(n) {
@@ -55,7 +55,7 @@ async function updateBadge() {
   }
 }
 
-// Render cart
+// Render
 function render() {
   if (!listEl || !emptyEl) return;
 
@@ -64,34 +64,22 @@ function render() {
     emptyEl.classList.remove("hidden");
   } else {
     emptyEl.classList.add("hidden");
-    listEl.innerHTML = currentCart.map((item) => {
-      const p = item.product;
-      const qty = item.quantity;
-      const imageUrl = p.image ? `${BASE_URL}${p.image}` : "";
-      return `
-        <li class="cart-item" data-id="${item.id}">
-          <div class="item-img">
-            <img src="${imageUrl}" alt="${p.name}">
-          </div>
-          <div>
-            <div class="item-name">${p.name}</div>
-            <div class="item-meta">${p.weight}</div>
-          </div>
-          <div class="item-price">${fmt(p.price)}</div>
-          <div class="stepper">
-            <button class="dec" aria-label="Decrease">-</button>
-            <span class="qty">${qty}</span>
-            <button class="inc" aria-label="Increase">+</button>
-          </div>
-          <button class="remove-btn link danger">Remove</button>
-        </li>
-      `;
-    }).join("");
+    listEl.innerHTML = currentCart
+      .map((item) => {
+        const p = item.product;
+        const qty = item.quantity;
+        const imageUrl = p.image ? `${BASE_URL}${p.image}` : "";
+        return `<li class="cart-item" data-id="${item.id}"> <div class="item-img"> <img src="${imageUrl}" alt="${p.name}"> </div> <div> <div class="item-name">${p.name}</div> <div class="item-meta">${p.weight}</div> </div> <div class="item-price">${fmt(
+          p.price
+        )}</div> <div class="stepper"> <button class="dec" aria-label="Decrease">−</button> <span class="qty">${qty}</span> <button class="inc" aria-label="Increase">+</button> </div> <button class="remove-btn link danger">Remove</button> </li>`;
+      })
+      .join("");
   }
 
   // Totals
   let itemsTotal = currentCart.reduce((sum, item) => sum + parseFloat(item.product.price) * item.quantity, 0);
-  const delivery = itemsTotal === 0 ? 0 : itemsTotal >= FREE_SHIP_THRESHOLD ? 0 : DELIVERY_BASE;
+  const delivery =
+    itemsTotal === 0 ? 0 : itemsTotal >= FREE_SHIP_THRESHOLD ? 0 : DELIVERY_BASE;
 
   if (itemsTotalEl) itemsTotalEl.textContent = fmt(itemsTotal);
   if (deliveryFeeEl) deliveryFeeEl.textContent = fmt(delivery);
@@ -100,7 +88,9 @@ function render() {
   if (freeShipBanner) {
     if (itemsTotal > 0 && itemsTotal < FREE_SHIP_THRESHOLD) {
       const diff = FREE_SHIP_THRESHOLD - itemsTotal;
-      freeShipBanner.textContent = `Add items worth ${fmt(diff)} more for free delivery`;
+      freeShipBanner.textContent = `Add items worth ${fmt(
+        diff
+      )} more for free delivery`;
       freeShipBanner.classList.remove("hidden");
     } else {
       freeShipBanner.classList.add("hidden");
@@ -110,10 +100,17 @@ function render() {
   updateBadge();
 }
 
-// API calls
+// API Calls
 async function fetchCart() {
+  const token = localStorage.getItem("accessToken");
   try {
-    const response = await authFetch(`${BASE_URL}/api/cart/`);
+    const response = await fetch(`${BASE_URL}/api/cart/`, {
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
+
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     return await response.json();
   } catch (err) {
@@ -124,7 +121,7 @@ async function fetchCart() {
 
 async function updateCartItem(itemId, quantity) {
   try {
-    const response = await authFetch(`${BASE_URL}/api/cart/${itemId}/`, {
+    const response = await fetch(`${BASE_URL}/api/cart/${itemId}/`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ quantity }),
@@ -143,7 +140,7 @@ async function updateCartItem(itemId, quantity) {
 
 async function removeCartItem(itemId) {
   try {
-    const response = await authFetch(`${BASE_URL}/api/cart/${itemId}/`, {
+    const response = await fetch(`${BASE_URL}/api/cart/${itemId}/`, {
       method: "DELETE",
     });
     if (response.ok) {
@@ -160,13 +157,14 @@ async function removeCartItem(itemId) {
 
 // Main logic
 async function fetchAndRender() {
-  currentCart = await fetchCart(); 
+  await fetchCart();
   render();
 }
 
 // Events
 if (clearBtn) {
   clearBtn.addEventListener("click", async () => {
+    // We need to loop and delete each item from the backend
     if (currentCart.length > 0) {
       for (const item of currentCart) {
         await removeCartItem(item.id);
@@ -205,16 +203,16 @@ if (checkoutBtn) {
 }
 
 (function wireBackButton(){
-  const btn = document.getElementById("navBack");
-  if (!btn) return;
-  btn.addEventListener("click", ()=>{
-    const hasHistory = (window.history.length > 1);
-    if (hasHistory) {
-      window.history.back();
-    } else {
-      window.location.href = "products.html";
-    }
-  });
+const btn = document.getElementById("navBack");
+if (!btn) return;
+btn.addEventListener("click", ()=>{
+const hasHistory = (window.history.length > 1);
+if (hasHistory) {
+window.history.back();
+} else {
+window.location.href = "products.html";
+}
+});
 })();
 
 // Initial render
