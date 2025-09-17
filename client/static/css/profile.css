@@ -551,7 +551,7 @@ body {
   padding: var(--space-8);
   border-bottom: 1px solid var(--glass-border);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-6);
   background: linear-gradient(135deg, var(--surface) 0%, rgba(255, 255, 255, 0.02) 100%);
@@ -690,22 +690,32 @@ body {
   margin-top: var(--space-1);
 }
 
+.card-header .security-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
 /* Password Input */
 .password-wrapper {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .password-wrapper .form-input {
-  padding-right: 48px;
+  padding-right: 52px;
+  flex: 1;
 }
 
 .password-toggle {
   position: absolute;
-  right: var(--space-3);
+  right: var(--space-4);
   top: 50%;
   transform: translateY(-50%);
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border: none;
   background: transparent;
   color: var(--gray-400);
@@ -715,16 +725,23 @@ body {
   align-items: center;
   justify-content: center;
   transition: var(--transition);
+  z-index: 1;
 }
 
 .password-toggle:hover {
-  background: var(--surface);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--primary);
+}
+
+.password-toggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(233, 181, 64, 0.2);
 }
 
 /* Password Strength */
 .password-strength {
-  margin-top: var(--space-2);
+  margin-top: var(--space-3);
+  padding: var(--space-3) 0;
 }
 
 .strength-bar {
@@ -732,69 +749,91 @@ body {
   background: var(--gray-700);
   border-radius: var(--radius-full);
   overflow: hidden;
-  margin-bottom: var(--space-1);
+  margin-bottom: var(--space-2);
+  position: relative;
 }
 
 .strength-fill {
   height: 100%;
   background: var(--danger);
-  transition: var(--transition);
+  transition: all var(--transition-slow);
   width: 0%;
+  border-radius: var(--radius-full);
 }
 
 .strength-fill.weak {
-  background: var(--danger);
+  background: linear-gradient(90deg, var(--danger) 0%, #ff6b6b 100%);
   width: 25%;
 }
 
 .strength-fill.medium {
-  background: var(--warning);
-  width: 60%;
+  background: linear-gradient(90deg, var(--warning) 0%, #ffd93d 100%);
+  width: 65%;
 }
 
 .strength-fill.strong {
-  background: var(--success);
+  background: linear-gradient(90deg, var(--success) 0%, #51cf66 100%);
   width: 100%;
 }
 
 .strength-text {
   font-size: var(--text-xs);
   color: var(--gray-400);
+  font-weight: 500;
+  text-align: left;
 }
 
 /* Password Requirements */
 .password-requirements {
-  padding: var(--space-4);
-  background: rgba(233, 181, 64, 0.05);
+  padding: var(--space-5);
+  background: rgba(233, 181, 64, 0.03);
   border: 1px solid rgba(233, 181, 64, 0.1);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-8);
 }
 
 .requirements-title {
   font-size: var(--text-sm);
   font-weight: 600;
   color: var(--primary);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.requirements-title::before {
+  content: '';
+  width: 4px;
+  height: 16px;
+  background: var(--primary);
+  border-radius: var(--radius-full);
 }
 
 .requirements-list {
   display: grid;
-  gap: var(--space-2);
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .requirement {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
   font-size: var(--text-xs);
   color: var(--gray-400);
   transition: var(--transition);
+  padding: var(--space-2) 0;
 }
 
 .requirement i {
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   color: var(--danger);
   transition: var(--transition);
+  width: 16px;
+  text-align: center;
+  flex-shrink: 0;
 }
 
 .requirement.satisfied {
@@ -816,27 +855,90 @@ body {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-full);
   font-size: var(--text-xs);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .status-indicator.strong {
   background: var(--success-light);
   color: var(--success);
+  border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
 .status-indicator.medium {
   background: var(--warning-light);
   color: var(--warning);
+  border: 1px solid rgba(245, 158, 11, 0.2);
 }
 
 .status-indicator.weak {
   background: var(--danger-light);
   color: var(--danger);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Security Form Improvements */
+#securityForm .form-section {
+  margin-bottom: var(--space-8);
+}
+
+#securityForm .form-section:last-of-type {
+  margin-bottom: 0;
+}
+
+/* Password Input Group Spacing */
+#securityForm .form-group {
+  margin-bottom: var(--space-6);
+}
+
+#securityForm .form-group:last-child {
+  margin-bottom: 0;
+}
+
+
+/* Form Actions for Security */
+#securityForm .form-actions {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: flex-end;
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--glass-border);
+  margin-top: var(--space-8);
+}
+
+/* Form Labels Consistency */
+#securityForm .form-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: var(--space-2);
+  display: block;
+}
+
+/* Input Focus States */
+#securityForm .form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(233, 181, 64, 0.1);
+  background: var(--surface-hover);
+}
+
+/* Enhanced Form Section Titles */
+#securityForm .form-section-title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--primary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
 }
 
 /* Orders List */
@@ -1361,6 +1463,27 @@ body {
   .card-header {
     flex-direction: column;
     gap: var(--space-4);
+    align-items: flex-start;
+  }
+
+  .card-header .security-status {
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 0;
+  }
+
+  .requirements-list {
+    grid-template-columns: 1fr;
+  }
+
+  #securityForm .form-actions {
+    flex-direction: column-reverse;
+    gap: var(--space-3);
+  }
+
+  #securityForm .form-actions .btn {
+    width: 100%;
+    justify-content: center;
   }
 
   .warning-section {
@@ -1381,6 +1504,20 @@ body {
   .navbar {
     padding: var(--space-3);
     gap: var(--space-3);
+  }
+
+  .password-requirements {
+    padding: var(--space-4);
+  }
+
+  .password-toggle {
+    width: 32px;
+    height: 32px;
+    right: var(--space-3);
+  }
+
+  .password-wrapper .form-input {
+    padding-right: 44px;
   }
 
   .header-actions .divider {
