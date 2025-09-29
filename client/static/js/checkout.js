@@ -1,35 +1,43 @@
 /* Base URL for backend */
 const BASE_URL = "http://127.0.0.1:8000";
 
-// Summary DOM
-const reviewList = document.getElementById("reviewList");
-const sumItems = document.getElementById("sumItems");
-const sumDelivery = document.getElementById("sumDelivery");
-const sumService = document.getElementById("sumService");
-const sumTotal = document.getElementById("sumTotal");
-const placeOrderBtn = document.getElementById("placeOrder");
+const DOM = {
+  reviewList: document.getElementById("reviewList"),
+  sumItems: document.getElementById("sumItems"),
+  sumDelivery: document.getElementById("sumDelivery"),
+  sumService: document.getElementById("sumService"),
+  sumTotal: document.getElementById("sumTotal"),
+  placeOrderBtn: document.getElementById("placeOrder"),
 
-// Address DOM
-const addrSelect = document.getElementById("addrSelect");
-const addAddressBtn = document.getElementById("addAddressBtn");
-const saveAddressBtn = document.getElementById("saveAddressBtn");
-const deleteAddressBtn = document.getElementById("deleteAddressBtn");
-const addrLine = document.getElementById("addrLine");
-const addrCity = document.getElementById("addrCity");
-const addrZip = document.getElementById("addrZip");
-const addrNote = document.getElementById("addrNote");
+  addrSelect: document.getElementById("addrSelect"),
+  addAddressBtn: document.getElementById("addAddressBtn"),
+  saveAddressBtn: document.getElementById("saveAddressBtn"),
+  deleteAddressBtn: document.getElementById("deleteAddressBtn"),
+  addrLine: document.getElementById("addrLine"),
+  addrCity: document.getElementById("addrCity"),
+  addrZip: document.getElementById("addrZip"),
+  addrNote: document.getElementById("addrNote"),
 
-// Payment DOM
-const payList = document.getElementById("payList");
-const cardForm = document.getElementById("cardForm");
-const upiForm = document.getElementById("upiForm");
+  payList: document.getElementById("payList"),
+  cardForm: document.getElementById("cardForm"),
+  upiForm: document.getElementById("upiForm")
+};
 
 // State
 const state = {
   cartItems: [],
   addresses: [],
   selectedAddress: null,
-  payment: "cod"
+  payment: "cod",
+  loading: false,
+  errors: {}
+};
+
+const CONFIG = {
+  FREE_SHIP_THRESHOLD: 499.0,
+  DELIVERY_BASE: 30.0,
+  SERVICE_FEE_RATE: 0.02,
+  MAX_RETRY_ATTEMPTS: 3
 };
 
 // ---- Database calls ----
@@ -98,10 +106,6 @@ function render() {
       return `<li class="review-item" data-id="${p.id}"> <div class="review-thumb"><img src="${imageUrl}" alt="${p.name}"/></div> <div> <div>${p.name}</div> <small class="muted">${p.weight || ""}</small> </div> <div class="qty-badge">×${qty}</div> </li>`;
     }).join("");
   }
-
-  const FREE_SHIP_THRESHOLD = 499.0;
-  const DELIVERY_BASE = 30.0;
-  const SERVICE_FEE_RATE = 0.02;
 
   const delivery = itemsSubtotal === 0 ? 0 : (itemsSubtotal >= FREE_SHIP_THRESHOLD ? 0 : DELIVERY_BASE);
   const service = +(itemsSubtotal * SERVICE_FEE_RATE).toFixed(2);
