@@ -1,9 +1,4 @@
-const viewport = document.getElementById("popViewport");
-const track = document.getElementById("popTrack");
-const prevBtn = document.getElementById("popPrev");
-const nextBtn = document.getElementById("popNext");
-
-// Cart storage helpers
+// ==================== CART MANAGEMENT ====================
 function loadCartLS() {
   try {
     return JSON.parse(localStorage.getItem("cartItems")) || {};
@@ -21,13 +16,10 @@ function addToCart(id, qty = 1) {
   items[id] = (items[id] || 0) + qty;
   saveCartLS(items);
 
-  // Update cart badge with animation
   const badge = document.getElementById("cartCount");
   if (badge) {
     const newCount = Object.values(items).reduce((s, q) => s + q, 0);
     badge.textContent = newCount;
-
-    // Add success feedback animation
     badge.style.transform = "scale(1.3)";
     badge.style.color = "#e9b540";
     setTimeout(() => {
@@ -36,13 +28,10 @@ function addToCart(id, qty = 1) {
     }, 200);
   }
 
-  // Show toast notification
   showAddToCartToast();
 }
 
-
 function showAddToCartToast() {
-  // Create toast element
   const toast = document.createElement('div');
   toast.innerHTML = `
     <div style="
@@ -72,12 +61,10 @@ function showAddToCartToast() {
   document.body.appendChild(toast);
   const toastElement = toast.firstElementChild;
 
-  // Animate in
   setTimeout(() => {
     toastElement.style.transform = 'translateX(0)';
   }, 10);
 
-  // Animate out and remove
   setTimeout(() => {
     toastElement.style.transform = 'translateX(100%)';
     setTimeout(() => {
@@ -86,13 +73,31 @@ function showAddToCartToast() {
   }, 2500);
 }
 
+function initCartCount() {
+  const cartItems = loadCartLS();
+  const totalCount = Object.values(cartItems).reduce((sum, qty) => sum + qty, 0);
+  const badge = document.getElementById("cartCount");
+  if (badge) {
+    badge.textContent = totalCount;
+  }
+}
 
-//  API-driven popular
+// ==================== POPULAR PRODUCTS CAROUSEL ====================
+const viewport = document.getElementById("popViewport");
+const track = document.getElementById("popTrack");
+const prevBtn = document.getElementById("popPrev");
+const nextBtn = document.getElementById("popNext");
+
 let popular = [];
 let eventsBound = false;
+let page = 0;
+let pages = 1;
+let perPage = 3;
+let slideW = 0;
+let isAnimating = false;
 
 async function fetchPopular() {
-  const API_URL = "http://127.0.0.1:8000/api/featured-products/"; 
+  const API_URL = "http://127.0.0.1:8000/api/featured-products/";
   if (track) track.innerHTML = `<div class="pop-loading" style="padding:20px;">Loading popular items…</div>`;
 
   try {
@@ -108,7 +113,7 @@ async function fetchPopular() {
     const items = json.results || json.products || json.data || json || [];
 
     const normalized = items.map(item => {
-      const p = item.product || {};  // extract the nested product
+      const p = item.product || {};
       const name = p.name || p.title || "Unnamed product";
       const images = p.image || "/assets/img/placeholder.png";
       const price = Number(p.price ?? 0);
@@ -127,10 +132,9 @@ async function fetchPopular() {
         _raw: item
       };
     });
-    
-    // Filter items with valid rating, fallback to first 12 if none
+
     const withRating = normalized.filter(x => typeof x.rating === "number" && x.rating > 0)
-                                .sort((a,b) => (b.rating || 0) - (a.rating || 0));
+      .sort((a, b) => (b.rating || 0) - (a.rating || 0));
 
     popular = withRating.length ? withRating : normalized.slice(0, 12);
 
@@ -247,12 +251,6 @@ function wireEvents() {
   });
 }
 
-let page = 0;
-let pages = 1;
-let perPage = 3;
-let slideW = 0;
-let isAnimating = false;
-
 function layout() {
   if (!viewport || !track) return;
   const total = popular.length;
@@ -274,8 +272,8 @@ function layout() {
   });
 
   const needsNav = total > perPage;
-  if(prevBtn) prevBtn.hidden = !needsNav;
-  if(nextBtn) nextBtn.hidden = !needsNav;
+  if (prevBtn) prevBtn.hidden = !needsNav;
+  if (nextBtn) nextBtn.hidden = !needsNav;
 
   updateNavButtons();
   page = Math.min(page, pages - 1);
@@ -309,7 +307,7 @@ function slide(dir) {
   if (track) {
     track.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
   }
-  
+
   applyTransform();
   updateNavButtons();
 
@@ -335,15 +333,389 @@ function addScrollAnimations() {
   });
 }
 
-function initCartCount() {
-  const cartItems = loadCartLS();
-  const totalCount = Object.values(cartItems).reduce((sum, qty) => sum + qty, 0);
-  const badge = document.getElementById("cartCount");
-  if (badge) {
-    badge.textContent = totalCount;
-  }
-}
+// ==================== TESTIMONIALS CONTROLLER ====================
+(function TestimonialsController() {
+  let currentIndex = 0;
+  let autoPlayInterval = null;
+  let isAnimating = false;
+  let touchStartX = 0;
+  let touchEndX = 0;
 
+  const testimonials = [
+    {
+      name: "Priya Sharma",
+      location: "Jaipur, Rajasthan",
+      rating: 5,
+      text: "The authentic taste reminds me of my grandmother's kitchen. Bari Foods truly captures the essence of traditional Rajasthani flavors!",
+      avatar: "PS"
+    },
+    {
+      name: "Rajesh Kumar",
+      location: "Delhi",
+      rating: 5,
+      text: "Outstanding quality and packaging! Every order arrives fresh and perfectly seasoned. My family's favorite snack brand now.",
+      avatar: "RK"
+    },
+    {
+      name: "Anjali Mehta",
+      location: "Mumbai, Maharashtra",
+      rating: 5,
+      text: "A perfect blend of tradition and taste! The snacks are always crispy, and the delivery is impressively fast. Highly recommended!",
+      avatar: "AM"
+    },
+    {
+      name: "Vikram Singh",
+      location: "Udaipur, Rajasthan",
+      rating: 5,
+      text: "Been ordering for 2 years now. Consistency in quality is remarkable. Perfect for gifting to relatives abroad!",
+      avatar: "VS"
+    },
+    {
+      name: "Meera Patel",
+      location: "Ahmedabad, Gujarat",
+      rating: 5,
+      text: "My go-to snack for office breaks. The spice level is just perfect and the packaging keeps them fresh for weeks!",
+      avatar: "MP"
+    },
+    {
+      name: "Arjun Reddy",
+      location: "Bangalore, Karnataka",
+      rating: 5,
+      text: "Discovered this brand during Diwali. Now it's a staple in my pantry. Authentic flavors that transport you to Rajasthan!",
+      avatar: "AR"
+    }
+  ];
+
+  function init() {
+    const container = document.querySelector('.testimonials-container');
+    if (!container) return;
+
+    enhanceTestimonialSection();
+    renderTestimonials();
+    addNavigationControls();
+    addPaginationDots();
+    setupAutoPlay();
+    setupTouchGestures();
+    setupKeyboardNavigation();
+    setupIntersectionObserver();
+    addHoverEffects();
+  }
+
+  function enhanceTestimonialSection() {
+    const section = document.querySelector('.testimonials-section');
+    if (!section) return;
+
+    const decorativeElements = document.createElement('div');
+    decorativeElements.className = 'testimonial-decorations';
+    decorativeElements.innerHTML = `
+      <div class="testimonial-blob blob-1"></div>
+      <div class="testimonial-blob blob-2"></div>
+      <div class="testimonial-pattern"></div>
+    `;
+    section.insertBefore(decorativeElements, section.firstChild);
+  }
+
+  function renderTestimonials() {
+    const container = document.querySelector('.testimonials-container');
+    if (!container) return;
+
+    container.innerHTML = testimonials.map((testimonial, index) => `
+      <div class="testimonial-card" data-index="${index}" style="opacity: 0; transform: translateY(30px);">
+        <div class="quote-icon">
+          <i class="fas fa-quote-left"></i>
+        </div>
+        <div class="testimonial-content">
+          <div class="stars">
+            ${generateStars(testimonial.rating)}
+          </div>
+          <p class="testimonial-text">"${testimonial.text}"</p>
+          <div class="customer-info">
+            <div class="customer-avatar" style="background: var(--logo-gradient);">
+              <span style="color: var(--button-primary); font-weight: 700; font-size: 18px;">${testimonial.avatar}</span>
+            </div>
+            <div class="customer-details">
+              <h4 class="customer-name">${testimonial.name}</h4>
+              <p class="customer-location">
+                <i class="fas fa-map-marker-alt" style="font-size: 12px; margin-right: 4px;"></i>
+                ${testimonial.location}
+              </p>
+            </div>
+          </div>
+          <div class="verified-badge">
+            <i class="fas fa-check-circle"></i>
+            <span>Verified Purchase</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    animateCardsIn();
+  }
+
+  function generateStars(rating) {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 >= 0.5;
+    let starsHTML = '';
+
+    for (let i = 0; i < fullStars; i++) {
+      starsHTML += '<i class="fas fa-star"></i>';
+    }
+    if (halfStar) {
+      starsHTML += '<i class="fas fa-star-half-alt"></i>';
+    }
+    const emptyStars = 5 - Math.ceil(rating);
+    for (let i = 0; i < emptyStars; i++) {
+      starsHTML += '<i class="far fa-star"></i>';
+    }
+
+    return starsHTML;
+  }
+
+  function animateCardsIn() {
+    const cards = document.querySelectorAll('.testimonial-card');
+    cards.forEach((card, index) => {
+      setTimeout(() => {
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, index * 150);
+    });
+  }
+
+  function addNavigationControls() {
+    const section = document.querySelector('.testimonials-section');
+    if (!section || window.innerWidth < 768) return;
+
+    const navHTML = `
+      <div class="testimonial-navigation">
+        <button class="testimonial-nav testimonial-prev" aria-label="Previous testimonial">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="testimonial-nav testimonial-next" aria-label="Next testimonial">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    `;
+
+    const header = section.querySelector('.testimonials-header');
+    header.insertAdjacentHTML('afterend', navHTML);
+
+    document.querySelector('.testimonial-prev')?.addEventListener('click', () => navigateTestimonials(-1));
+    document.querySelector('.testimonial-next')?.addEventListener('click', () => navigateTestimonials(1));
+  }
+
+  function addPaginationDots() {
+    const section = document.querySelector('.testimonials-section');
+    if (!section) return;
+
+    const dotsContainer = document.createElement('div');
+    dotsContainer.className = 'testimonial-dots';
+
+    const visibleCards = getVisibleCardsCount();
+    const totalPages = Math.ceil(testimonials.length / visibleCards);
+
+    for (let i = 0; i < totalPages; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'testimonial-dot';
+      dot.setAttribute('aria-label', `Go to testimonial page ${i + 1}`);
+      if (i === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => goToPage(i));
+      dotsContainer.appendChild(dot);
+    }
+
+    section.appendChild(dotsContainer);
+  }
+
+  function getVisibleCardsCount() {
+    if (window.innerWidth < 768) return 1;
+    if (window.innerWidth < 1024) return 2;
+    return 3;
+  }
+
+  function navigateTestimonials(direction) {
+    if (isAnimating) return;
+
+    const cards = document.querySelectorAll('.testimonial-card');
+    const visibleCount = getVisibleCardsCount();
+    const maxIndex = Math.ceil(cards.length / visibleCount) - 1;
+
+    currentIndex += direction;
+    if (currentIndex < 0) currentIndex = maxIndex;
+    if (currentIndex > maxIndex) currentIndex = 0;
+
+    updateCardsDisplay();
+    updateDots();
+    resetAutoPlay();
+  }
+
+  function goToPage(pageIndex) {
+    if (isAnimating) return;
+    currentIndex = pageIndex;
+    updateCardsDisplay();
+    updateDots();
+    resetAutoPlay();
+  }
+
+  function updateCardsDisplay() {
+    const cards = document.querySelectorAll('.testimonial-card');
+    const visibleCount = getVisibleCardsCount();
+    const startIndex = currentIndex * visibleCount;
+
+    isAnimating = true;
+
+    cards.forEach((card, index) => {
+      const isVisible = index >= startIndex && index < startIndex + visibleCount;
+
+      if (isVisible) {
+        card.style.display = 'block';
+        card.style.animation = 'testimonialSlideIn 0.6s ease forwards';
+      } else {
+        setTimeout(() => {
+          card.style.display = 'none';
+        }, 300);
+        card.style.animation = 'testimonialSlideOut 0.3s ease forwards';
+      }
+    });
+
+    setTimeout(() => {
+      isAnimating = false;
+    }, 600);
+  }
+
+  function updateDots() {
+    const dots = document.querySelectorAll('.testimonial-dot');
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === currentIndex);
+    });
+  }
+
+  function setupAutoPlay() {
+    autoPlayInterval = setInterval(() => {
+      navigateTestimonials(1);
+    }, 5000);
+
+    const section = document.querySelector('.testimonials-section');
+    if (section) {
+      section.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
+      section.addEventListener('mouseleave', () => {
+        clearInterval(autoPlayInterval);
+        autoPlayInterval = setInterval(() => navigateTestimonials(1), 5000);
+      });
+    }
+  }
+
+  function resetAutoPlay() {
+    clearInterval(autoPlayInterval);
+    autoPlayInterval = setInterval(() => {
+      navigateTestimonials(1);
+    }, 5000);
+  }
+
+  function setupTouchGestures() {
+    const container = document.querySelector('.testimonials-container');
+    if (!container) return;
+
+    container.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    container.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+  }
+
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+
+    if (Math.abs(diff) > swipeThreshold) {
+      if (diff > 0) {
+        navigateTestimonials(1);
+      } else {
+        navigateTestimonials(-1);
+      }
+    }
+  }
+
+  function setupKeyboardNavigation() {
+    document.addEventListener('keydown', (e) => {
+      const section = document.querySelector('.testimonials-section');
+      if (!section) return;
+
+      const rect = section.getBoundingClientRect();
+      const isInView = rect.top < window.innerHeight && rect.bottom >= 0;
+
+      if (isInView) {
+        if (e.key === 'ArrowLeft') navigateTestimonials(-1);
+        if (e.key === 'ArrowRight') navigateTestimonials(1);
+      }
+    });
+  }
+
+  function setupIntersectionObserver() {
+    const cards = document.querySelectorAll('.testimonial-card');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          entry.target.style.animationPlayState = 'running';
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    cards.forEach(card => observer.observe(card));
+  }
+
+  function addHoverEffects() {
+    const cards = document.querySelectorAll('.testimonial-card');
+
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', function () {
+        this.style.transform = 'translateY(-12px) scale(1.02)';
+
+        const ripple = document.createElement('div');
+        ripple.className = 'testimonial-ripple';
+        this.appendChild(ripple);
+
+        setTimeout(() => ripple.remove(), 600);
+      });
+
+      card.addEventListener('mouseleave', function () {
+        this.style.transform = '';
+      });
+    });
+  }
+
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      const dots = document.querySelector('.testimonial-dots');
+      if (dots) {
+        dots.remove();
+        addPaginationDots();
+      }
+      updateCardsDisplay();
+    }, 250);
+  });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  window.addEventListener('beforeunload', () => {
+    clearInterval(autoPlayInterval);
+  });
+})();
+
+// ==================== AUTHENTICATION MODAL ====================
 function updateUIForUser(userData) {
   const userIcon = document.querySelector('.user-icon');
   const profileTrigger = document.getElementById('profileTrigger');
@@ -757,15 +1129,7 @@ class EnhancedAuthModal {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  initCartCount();
-  const authModalInstance = new EnhancedAuthModal();
-  authModalInstance.init();
-  window.authModalInstance = authModalInstance;
-  initNavbarScrollEffect();
-  fetchPopular();
-});
-
+// ==================== NAVBAR SCROLL EFFECT ====================
 function initNavbarScrollEffect() {
   const navbar = document.querySelector('.navbar');
   if (navbar) {
@@ -775,3 +1139,13 @@ function initNavbarScrollEffect() {
     });
   }
 }
+
+// ==================== INITIALIZATION ====================
+document.addEventListener('DOMContentLoaded', () => {
+  initCartCount();
+  const authModalInstance = new EnhancedAuthModal();
+  authModalInstance.init();
+  window.authModalInstance = authModalInstance;
+  initNavbarScrollEffect();
+  fetchPopular();
+});
