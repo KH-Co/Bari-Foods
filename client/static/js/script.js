@@ -337,7 +337,7 @@ function addScrollAnimations() {
 (function TestimonialsController() {
   let currentIndex = 0;
   let autoPlayInterval = null;
-  let isAnimating = false;
+  let isTransitioning = false;
   let touchStartX = 0;
   let touchEndX = 0;
 
@@ -390,29 +390,12 @@ function addScrollAnimations() {
     const container = document.querySelector('.testimonials-container');
     if (!container) return;
 
-    enhanceTestimonialSection();
     renderTestimonials();
     addNavigationControls();
     addPaginationDots();
+    setupEventListeners();
     setupAutoPlay();
-    setupTouchGestures();
-    setupKeyboardNavigation();
-    setupIntersectionObserver();
-    addHoverEffects();
-  }
-
-  function enhanceTestimonialSection() {
-    const section = document.querySelector('.testimonials-section');
-    if (!section) return;
-
-    const decorativeElements = document.createElement('div');
-    decorativeElements.className = 'testimonial-decorations';
-    decorativeElements.innerHTML = `
-      <div class="testimonial-blob blob-1"></div>
-      <div class="testimonial-blob blob-2"></div>
-      <div class="testimonial-pattern"></div>
-    `;
-    section.insertBefore(decorativeElements, section.firstChild);
+    updateDisplay();
   }
 
   function renderTestimonials() {
@@ -420,7 +403,7 @@ function addScrollAnimations() {
     if (!container) return;
 
     container.innerHTML = testimonials.map((testimonial, index) => `
-      <div class="testimonial-card" data-index="${index}" style="opacity: 0; transform: translateY(30px);">
+      <div class="testimonial-card" data-index="${index}">
         <div class="quote-icon">
           <i class="fas fa-quote-left"></i>
         </div>
@@ -430,13 +413,13 @@ function addScrollAnimations() {
           </div>
           <p class="testimonial-text">"${testimonial.text}"</p>
           <div class="customer-info">
-            <div class="customer-avatar" style="background: var(--logo-gradient);">
-              <span style="color: var(--button-primary); font-weight: 700; font-size: 18px;">${testimonial.avatar}</span>
+            <div class="customer-avatar">
+              <span>${testimonial.avatar}</span>
             </div>
             <div class="customer-details">
               <h4 class="customer-name">${testimonial.name}</h4>
               <p class="customer-location">
-                <i class="fas fa-map-marker-alt" style="font-size: 12px; margin-right: 4px;"></i>
+                <i class="fas fa-map-marker-alt"></i>
                 ${testimonial.location}
               </p>
             </div>
@@ -448,8 +431,6 @@ function addScrollAnimations() {
         </div>
       </div>
     `).join('');
-
-    animateCardsIn();
   }
 
   function generateStars(rating) {
@@ -471,20 +452,13 @@ function addScrollAnimations() {
     return starsHTML;
   }
 
-  function animateCardsIn() {
-    const cards = document.querySelectorAll('.testimonial-card');
-    cards.forEach((card, index) => {
-      setTimeout(() => {
-        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        card.style.opacity = '1';
-        card.style.transform = 'translateY(0)';
-      }, index * 150);
-    });
-  }
-
   function addNavigationControls() {
     const section = document.querySelector('.testimonials-section');
-    if (!section || window.innerWidth < 768) return;
+    if (!section) return;
+
+    // Remove existing navigation if present
+    const existingNav = section.querySelector('.testimonial-navigation');
+    if (existingNav) existingNav.remove();
 
     const navHTML = `
       <div class="testimonial-navigation">
@@ -498,15 +472,18 @@ function addScrollAnimations() {
     `;
 
     const header = section.querySelector('.testimonials-header');
-    header.insertAdjacentHTML('afterend', navHTML);
-
-    document.querySelector('.testimonial-prev')?.addEventListener('click', () => navigateTestimonials(-1));
-    document.querySelector('.testimonial-next')?.addEventListener('click', () => navigateTestimonials(1));
+    if (header) {
+      header.insertAdjacentHTML('afterend', navHTML);
+    }
   }
 
   function addPaginationDots() {
     const section = document.querySelector('.testimonials-section');
     if (!section) return;
+
+    // Remove existing dots if present
+    const existingDots = section.querySelector('.testimonial-dots');
+    if (existingDots) existingDots.remove();
 
     const dotsContainer = document.createElement('div');
     dotsContainer.className = 'testimonial-dots';
@@ -517,9 +494,8 @@ function addScrollAnimations() {
     for (let i = 0; i < totalPages; i++) {
       const dot = document.createElement('button');
       dot.className = 'testimonial-dot';
-      dot.setAttribute('aria-label', `Go to testimonial page ${i + 1}`);
-      if (i === 0) dot.classList.add('active');
-      dot.addEventListener('click', () => goToPage(i));
+      dot.setAttribute('aria-label', `Go to page ${i + 1}`);
+      dot.setAttribute('data-page', i);
       dotsContainer.appendChild(dot);
     }
 
@@ -527,59 +503,154 @@ function addScrollAnimations() {
   }
 
   function getVisibleCardsCount() {
-    if (window.innerWidth < 768) return 1;
-    if (window.innerWidth < 1024) return 2;
+    const width = window.innerWidth;
+    if (width < 768) return 1;
+    if (width < 1024) return 2;
     return 3;
   }
 
-  function navigateTestimonials(direction) {
-    if (isAnimating) return;
+  function setupEventListeners() {
+    // Navigation buttons
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.testimonial-prev')) {
+        navigate(-1);
+      } else if (e.target.closest('.testimonial-next')) {
+        navigate(1);
+      } else if (e.target.closest('.testimonial-dot')) {
+        const page = parseInt(e.target.closest('.testimonial-dot').dataset.page);
+        goToPage(page);
+      }
+    });
 
-    const cards = document.querySelectorAll('.testimonial-card');
+    // Touch gestures
+    const container = document.querySelector('.testimonials-container');
+    if (container) {
+      container.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+      }, { passive: true });
+
+      container.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].clientX;
+        handleSwipe();
+      }, { passive: true });
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      const section = document.querySelector('.testimonials-section');
+      if (!section) return;
+
+      const rect = section.getBoundingClientRect();
+      const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
+
+      if (isVisible && !isTransitioning) {
+        if (e.key === 'ArrowLeft') navigate(-1);
+        if (e.key === 'ArrowRight') navigate(1);
+      }
+    });
+
+    // Pause autoplay on hover
+    const section = document.querySelector('.testimonials-section');
+    if (section) {
+      section.addEventListener('mouseenter', pauseAutoPlay);
+      section.addEventListener('mouseleave', resumeAutoPlay);
+    }
+
+    // Responsive handling
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        addPaginationDots();
+        updateDisplay();
+      }, 250);
+    });
+  }
+
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+
+    if (Math.abs(diff) > swipeThreshold && !isTransitioning) {
+      navigate(diff > 0 ? 1 : -1);
+    }
+  }
+
+  function navigate(direction) {
+    if (isTransitioning) return;
+
     const visibleCount = getVisibleCardsCount();
-    const maxIndex = Math.ceil(cards.length / visibleCount) - 1;
+    const totalPages = Math.ceil(testimonials.length / visibleCount);
 
     currentIndex += direction;
-    if (currentIndex < 0) currentIndex = maxIndex;
-    if (currentIndex > maxIndex) currentIndex = 0;
 
-    updateCardsDisplay();
-    updateDots();
+    // Loop around
+    if (currentIndex < 0) currentIndex = totalPages - 1;
+    if (currentIndex >= totalPages) currentIndex = 0;
+
+    updateDisplay();
     resetAutoPlay();
   }
 
   function goToPage(pageIndex) {
-    if (isAnimating) return;
+    if (isTransitioning || pageIndex === currentIndex) return;
     currentIndex = pageIndex;
-    updateCardsDisplay();
-    updateDots();
+    updateDisplay();
     resetAutoPlay();
   }
 
-  function updateCardsDisplay() {
+  function updateDisplay() {
+    if (isTransitioning) return;
+
+    isTransitioning = true;
     const cards = document.querySelectorAll('.testimonial-card');
     const visibleCount = getVisibleCardsCount();
     const startIndex = currentIndex * visibleCount;
+    const endIndex = startIndex + visibleCount;
 
-    isAnimating = true;
-
-    cards.forEach((card, index) => {
-      const isVisible = index >= startIndex && index < startIndex + visibleCount;
-
-      if (isVisible) {
-        card.style.display = 'block';
-        card.style.animation = 'testimonialSlideIn 0.6s ease forwards';
-      } else {
-        setTimeout(() => {
-          card.style.display = 'none';
-        }, 300);
-        card.style.animation = 'testimonialSlideOut 0.3s ease forwards';
-      }
+    // Fade out all cards first
+    cards.forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px) scale(0.95)';
+      card.style.pointerEvents = 'none';
     });
 
+    // Wait for fade out, then show new cards
     setTimeout(() => {
-      isAnimating = false;
-    }, 600);
+      cards.forEach((card, index) => {
+        if (index >= startIndex && index < endIndex) {
+          card.style.display = 'block';
+          // Trigger reflow
+          void card.offsetWidth;
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0) scale(1)';
+          card.style.pointerEvents = 'auto';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      updateNavigationState();
+      updateDots();
+
+      setTimeout(() => {
+        isTransitioning = false;
+      }, 400);
+    }, 300);
+  }
+
+  function updateNavigationState() {
+    const prevBtn = document.querySelector('.testimonial-prev');
+    const nextBtn = document.querySelector('.testimonial-next');
+    const visibleCount = getVisibleCardsCount();
+    const totalPages = Math.ceil(testimonials.length / visibleCount);
+
+    if (prevBtn && nextBtn) {
+      // Show/hide buttons based on whether navigation is needed
+      const needsNav = totalPages > 1;
+      prevBtn.style.display = needsNav ? 'flex' : 'none';
+      nextBtn.style.display = needsNav ? 'flex' : 'none';
+    }
   }
 
   function updateDots() {
@@ -590,129 +661,44 @@ function addScrollAnimations() {
   }
 
   function setupAutoPlay() {
-    autoPlayInterval = setInterval(() => {
-      navigateTestimonials(1);
-    }, 5000);
+    const visibleCount = getVisibleCardsCount();
+    const totalPages = Math.ceil(testimonials.length / visibleCount);
 
-    const section = document.querySelector('.testimonials-section');
-    if (section) {
-      section.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
-      section.addEventListener('mouseleave', () => {
-        clearInterval(autoPlayInterval);
-        autoPlayInterval = setInterval(() => navigateTestimonials(1), 5000);
-      });
+    // Only autoplay if there are multiple pages
+    if (totalPages > 1) {
+      autoPlayInterval = setInterval(() => {
+        navigate(1);
+      }, 5000);
     }
+  }
+
+  function pauseAutoPlay() {
+    if (autoPlayInterval) {
+      clearInterval(autoPlayInterval);
+    }
+  }
+
+  function resumeAutoPlay() {
+    pauseAutoPlay();
+    setupAutoPlay();
   }
 
   function resetAutoPlay() {
-    clearInterval(autoPlayInterval);
-    autoPlayInterval = setInterval(() => {
-      navigateTestimonials(1);
-    }, 5000);
+    pauseAutoPlay();
+    setupAutoPlay();
   }
 
-  function setupTouchGestures() {
-    const container = document.querySelector('.testimonials-container');
-    if (!container) return;
-
-    container.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    container.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    }, { passive: true });
-  }
-
-  function handleSwipe() {
-    const swipeThreshold = 50;
-    const diff = touchStartX - touchEndX;
-
-    if (Math.abs(diff) > swipeThreshold) {
-      if (diff > 0) {
-        navigateTestimonials(1);
-      } else {
-        navigateTestimonials(-1);
-      }
-    }
-  }
-
-  function setupKeyboardNavigation() {
-    document.addEventListener('keydown', (e) => {
-      const section = document.querySelector('.testimonials-section');
-      if (!section) return;
-
-      const rect = section.getBoundingClientRect();
-      const isInView = rect.top < window.innerHeight && rect.bottom >= 0;
-
-      if (isInView) {
-        if (e.key === 'ArrowLeft') navigateTestimonials(-1);
-        if (e.key === 'ArrowRight') navigateTestimonials(1);
-      }
-    });
-  }
-
-  function setupIntersectionObserver() {
-    const cards = document.querySelectorAll('.testimonial-card');
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          entry.target.style.animationPlayState = 'running';
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    });
-
-    cards.forEach(card => observer.observe(card));
-  }
-
-  function addHoverEffects() {
-    const cards = document.querySelectorAll('.testimonial-card');
-
-    cards.forEach(card => {
-      card.addEventListener('mouseenter', function () {
-        this.style.transform = 'translateY(-12px) scale(1.02)';
-
-        const ripple = document.createElement('div');
-        ripple.className = 'testimonial-ripple';
-        this.appendChild(ripple);
-
-        setTimeout(() => ripple.remove(), 600);
-      });
-
-      card.addEventListener('mouseleave', function () {
-        this.style.transform = '';
-      });
-    });
-  }
-
-  let resizeTimeout;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      const dots = document.querySelector('.testimonial-dots');
-      if (dots) {
-        dots.remove();
-        addPaginationDots();
-      }
-      updateCardsDisplay();
-    }, 250);
+  // Cleanup on page unload
+  window.addEventListener('beforeunload', () => {
+    pauseAutoPlay();
   });
 
+  // Initialize
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
   }
-
-  window.addEventListener('beforeunload', () => {
-    clearInterval(autoPlayInterval);
-  });
 })();
 
 // ==================== AUTHENTICATION MODAL ====================
