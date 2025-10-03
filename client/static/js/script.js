@@ -346,43 +346,37 @@ function addScrollAnimations() {
       name: "Priya Sharma",
       location: "Jaipur, Rajasthan",
       rating: 5,
-      text: "The authentic taste reminds me of my grandmother's kitchen. Bari Foods truly captures the essence of traditional Rajasthani flavors!",
-      avatar: "PS"
+      text: "The authentic taste reminds me of my grandmother's kitchen. Bari Foods truly captures the essence of traditional Rajasthani flavors!"
     },
     {
       name: "Rajesh Kumar",
       location: "Delhi",
       rating: 5,
-      text: "Outstanding quality and packaging! Every order arrives fresh and perfectly seasoned. My family's favorite snack brand now.",
-      avatar: "RK"
+      text: "Outstanding quality and packaging! Every order arrives fresh and perfectly seasoned. My family's favorite snack brand now."
     },
     {
       name: "Anjali Mehta",
       location: "Mumbai, Maharashtra",
       rating: 5,
-      text: "A perfect blend of tradition and taste! The snacks are always crispy, and the delivery is impressively fast. Highly recommended!",
-      avatar: "AM"
+      text: "A perfect blend of tradition and taste! The snacks are always crispy, and the delivery is impressively fast. Highly recommended!"
     },
     {
       name: "Vikram Singh",
       location: "Udaipur, Rajasthan",
       rating: 5,
-      text: "Been ordering for 2 years now. Consistency in quality is remarkable. Perfect for gifting to relatives abroad!",
-      avatar: "VS"
+      text: "Been ordering for 2 years now. Consistency in quality is remarkable. Perfect for gifting to relatives abroad!"
     },
     {
       name: "Meera Patel",
       location: "Ahmedabad, Gujarat",
       rating: 5,
-      text: "My go-to snack for office breaks. The spice level is just perfect and the packaging keeps them fresh for weeks!",
-      avatar: "MP"
+      text: "My go-to snack for office breaks. The spice level is just perfect and the packaging keeps them fresh for weeks!"
     },
     {
       name: "Arjun Reddy",
       location: "Bangalore, Karnataka",
       rating: 5,
-      text: "Discovered this brand during Diwali. Now it's a staple in my pantry. Authentic flavors that transport you to Rajasthan!",
-      avatar: "AR"
+      text: "Discovered this brand during Diwali. Now it's a staple in my pantry. Authentic flavors that transport you to Rajasthan!"
     }
   ];
 
@@ -413,20 +407,11 @@ function addScrollAnimations() {
           </div>
           <p class="testimonial-text">"${testimonial.text}"</p>
           <div class="customer-info">
-            <div class="customer-avatar">
-              <span>${testimonial.avatar}</span>
-            </div>
-            <div class="customer-details">
-              <h4 class="customer-name">${testimonial.name}</h4>
-              <p class="customer-location">
-                <i class="fas fa-map-marker-alt"></i>
-                ${testimonial.location}
-              </p>
-            </div>
-          </div>
-          <div class="verified-badge">
-            <i class="fas fa-check-circle"></i>
-            <span>Verified Purchase</span>
+            <h4 class="customer-name">${testimonial.name}</h4>
+            <p class="customer-location">
+              <i class="fas fa-map-marker-alt"></i>
+              ${testimonial.location}
+            </p>
           </div>
         </div>
       </div>
@@ -456,7 +441,6 @@ function addScrollAnimations() {
     const section = document.querySelector('.testimonials-section');
     if (!section) return;
 
-    // Remove existing navigation if present
     const existingNav = section.querySelector('.testimonial-navigation');
     if (existingNav) existingNav.remove();
 
@@ -481,7 +465,6 @@ function addScrollAnimations() {
     const section = document.querySelector('.testimonials-section');
     if (!section) return;
 
-    // Remove existing dots if present
     const existingDots = section.querySelector('.testimonial-dots');
     if (existingDots) existingDots.remove();
 
@@ -510,7 +493,6 @@ function addScrollAnimations() {
   }
 
   function setupEventListeners() {
-    // Navigation buttons
     document.addEventListener('click', (e) => {
       if (e.target.closest('.testimonial-prev')) {
         navigate(-1);
@@ -522,7 +504,6 @@ function addScrollAnimations() {
       }
     });
 
-    // Touch gestures
     const container = document.querySelector('.testimonials-container');
     if (container) {
       container.addEventListener('touchstart', (e) => {
@@ -535,7 +516,6 @@ function addScrollAnimations() {
       }, { passive: true });
     }
 
-    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
       const section = document.querySelector('.testimonials-section');
       if (!section) return;
@@ -549,14 +529,12 @@ function addScrollAnimations() {
       }
     });
 
-    // Pause autoplay on hover
     const section = document.querySelector('.testimonials-section');
     if (section) {
       section.addEventListener('mouseenter', pauseAutoPlay);
       section.addEventListener('mouseleave', resumeAutoPlay);
     }
 
-    // Responsive handling
     let resizeTimeout;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimeout);
@@ -584,7 +562,6 @@ function addScrollAnimations() {
 
     currentIndex += direction;
 
-    // Loop around
     if (currentIndex < 0) currentIndex = totalPages - 1;
     if (currentIndex >= totalPages) currentIndex = 0;
 
@@ -608,19 +585,16 @@ function addScrollAnimations() {
     const startIndex = currentIndex * visibleCount;
     const endIndex = startIndex + visibleCount;
 
-    // Fade out all cards first
     cards.forEach(card => {
       card.style.opacity = '0';
       card.style.transform = 'translateY(20px) scale(0.95)';
       card.style.pointerEvents = 'none';
     });
 
-    // Wait for fade out, then show new cards
     setTimeout(() => {
       cards.forEach((card, index) => {
         if (index >= startIndex && index < endIndex) {
           card.style.display = 'block';
-          // Trigger reflow
           void card.offsetWidth;
           card.style.opacity = '1';
           card.style.transform = 'translateY(0) scale(1)';
@@ -646,7 +620,6 @@ function addScrollAnimations() {
     const totalPages = Math.ceil(testimonials.length / visibleCount);
 
     if (prevBtn && nextBtn) {
-      // Show/hide buttons based on whether navigation is needed
       const needsNav = totalPages > 1;
       prevBtn.style.display = needsNav ? 'flex' : 'none';
       nextBtn.style.display = needsNav ? 'flex' : 'none';
@@ -664,7 +637,6 @@ function addScrollAnimations() {
     const visibleCount = getVisibleCardsCount();
     const totalPages = Math.ceil(testimonials.length / visibleCount);
 
-    // Only autoplay if there are multiple pages
     if (totalPages > 1) {
       autoPlayInterval = setInterval(() => {
         navigate(1);
@@ -688,12 +660,10 @@ function addScrollAnimations() {
     setupAutoPlay();
   }
 
-  // Cleanup on page unload
   window.addEventListener('beforeunload', () => {
     pauseAutoPlay();
   });
 
-  // Initialize
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
