@@ -9,13 +9,13 @@ const state = {
 };
 
 /* Base URL for backend */
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "";
 
 /* Render product grid */
 const grid = document.getElementById("grid");
 
 function productCardHTML(p) {
-  const fav = state.favorites.has(p.id) ? "★" : "☆";
+  const fav = state.favorites.has(p.id) ? "â˜…" : "â˜†";
   const uniqueId = p.id || p.name;
   const imageUrl = p.image || "../assets/products-img/default.png";
 
@@ -26,7 +26,7 @@ function productCardHTML(p) {
       </div>
       <h3>${p.name}</h3>
       <div class="meta">
-        <span class="price">₹ ${parseFloat(p.price).toFixed(2)}</span>
+        <span class="price">â‚¹ ${parseFloat(p.price).toFixed(2)}</span>
         <span>${p.weight ? p.weight + " kg" : 'N/A'}</span>
       </div>
       <div class="meta">
@@ -150,12 +150,12 @@ function openModal(id) {
 
   modalTitle.textContent = p.name;
   crumbName.textContent = p.name;
-  modalPrice.textContent = `₹ ${parseFloat(p.price).toFixed(2)}`;
+  modalPrice.textContent = `â‚¹ ${parseFloat(p.price).toFixed(2)}`;
   modalDesc.textContent = p.description;
   modalWeight.textContent = p.weight ? p.weight + " kg" : 'N/A';
   modalRating.innerHTML =
-    "★".repeat(Math.round(p.rating)) +
-    "☆".repeat(5 - Math.round(p.rating)) +
+    "â˜…".repeat(Math.round(p.rating)) +
+    "â˜†".repeat(5 - Math.round(p.rating)) +
     ` (${p.rating.toFixed(1)})`;
 
   modalHero.src = (p.images && p.images.length > 0)
@@ -180,7 +180,7 @@ function openModal(id) {
     modalThumbs.innerHTML = '';
   }
 
-  btnFav.textContent = state.favorites.has(id) ? "★" : "☆";
+  btnFav.textContent = state.favorites.has(id) ? "â˜…" : "â˜†";
 
   backdrop.style.display = "flex";
   backdrop.setAttribute("aria-hidden", "false");
@@ -204,7 +204,7 @@ btnAdd.addEventListener("click", () => { if (state.openId) addToCart(state.openI
 btnFav.addEventListener("click", () => {
   if (!state.openId) return;
   toggleFavorite(state.openId);
-  btnFav.textContent = state.favorites.has(state.openId) ? "★" : "☆";
+  btnFav.textContent = state.favorites.has(state.openId) ? "â˜…" : "â˜†";
   renderGrid();
 });
 
@@ -240,7 +240,7 @@ async function addToCart(id, qty) {
     localCart[id] = (localCart[id] || 0) + qty;
     localStorage.setItem("cart", JSON.stringify(localCart));
 
-    toast(`${p.name} ×${qty} added to cart`);
+    toast(`${p.name} Ã—${qty} added to cart`);
     updateBadge();
   } catch (error) {
     console.error("Error adding to cart:", error);

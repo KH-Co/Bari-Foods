@@ -98,7 +98,7 @@ let isAnimating = false;
 
 async function fetchPopular() {
   const API_URL = "http://127.0.0.1:8000/api/featured-products/";
-  if (track) track.innerHTML = `<div class="pop-loading" style="padding:20px;">Loading popular items…</div>`;
+  if (track) track.innerHTML = `<div class="pop-loading" style="padding:20px;">Loading popular itemsâ€¦</div>`;
 
   try {
     const userData = JSON.parse(sessionStorage.getItem('user') || '{}');
@@ -149,7 +149,7 @@ async function fetchPopular() {
 
 function cardHTML(p) {
   const img = (p.images && p.images) || "/assets/img/placeholder.png";
-  const rating = p.rating ? '★'.repeat(Math.floor(p.rating)) : '';
+  const rating = p.rating ? 'â˜…'.repeat(Math.floor(p.rating)) : '';
 
   return `
     <div class="pop-slide"> 
@@ -162,7 +162,7 @@ function cardHTML(p) {
           <div class="home-prod-desc">${p.weight || p.description || ""}</div>
           ${rating ? `<div class="home-prod-rating" style="color: #e9b540; font-size: 14px; margin: 8px 0;">${rating}</div>` : ''}
           <div class="home-prod-meta"> 
-            <div class="home-prod-price">₹${(+p.price).toFixed(2)}</div> 
+            <div class="home-prod-price">â‚¹${(+p.price).toFixed(2)}</div> 
             <button class="home-add-btn" data-id="${p.id}" type="button">
               <i class="fas fa-cart-plus" style="font-size: 12px;"></i>
               Add to Cart
