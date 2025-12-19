@@ -97,7 +97,7 @@ let slideW = 0;
 let isAnimating = false;
 
 async function fetchPopular() {
-  const API_URL = "http://127.0.0.1:8000/api/featured-products/";
+  const API_URL = "/api/featured-products/";
   if (track) track.innerHTML = `<div class="pop-loading" style="padding:20px;">Loading popular itemsâ€¦</div>`;
 
   try {
@@ -974,7 +974,7 @@ class EnhancedAuthModal {
     this.setButtonLoading(submitBtn, 'Signing In...');
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/users/login/', {
+      const response = await fetch('/api/users/login/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: email, password }),
@@ -1015,7 +1015,7 @@ class EnhancedAuthModal {
     this.setButtonLoading(submitBtn, 'Creating Account...');
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/users/register/', {
+      const response = await fetch('/api/users/register/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ first_name: firstName, last_name: lastName, email, username: email, phone, password }),
