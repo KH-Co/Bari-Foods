@@ -532,6 +532,20 @@ body {
   z-index: 1;
 }
 
+.corner-img-second {
+  position: absolute;
+  right: 0;
+  top: 20px;
+  width: min(25vw, 280px);
+  height: auto;
+  opacity: 0.6;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+  pointer-events: none;
+  user-select: none;
+  transform: scaleX(-1);
+  z-index: 1;
+}
+
 .popular-headings {
   display: flex;
   align-items: center;
@@ -2404,6 +2418,13 @@ input:focus {
   .corner-img {
     top: -20px;
     right: -20px;
+    width: min(35vw, 200px);
+    opacity: 0.1;
+  }
+
+  .corner-img-second{
+    top: -20px;
+    left: -20px;
     width: min(35vw, 200px);
     opacity: 0.1;
   }
