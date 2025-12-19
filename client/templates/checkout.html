@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../static/css/product.css" />
-  <link rel="stylesheet" href="../static/css/checkout.css" />
+  <link rel="stylesheet" href="/static/css/product.css" />
+  <link rel="stylesheet" href="/static/css/checkout.css" />
   <meta name="theme-color" content="#0f1115">
   <meta name="description" content="Complete your order securely at BariFoods">
 </head>
@@ -18,7 +18,7 @@
   <header class="navbar navbar--brand">
     <div class="logo-container">
       <a href="index.html" class="brand-link" aria-label="Home">
-        <img class="logo" src="../assets/img/bari.jpg" alt="BariFoods" />
+        <img class="logo" src="/static/img/bari.jpg" alt="BariFoods" />
         <h1>BARI FOODS</h1>
       </a>
     </div>
@@ -39,7 +39,7 @@
         <details class="block" open>
           <summary class="block-head" role="button" aria-expanded="true">
             <span class="block-title">Delivery Information</span>
-            <span aria-hidden="true">›</span>
+            <span aria-hidden="true">â€º</span>
           </summary>
           <div class="block-body">
             <div class="row-2">
@@ -95,7 +95,7 @@
         <details class="block" open>
           <summary class="block-head" role="button" aria-expanded="true">
             <span class="block-title">Payment Method</span>
-            <span aria-hidden="true">›</span>
+            <span aria-hidden="true">â€º</span>
           </summary>
           <div class="block-body">
             <div class="pay-list" id="payList" role="radiogroup" aria-describedby="payment-title">
@@ -146,7 +146,7 @@
         <details class="block" open>
           <summary class="block-head" role="button" aria-expanded="true">
             <span class="block-title">Review Your Order</span>
-            <span aria-hidden="true">›</span>
+            <span aria-hidden="true">â€º</span>
           </summary>
           <div class="block-body">
             <ul id="reviewList" class="review-list"></ul>
@@ -161,24 +161,24 @@
 
           <div class="row">
             <span>Items Subtotal</span>
-            <strong id="sumItems">₹ 0.00</strong>
+            <strong id="sumItems">â‚¹ 0.00</strong>
           </div>
 
           <div class="row">
             <span>Delivery Fee</span>
-            <span id="sumDelivery">₹ 0.00</span>
+            <span id="sumDelivery">â‚¹ 0.00</span>
           </div>
 
           <div class="row">
             <span>Service Fee</span>
-            <span id="sumService">₹ 0.00</span>
+            <span id="sumService">â‚¹ 0.00</span>
           </div>
 
           <hr aria-hidden="true" />
 
           <div class="row grand">
             <span>Total Amount</span>
-            <strong id="sumTotal">₹ 0.00</strong>
+            <strong id="sumTotal">â‚¹ 0.00</strong>
           </div>
 
           <button id="placeOrder" class="primary" type="button" aria-describedby="order-terms" disabled>
@@ -186,7 +186,7 @@
           </button>
 
           <p class="tiny" id="order-terms">
-            Secure checkout • By placing this order, you agree to our
+            Secure checkout â€¢ By placing this order, you agree to our
             <a href="/terms" style="color: var(--gold); text-decoration: none;">Terms & Conditions</a>
           </p>
 
@@ -201,8 +201,8 @@
     </div>
   </footer>
 
-  <script type="module" src="../static/js/checkout.js"></script>
-  <script src="../static/js/header.js" defer></script>
+  <script type="module" src="/static/js/checkout.js"></script>
+  <script src="/static/js/header.js" defer></script>
 </body>
 
 </html>

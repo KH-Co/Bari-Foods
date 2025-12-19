@@ -5,8 +5,8 @@
   <meta charset="utf-8" />
   <title>BariFoods - Cart</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Theme + page CSS -->
-  <link rel="stylesheet" href="../static/css/product.css" />
-  <link rel="stylesheet" href="../static/css/cart.css" />
+  <link rel="stylesheet" href="/static/css/product.css" />
+  <link rel="stylesheet" href="/static/css/cart.css" />
 
   <link href='https://cdn.boxicons.com' rel='stylesheet'>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -16,7 +16,7 @@
   <header class="navbar navbar--brand">
     <div class="logo-container"> 
       <a href="index.html" class="brand-link" aria-label="Home"> 
-        <img class="logo" src="../assets/img/bari.jpg" alt="BariFoods" /> 
+        <img class="logo" src="/static/img/bari.jpg" alt="BariFoods" /> 
         <h1>BARI FOODS</h1>
       </a>
     </div>
@@ -64,19 +64,19 @@
 
           <div class="row">
             <span>Items total</span>
-            <strong id="itemsTotal">₹ 0.00</strong>
+            <strong id="itemsTotal">â‚¹ 0.00</strong>
           </div>
 
           <div class="row">
             <span>Delivery fee</span>
-            <span id="deliveryFee">₹ 0.00</span>
+            <span id="deliveryFee">â‚¹ 0.00</span>
           </div>
 
           <hr />
 
           <div class="row grand">
             <span>Total</span>
-            <strong id="grandTotal">₹ 0.00</strong>
+            <strong id="grandTotal">â‚¹ 0.00</strong>
           </div>
 
           <button id="checkoutBtn" class="primary">Go to Checkout</button>
@@ -86,14 +86,15 @@
   </main>
   <footer class="footer-bottom">
     <div class="footer-bottom-content">
-      <p>© 2025 Bari Foods | All rights reserved</p>
+      <p>Â© 2025 Bari Foods | All rights reserved</p>
     </div>
   </footer> <!-- Scripts -->
 
 
-  <script type="module" src="../static/js/cart.js"></script>
-  <script src="../static/js/header.js" defer></script>
+  <script type="module" src="/static/js/cart.js"></script>
+  <script src="/static/js/header.js" defer></script>
   <script>
+    // Back button behavior (now above title) 
     (function () {
       const btn = document.getElementById('navBackBtn');
       if (!btn) return; btn.addEventListener('click', () => {
