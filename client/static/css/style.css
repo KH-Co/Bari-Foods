@@ -142,7 +142,6 @@ body {
   transform: rotate(5deg) scale(1.05);
 }
 
-
 .logo-container h1 {
   font-size: clamp(20px, 3vw, 28px);
   font-weight: 700;
@@ -542,7 +541,6 @@ body {
   filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
   pointer-events: none;
   user-select: none;
-  transform: scaleX(-1);
   z-index: 1;
 }
 
