@@ -333,6 +333,17 @@ function addScrollAnimations() {
   });
 }
 
+// ==================== PRODUCT DISCRIPTION SLIDESHOW ====================
+const slides = document.querySelectorAll(".heritage-image .slide");
+  let currentSlide = 0;
+
+  setInterval(() => {
+    slides[currentSlide].classList.remove("active");
+    currentSlide = (currentSlide + 1) % slides.length;
+    slides[currentSlide].classList.add("active");
+  }, 3000);
+
+
 // ==================== TESTIMONIALS CONTROLLER ====================
 (function TestimonialsController() {
   let currentIndex = 0;
