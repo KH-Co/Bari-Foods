@@ -2513,7 +2513,7 @@ input:focus {
 
   .corner-img-second{
     right: 0;
-    transform: scaleX(-1);
+    transform: scaleX(1);
   }
 
   .popular-headings h3::before,
