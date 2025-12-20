@@ -47,8 +47,6 @@ body {
   display: none;
 }
 
-
-
 /* Brand header*/
 .navbar--brand {
   display: flex;
@@ -67,14 +65,12 @@ body {
   transition: var(--transition);
 }
 
-
 .navbar ul,
 .navbar li {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-
 
 .navbar--brand:hover {
   border-bottom-color: rgba(233, 181, 64, 0.3);

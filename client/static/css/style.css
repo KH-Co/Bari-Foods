@@ -2,7 +2,6 @@
   --bg-gradient: linear-gradient(to right, #021120 0%, #641807 100%);
   --logo-gradient: linear-gradient(180deg, #e9b540 0%, #f7d2c4 100%);
 
-  /* Text Colors */
   --primary-gold: #e9b540;
   --secondary-gold: #f7d2c4;
   --warm-gold: #a67c52;
@@ -10,33 +9,27 @@
   --light-cream: #F5F5DC;
   --pure-white: #ffffff;
 
-  /* Typography */
   --font-primary: 'Poppins', sans-serif;
   --font-secondary: 'Playfair Display', serif;
   --font-tertiary: 'Inter', sans-serif;
 
-  /* Shadows & Effects */
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.3);
 
-  /* Spacing */
   --section-padding: clamp(60px, 8vw, 120px);
   --container-padding: clamp(20px, 4vw, 50px);
 
-  /* Interactive Colors */
   --button-primary: #831500;
   --button-secondary: #720500;
   --button-hover: #8b1902;
 
-  /* Border Radius */
   --radius-sm: 8px;
   --radius-md: 16px;
   --radius-lg: 24px;
   --radius-xl: 32px;
 
-  /* Transitions */
   --transition-fast: 0.2s ease;
   --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 0.3s ease;
@@ -261,7 +254,7 @@ body {
   justify-content: space-between;
   align-items: center;
   min-height: 100vh;
-  padding: 120px var(--container-padding) var(--section-padding);
+  padding: calc(110px + 70px) var(--container-padding) var(--section-padding);
   background: none;
   position: relative;
   overflow: hidden;
@@ -275,17 +268,8 @@ body {
   top: 0;
   width: 50%;
   height: 100%;
-  background: url('../../assets/img/model-back.png') no-repeat;
-  background-position: right 80px;
-  background-size: contain;
   opacity: 0.2;
   pointer-events: none;
-}
-
-.hero-content {
-  flex: 1;
-  max-width: 800px;
-  z-index: 2;
 }
 
 .hero-section h1 {
@@ -296,6 +280,12 @@ body {
   margin-bottom: 24px;
   font-family: var(--font-secondary);
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 800px;
+  z-index: 2;
 }
 
 .highlight-text {
@@ -449,7 +439,6 @@ body {
   justify-content: flex-end;
   bottom: 80px;
   display: flex;
-
 }
 
 .hero-image img {
