@@ -49,6 +49,14 @@ body {
   line-height: 1.6;
 }
 
+
+/* Dot removed (toggle)*/
+.menu-toggle {
+  display: none;
+}
+
+
+
 /* header*/
 .navbar--brand {
   display: flex;

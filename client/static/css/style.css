@@ -69,6 +69,7 @@ body {
   position: relative;
 }
 
+
 /* Enhanced Typography */
 .section-title {
   font-size: clamp(32px, 5vw, 56px);
