@@ -1,4 +1,11 @@
 :root {
+    /* Text Colors */
+  --primary-gold: #e9b540;
+  --secondary-gold: #f7d2c4;
+  --warm-gold: #a67c52;
+  --accent-gold: #d6c39f;
+  --light-cream: #F5F5DC;
+  --pure-white: #ffffff;
   --bg: #0f1115;
   --panel: #201417;
   --card: #efe0c9;
@@ -106,58 +113,24 @@ body {
 }
 
 /* Profile avatar */
-.avatar-btn {
-  display: inline-flex;
+#profile-trigger {
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  border: 1px solid rgba(233, 181, 64, 0.4);
-  background: var(--surface);
-  color: #f6e3c8;
-  cursor: pointer;
-  margin-left: 16px;
+  border: none;
+  color: var(--primary-gold);
+  text-decoration: none;
   transition: var(--transition);
-  backdrop-filter: blur(10px);
 }
 
-.avatar-btn:hover {
-  border-color: rgba(233, 181, 64, 0.7);
-  background: rgba(255, 255, 255, 0.12);
-  box-shadow: var(--shadow-sm);
+#profile-trigger:hover {
+  transform: scale(1.05);
 }
 
-.avatar-btn:focus-visible {
-  outline: 3px solid rgba(233, 181, 64, 0.8);
-  outline-offset: 3px;
-}
-
-.avatar {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  overflow: hidden;
-  display: grid;
-  place-items: center;
-  font-weight: 600;
-  font-size: 16px;
-  background: linear-gradient(135deg, #5a2219, #2a1515);
-  color: #f7d2c4;
-}
-
-.avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-@media (max-width: 480px) {
-  .avatar-btn {
-    width: 36px;
-    height: 36px;
-  }
+.user-icon {
+  font-size: 26px;
 }
 
 /* Page layout */
@@ -640,24 +613,15 @@ body {
 /* Footer */
 .footer-bottom {
   margin-top: 60px;
-  padding: 24px 0;
-  border-top: 1px solid rgba(233, 181, 64, 0.1);
-}
-
-.footer-bottom-content {
-  max-width: 1300px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  padding: 0 28px;
-}
-
-.footer-bottom p {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.5);
   text-align: center;
+  padding: 24px 0;
+  border-top: 1px solid rgba(233, 181, 64, 0.2);
+}
+
+.footer-bottom-content{
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 14px;
 }
 
 @media (max-width: 768px) {
