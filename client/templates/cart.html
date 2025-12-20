@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <title>BariFoods - Cart</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Theme + page CSS -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="../static/css/product.css" />
   <link rel="stylesheet" href="../static/css/cart.css" />
 
@@ -12,21 +12,27 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
-<body> 
+<body>
   <header class="navbar navbar--brand">
-    <div class="logo-container"> 
-      <a href="index.html" class="brand-link" aria-label="Home"> 
-        <img class="logo" src="../static/img/bari.jpg" alt="BariFoods" /> 
+    <div class="logo-container">
+      <a href="index.html" class="brand-link" aria-label="Home">
+        <img class="logo" src="../static/img/bari.jpg" alt="BariFoods" />
         <h1>BARI FOODS</h1>
       </a>
     </div>
-    <div class="spacer"></div> <button class="avatar-btn" id="profileBtn" aria-label="Profile"> <span class="avatar"
-        id="profileAvatar" aria-hidden="true"></span> </button>
+
+    <div class="spacer"></div>
+
+    <a href="profile.html" id="profile-trigger" aria-label="User Profile">
+      <i class="fas fa-user user-icon"></i>
+    </a>
   </header>
+
   <main class="container">
     <!-- Back button ABOVE the title -->
-    <div class="utility-row"> 
-      <button id="navBack" class="nav-back" type="button" aria-label="Go back"> <i class="fa-solid fa-chevron-left"></i> </button>
+    <div class="utility-row">
+      <button id="navBack" class="nav-back" type="button" aria-label="Go back"> <i class="fa-solid fa-chevron-left"></i>
+      </button>
     </div>
     <!-- Title with Customer ID on the RIGHT -->
     <div class="title-row">
@@ -84,11 +90,12 @@
       </aside>
     </div>
   </main>
+  
   <footer class="footer-bottom">
     <div class="footer-bottom-content">
-      <p>Â© 2025 Bari Foods | All rights reserved</p>
+      <p>&copy; 2025 BariFoods | All Rights Reserved.</p>
     </div>
-  </footer> <!-- Scripts -->
+  </footer>
 
 
   <script type="module" src="../static/js/cart.js"></script>

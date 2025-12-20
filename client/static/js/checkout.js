@@ -261,6 +261,6 @@ function applyPaymentUI() {
     if (reviewList) reviewList.innerHTML = `<li class="review-item"><p style="color:red;">Failed to load checkout data. Please check if you are logged in.</p></li>`;
   }
   
-  // Finally render items and totals
+
   render();
 })();
