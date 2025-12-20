@@ -11,6 +11,8 @@ function saveCartLS(o) {
   localStorage.setItem("cartItems", JSON.stringify(o));
 }
 
+// ========Cart count on Cart icon is currently disabled  =============
+/*  
 function addToCart(id, qty = 1) {
   const items = loadCartLS();
   items[id] = (items[id] || 0) + qty;
@@ -27,9 +29,10 @@ function addToCart(id, qty = 1) {
       badge.style.color = "";
     }, 200);
   }
-
   showAddToCartToast();
 }
+*/
+
 
 function showAddToCartToast() {
   const toast = document.createElement('div');
