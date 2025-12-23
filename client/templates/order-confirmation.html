@@ -11,12 +11,11 @@
   <link rel="stylesheet" href="../static/css/product.css" />
   <link rel="stylesheet" href="../static/css/order-confirmation.css" />
   <meta name="theme-color" content="#0f1115">
-  <meta name="description" content="Your order has been confirmed at BariFoods">
 </head>
 
 <body>
   <header class="navbar navbar--brand">
-    <div class="logo-container">
+    <div class="logo-container"> 
       <a href="index.html" class="brand-link" aria-label="Home">
         <img class="logo" src="../static/img/bari.jpg" alt="BariFoods" />
         <h1>BARI FOODS</h1>
@@ -27,19 +26,17 @@
   <main class="container">
     <div class="confirmation-wrapper">
       <section class="confirmation-panel">
-        <!-- Success Icon -->
+        
         <div class="success-icon">
           <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="40" cy="40" r="38" stroke="#e9b540" stroke-width="3" fill="rgba(233, 181, 64, 0.1)" />
-            <path d="M25 40L35 50L55 30" stroke="#e9b540" stroke-width="4" stroke-linecap="round"
-              stroke-linejoin="round" />
+            <path d="M25 40L35 50L55 30" stroke="#e9b540" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </div>
 
         <h1 class="confirmation-title">Order Confirmed!</h1>
         <p class="confirmation-subtitle">Thank you for your order. We're preparing it for delivery.</p>
 
-        <!-- Order Details -->
         <div class="order-details-card">
           <div class="detail-row">
             <span class="detail-label">Order ID</span>
@@ -55,53 +52,49 @@
           </div>
           <div class="detail-row">
             <span class="detail-label">Payment Method</span>
-            <span class="detail-value" id="paymentMethod">Cash on Delivery</span>
+            <span class="detail-value" id="paymentMethod">Loading...</span>
           </div>
         </div>
 
-        <!-- Delivery Information -->
         <details class="info-section" open>
           <summary class="section-header">
             <span class="section-title">Delivery Information</span>
             <span aria-hidden="true">›</span>
           </summary>
           <div class="section-body">
-            <div class="address-box">
-              <p id="deliveryAddress">Loading delivery address...</p>
+            <div class="address-box" id="deliveryAddress">
+              Loading address...
             </div>
             <div class="estimate-box">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12.5 7H11V13L16.25 16.15L17 14.92L12.5 12.25V7Z"
-                  fill="#e9b540" />
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12.5 7H11V13L16.25 16.15L17 14.92L12.5 12.25V7Z" fill="#e9b540" />
               </svg>
-              <span>Estimated delivery: <strong id="estimatedDelivery">3-5 business days</strong></span>
+              <span>Estimated delivery: <strong id="estimatedDelivery">...</strong></span>
             </div>
           </div>
         </details>
 
-        <!-- Order Items -->
         <details class="info-section" open>
           <summary class="section-header">
             <span class="section-title">Order Items</span>
             <span aria-hidden="true">›</span>
           </summary>
           <div class="section-body">
-            <ul id="orderItemsList" class="items-list"></ul>
+            <ul id="orderItemsList" class="items-list">
+                </ul>
           </div>
         </details>
 
-        <!-- Action Buttons -->
         <div class="action-buttons">
-          <a href="index.html" class="btn btn-primary">Continue Shopping</a>
+          <a href="products.html" class="btn btn-primary">Continue Shopping</a>
           <a href="profile.html" class="btn btn-secondary">View All Orders</a>
         </div>
 
-        <!-- Additional Info -->
         <div class="info-box">
           <p>📧 A confirmation email has been sent to your registered email address.</p>
           <p>📱 You can track your order status in the "My Orders" section.</p>
         </div>
+
       </section>
     </div>
   </main>
@@ -114,5 +107,4 @@
 
   <script type="module" src="../static/js/order-confirmation.js"></script>
 </body>
-
 </html>
