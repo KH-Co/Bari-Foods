@@ -31,59 +31,26 @@
           <h2 class="page-title">Checkout</h2>
         </div>
 
-        <!-- Delivery Info Section -->
+        <!-- Delivery Info Section - NEW DESIGN -->
         <details class="block" open>
           <summary class="block-head" role="button" aria-expanded="true">
-            <span class="block-title">Delivery Information</span>
-            <span aria-hidden="true">â€º</span>
+            <span class="block-title">Select a delivery address</span>
+            <span aria-hidden="true">›</span>
           </summary>
           <div class="block-body">
-            <div class="row-2">
-              <label class="field">
-                <span class="label">Saved addresses</span>
-                <select id="addrSelect" aria-describedby="addr-help">
-                  <option>Loading addresses...</option>
-                </select>
-              </label>
-              <div class="field">
-                <span class="label">&nbsp;</span>
-                <button id="addAddressBtn" class="btn sm" type="button" aria-label="Add new address">
-                  <span style="margin-right: 10px;">+</span>Add address
-                </button>
-              </div>
+            <div class="address-count">Delivery addresses (<span id="addressCount">0</span>)</div>
+            
+            <div id="addressList" class="address-list" role="radiogroup" aria-label="Select delivery address">
+              <!-- Addresses will be populated here -->
             </div>
 
-            <label class="field">
-              <span class="label">Street Address *</span>
-              <input id="addrLine" type="text" placeholder="Enter street, area, building number" required
-                aria-describedby="line-help" />
-            </label>
+            <button id="addNewAddressBtn" class="add-address-btn" type="button">
+              <span style="margin-right: 8px;">+</span>Add a new delivery address
+            </button>
 
-            <div class="row-2">
-              <label class="field">
-                <span class="label">City *</span>
-                <input id="addrCity" type="text" placeholder="Enter city name" required />
-              </label>
-              <label class="field">
-                <span class="label">Postal code *</span>
-                <input id="addrZip" type="text" inputmode="numeric" placeholder="Enter PIN code" pattern="[0-9]{6}"
-                  required />
-              </label>
-            </div>
-
-            <label class="field">
-              <span class="label">Delivery instructions</span>
-              <textarea id="addrNote" rows="3" placeholder="e.g., Leave at the door" maxlength="200"></textarea>
-            </label>
-
-            <div class="row-2">
-              <button id="saveAddressBtn" class="btn sm" type="button">
-                Save Address
-              </button>
-              <button id="deleteAddressBtn" class="btn sm" type="button" title="Delete currently selected address">
-                Delete Selected
-              </button>
-            </div>
+            <button id="deliverBtn" class="primary deliver-btn" type="button" disabled>
+              Deliver to this address
+            </button>
           </div>
         </details>
 
@@ -91,7 +58,7 @@
         <details class="block" open>
           <summary class="block-head" role="button" aria-expanded="true">
             <span class="block-title">Payment Method</span>
-            <span aria-hidden="true">â€º</span>
+            <span aria-hidden="true">›</span>
           </summary>
           <div class="block-body">
             <div class="pay-list" id="payList" role="radiogroup" aria-describedby="payment-title">
@@ -142,7 +109,7 @@
         <details class="block" open>
           <summary class="block-head" role="button" aria-expanded="true">
             <span class="block-title">Review Your Order</span>
-            <span aria-hidden="true">â€º</span>
+            <span aria-hidden="true">›</span>
           </summary>
           <div class="block-body">
             <ul id="reviewList" class="review-list"></ul>
@@ -157,24 +124,24 @@
 
           <div class="row">
             <span>Items Subtotal</span>
-            <strong id="sumItems">â‚¹ 0.00</strong>
+            <strong id="sumItems">₹ 0.00</strong>
           </div>
 
           <div class="row">
             <span>Delivery Fee</span>
-            <span id="sumDelivery">â‚¹ 0.00</span>
+            <span id="sumDelivery">₹ 0.00</span>
           </div>
 
           <div class="row">
             <span>Service Fee</span>
-            <span id="sumService">â‚¹ 0.00</span>
+            <span id="sumService">₹ 0.00</span>
           </div>
 
           <hr aria-hidden="true" />
 
           <div class="row grand">
             <span>Total Amount</span>
-            <strong id="sumTotal">â‚¹ 0.00</strong>
+            <strong id="sumTotal">₹ 0.00</strong>
           </div>
 
           <button id="placeOrder" class="primary" type="button" aria-describedby="order-terms" disabled>
@@ -182,7 +149,7 @@
           </button>
 
           <p class="tiny" id="order-terms">
-            Secure checkout â€¢ By placing this order, you agree to our
+            Secure checkout • By placing this order, you agree to our
             <a href="/terms" style="color: var(--gold); text-decoration: none;">Terms & Conditions</a>
           </p>
 
