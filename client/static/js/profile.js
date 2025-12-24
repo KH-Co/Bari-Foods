@@ -462,99 +462,81 @@ class ProfileManager {
         <form class="modal-body" id="addressForm">
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Address Type</label>
-              <select class="form-select" name="type" required>
-                <option value="">Select type</option>
-                <option value="home">Home</option>
-                <option value="work">Work</option>
-                <option value="other">Other</option>
-              </select>
+              <label class="form-label">
+                <i class="fas fa-user"></i>
+                Full Name
+              </label>
+              <input type="text" class="form-input" name="name" placeholder="Enter your full name" required>
             </div>
             <div class="form-group">
-              <label class="form-label">Full Name</label>
-              <input type="text" class="form-input" name="name" required>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Street Address</label>
-              <input type="text" class="form-input" name="street" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label">City</label>
-              <input type="text" class="form-input" name="city" required>
+              <label class="form-label">
+                <i class="fas fa-phone"></i>
+                Phone Number
+              </label>
+              <input type="tel" class="form-input" name="phone" placeholder="+91 XXXXXXXXXX" required>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">State</label>
-              <input type="text" class="form-input" name="state" required>
+              <label class="form-label">
+                <i class="fas fa-map-marker-alt"></i>
+                Street Address
+              </label>
+              <input type="text" class="form-input" name="street" placeholder="House no., Building name" required>
             </div>
             <div class="form-group">
-              <label class="form-label">PIN Code</label>
-              <input type="text" class="form-input" name="pincode" pattern="[0-9]{6}" required>
+              <label class="form-label">
+                <i class="fas fa-city"></i>
+                City
+              </label>
+              <input type="text" class="form-input" name="city" placeholder="City" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-map"></i>
+                State
+              </label>
+              <input type="text" class="form-input" name="state" placeholder="State" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-envelope"></i>
+                PIN Code
+              </label>
+              <input type="text" class="form-input" name="pincode" pattern="[0-9]{6}" placeholder="6-digit PIN" required>
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">Phone Number</label>
-            <input type="tel" class="form-input" name="phone" placeholder="+91 XXXXXXXXXX" required>
-          </div>
-          <div class="form-actions">
-            <button type="button" class="btn btn-ghost modal-cancel">Cancel</button>
-            <button type="submit" class="btn btn-primary">
-              <i class="fas fa-plus"></i>
-              Add Address
-            </button>
+            <label class="form-label">
+              <i class="fas fa-tag"></i>
+              Address Type
+            </label>
+            <select class="form-select" name="type" required>
+              <option value="">Select address type</option>
+              <option value="home"> Home</option>
+              <option value="work"> Work</option>
+              <option value="other"> Other</option>
+            </select>
           </div>
         </form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost modal-cancel">
+            <i class="fas fa-times"></i>
+            Cancel
+          </button>
+          <button type="submit" form="addressForm" class="btn btn-primary">
+            <i class="fas fa-plus"></i>
+            Add Address
+          </button>
+        </div>
       </div>
     `;
 
-    // Add modal styles
-    modal.style.cssText = `
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: var(--z-modal);
-      opacity: 0;
-      visibility: hidden;
-      transition: var(--transition);
-      backdrop-filter: blur(8px);
-    `;
-
-    const modalContent = modal.querySelector('.modal-content');
-    modalContent.style.cssText = `
-      background: var(--bg-secondary);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-xl);
-      max-width: 600px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-      transform: scale(0.9) translateY(20px);
-      transition: var(--transition);
-    `;
-
-    const modalHeader = modal.querySelector('.modal-header');
-    modalHeader.style.cssText = `
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--space-6);
-      border-bottom: 1px solid var(--glass-border);
-    `;
-
-    const modalBody = modal.querySelector('.modal-body');
-    modalBody.style.cssText = `padding: var(--space-6);`;
-
     // Event handlers
     const closeModal = () => {
-      modal.style.opacity = '0';
-      modal.style.visibility = 'hidden';
-      modalContent.style.transform = 'scale(0.9) translateY(20px)';
+      modal.classList.remove('active');
       setTimeout(() => modal.remove(), 300);
     };
 
@@ -569,6 +551,10 @@ class ProfileManager {
       this.saveAddress(new FormData(e.target));
       closeModal();
     });
+
+    // Show modal
+    document.body.appendChild(modal);
+    setTimeout(() => modal.classList.add('active'), 10);
 
     return modal;
   }

@@ -1,9 +1,7 @@
-/* Import the same CSS variables from your main style.css */
 :root {
   --bg-gradient: linear-gradient(to right, #021120 0%, #641807 100%);
   --logo-gradient: linear-gradient(180deg, #e9b540 0%, #f7d2c4 100%);
 
-  /* Text Colors */
   --primary-gold: #e9b540;
   --secondary-gold: #f7d2c4;
   --warm-gold: #a67c52;
@@ -11,35 +9,29 @@
   --light-cream: #F5F5DC;
   --pure-white: #ffffff;
 
-  /* Typography */
   --font-primary: 'Poppins', sans-serif;
   --font-secondary: 'Playfair Display', serif;
   --font-tertiary: 'Inter', sans-serif;
 
-  /* Interactive Colors */
   --button-primary: #831500;
   --button-secondary: #720500;
   --button-hover: #8b1902;
 
-  /* Border Radius */
   --radius-sm: 8px;
   --radius-md: 16px;
   --radius-lg: 24px;
   --radius-xl: 32px;
 
-  /* Transitions */
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
   --transition-slow: 0.5s ease;
 
-  /* Shadows */
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.3);
 }
 
-/* Reset and Base Styles */
 * {
   margin: 0;
   padding: 0;
