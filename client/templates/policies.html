@@ -1,479 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Policies - Bari Foods</title>
+  <link rel="icon" href="../static/img/logo.ico" type="image/x-icon">
+  <link rel="stylesheet" href="../static/css/style.css">
   <link rel="stylesheet" href="../static/css/policies.css">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
-  <!-- Header -->
-  <header class="navbar">
-    <div class="logo-container">
-      <a href="index.html" class="brand-link" style="text-decoration: none;">
-        <img src="../static/img/bari.jpg" alt="Bari Foods Logo" class="logo">
-        <h1>BARI FOODS</h1>
-      </a>
+
+<header class="navbar">
+  <div class="logo-container">
+    <a href="index.html" class="brand-link" style="display:flex;align-items:center;gap:15px;text-decoration:none;">
+      <img src="../static/img/bari.jpg" alt="Bari Foods Logo" class="logo">
+      <h1>BARI FOODS</h1>
+    </a>
+  </div>
+
+  <nav>
+    <ul class="nav-links">
+      <li><a href="index.html#hero">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="icons">
+    <a href="cart.html"><i class="fas fa-shopping-cart"></i></a>
+    <a href="profile.html"><i class="fas fa-user"></i></a>
+  </div>
+</header>
+
+<main class="policies-container">
+
+  <section class="policies-hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Our Policies</h1>
+      <p class="hero-subtitle">
+        Transparency, trust, and compliance with Indian laws are at the heart of Bari Foods.
+      </p>
     </div>
+  </section>
 
-    <nav>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="products.html">Products</a></li>
-        <li><a href="index.html#about">About</a></li>
-        <li><a href="index.html#services">Services</a></li>
-        <li><a href="index.html#contact">Contact</a></li>
-      </ul>
-    </nav>
+  <div class="policies-wrapper">
 
-    <div class="icons">
-      <a href="cart.html" aria-label="Shopping Cart">
-        <i class="fas fa-shopping-cart cart-icon"></i>
-      </a>
-      <a href="profile.html" id="profileTrigger" aria-label="User Profile">
-        <i class="fas fa-user user-icon"></i>
-      </a>
+    <aside class="policies-sidebar">
+      <nav class="policies-nav">
+        <h3 class="nav-title">Quick Navigation</h3>
+        <ul class="nav-list">
+          <li><a href="#privacy" class="nav-link active"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
+          <li><a href="#terms" class="nav-link"><i class="fas fa-file-contract"></i> Terms & Conditions</a></li>
+          <li><a href="#shipping" class="nav-link"><i class="fas fa-shipping-fast"></i> Shipping Policy</a></li>
+          <li><a href="#refund" class="nav-link"><i class="fas fa-undo"></i> Cancellation & Refund</a></li>
+          <li><a href="#fssai" class="nav-link"><i class="fas fa-certificate"></i> FSSAI & Safety</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <div class="policies-content">
+
+      <!-- PRIVACY POLICY -->
+      <section id="privacy" class="policy-section">
+        <div class="section-header">
+          <i class="fas fa-shield-alt section-icon"></i>
+          <h2 class="section-title">Privacy Policy</h2>
+        </div>
+        <div class="section-content">
+          <p class="last-updated"><i class="fas fa-calendar-alt"></i> Last updated: January 2025</p>
+
+          <div class="content-block">
+            <h3>Legal Compliance</h3>
+            <p>
+              This policy complies with the Information Technology Act, 2000 and the
+              Digital Personal Data Protection (DPDP) Act, 2023.
+            </p>
+          </div>
+
+          <div class="content-block">
+            <h3>Information We Collect</h3>
+            <p>
+              We collect your name, shipping address, phone number, and email address
+              to process orders and provide delivery updates.
+            </p>
+          </div>
+
+          <div class="content-block">
+            <h3>Payment Security</h3>
+            <p>
+              Bari Foods does not store credit or debit card details.
+              All payments are processed through PCI-DSS compliant payment gateways.
+            </p>
+          </div>
+
+          <div class="content-block">
+            <h3>Cookies</h3>
+            <p>
+              Our website uses cookies to enhance browsing experience and remember
+              items in your shopping cart.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TERMS -->
+      <section id="terms" class="policy-section">
+        <div class="section-header">
+          <i class="fas fa-file-contract section-icon"></i>
+          <h2 class="section-title">Terms & Conditions</h2>
+        </div>
+
+        <div class="section-content">
+          <div class="content-block">
+            <h3>Eligibility</h3>
+            <p>
+              You must be at least 18 years of age to use this website and place orders.
+            </p>
+          </div>
+
+          <div class="content-block">
+            <h3>Product Accuracy</h3>
+            <p>
+              We strive for accurate product descriptions and images.
+              Minor variations in color or packaging may occur.
+            </p>
+          </div>
+
+          <div class="content-block">
+            <h3>Pricing</h3>
+            <p>
+              All prices are listed in Indian Rupees (INR) and are inclusive of applicable GST
+              unless stated otherwise.
+            </p>
+          </div>
+
+          <div class="content-block">
+            <h3>Intellectual Property</h3>
+            <p>
+              All content, logos, and designs are the intellectual property of Bari Foods.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SHIPPING -->
+      <section id="shipping" class="policy-section">
+        <div class="section-header">
+          <i class="fas fa-shipping-fast section-icon"></i>
+          <h2 class="section-title">Shipping & Delivery Policy</h2>
+        </div>
+
+        <div class="section-content">
+          <div class="content-block">
+            <h3>Processing Time</h3>
+            <p>Orders are processed and dispatched within 24–48 hours.</p>
+          </div>
+
+          <div class="content-block">
+            <h3>Delivery Timeline</h3>
+            <p>Standard delivery across India takes 3–7 business days.</p>
+          </div>
+
+          <div class="content-block">
+            <h3>Tracking</h3>
+            <p>
+              Once dispatched, a tracking ID will be shared via email or SMS.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- REFUND -->
+      <section id="refund" class="policy-section">
+        <div class="section-header">
+          <i class="fas fa-undo section-icon"></i>
+          <h2 class="section-title">Cancellation, Refund & Return</h2>
+        </div>
+
+        <div class="section-content">
+          <div class="content-block">
+            <h3>Cancellation</h3>
+            <p>
+              Orders can be cancelled before dispatch for a full refund.
+              Once dispatched, cancellations are not accepted due to perishable nature.
+            </p>
+          </div>
+
+          <div class="content-block">
+            <h3>Returns</h3>
+            <p>
+              Returns are accepted only for damaged, expired, or incorrect products.
+              You must notify us within 24 hours with photographic evidence.
+            </p>
+          </div>
+
+          <div class="content-block">
+            <h3>Refunds</h3>
+            <p>
+              Approved refunds are processed to the original payment method
+              within 5–7 working days.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FSSAI -->
+      <section id="fssai" class="policy-section">
+        <div class="section-header">
+          <i class="fas fa-certificate section-icon"></i>
+          <h2 class="section-title">FSSAI & Food Safety</h2>
+        </div>
+
+        <div class="section-content">
+          <div class="content-block">
+            <h3>FSSAI License</h3>
+            <p>
+              Bari Foods operates under FSSAI License No:
+              <strong>[INSERT YOUR 14-DIGIT LICENSE NUMBER]</strong>
+            </p>
+          </div>
+
+          <div class="content-block">
+            <h3>Allergy Warning</h3>
+            <p>
+              Products may be processed in facilities handling nuts, wheat, and dairy.
+              Please check product labels carefully.
+            </p>
+          </div>
+        </div>
+      </section>
+
     </div>
-  </header>
+  </div>
+</main>
 
-  <!-- Main Content -->
-  <main class="policies-container">
-    <!-- Hero Section -->
-    <section class="policies-hero">
-      <div class="hero-content">
-        <h1 class="hero-title">Our Policies</h1>
-        <p class="hero-subtitle">Your trust is important to us. Read our policies to understand how we serve you better.
-        </p>
-      </div>
-    </section>
-
-    <!-- Policies Navigation -->
-    <div class="policies-wrapper">
-      <aside class="policies-sidebar">
-        <nav class="policies-nav">
-          <h3 class="nav-title">Quick Navigation</h3>
-          <ul class="nav-list">
-            <li><a href="#privacy" class="nav-link active"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
-            <li><a href="#terms" class="nav-link"><i class="fas fa-file-contract"></i> Terms & Conditions</a></li>
-            <li><a href="#shipping" class="nav-link"><i class="fas fa-shipping-fast"></i> Shipping Policy</a></li>
-            <li><a href="#cancellation" class="nav-link"><i class="fas fa-times-circle"></i> Cancellation & Refund</a></li>
-            <li><a href="#return" class="nav-link"><i class="fas fa-undo"></i> Return & Exchange</a></li>
-          </ul>
-        </nav>
-      </aside>
-
-      <div class="policies-content">
-        <!-- Privacy Policy -->
-        <section id="privacy" class="policy-section">
-          <div class="section-header">
-            <i class="fas fa-shield-alt section-icon"></i>
-            <h2 class="section-title">Privacy Policy</h2>
-          </div>
-          <div class="section-content">
-            <p class="last-updated"><i class="fas fa-calendar-alt"></i> Last updated: January 2025</p>
-
-            <div class="content-block">
-              <h3>1. Information We Collect</h3>
-              <p>At Bari Foods, we collect information that you provide directly to us when you:</p>
-              <ul>
-                <li>Create an account or place an order</li>
-                <li>Subscribe to our newsletter or promotional communications</li>
-                <li>Contact our customer support team</li>
-                <li>Participate in surveys, contests, or promotions</li>
-              </ul>
-              <p>The information we collect may include your name, email address, phone number, shipping address,
-                payment information, and order history.</p>
-            </div>
-
-            <div class="content-block">
-              <h3>2. How We Use Your Information</h3>
-              <p>We use the information we collect to:</p>
-              <ul>
-                <li>Process and fulfill your orders</li>
-                <li>Communicate with you about your orders and account</li>
-                <li>Send you marketing communications (with your consent)</li>
-                <li>Improve our products and services</li>
-                <li>Detect and prevent fraud or unauthorized activities</li>
-              </ul>
-            </div>
-
-            <div class="content-block">
-              <h3>3. Information Sharing</h3>
-              <p>We do not sell, trade, or rent your personal information to third parties. We may share your
-                information with:</p>
-              <ul>
-                <li>Service providers who help us operate our business (e.g., payment processors, shipping companies)
-                </li>
-                <li>Legal authorities when required by law or to protect our rights</li>
-              </ul>
-            </div>
-
-            <div class="content-block">
-              <h3>4. Data Security</h3>
-              <p>We implement appropriate technical and organizational measures to protect your personal information
-                against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission
-                over the internet is 100% secure.</p>
-            </div>
-
-            <div class="content-block">
-              <h3>5. Your Rights</h3>
-              <p>You have the right to:</p>
-              <ul>
-                <li>Access, update, or delete your personal information</li>
-                <li>Opt-out of marketing communications</li>
-                <li>Request a copy of your data</li>
-                <li>Lodge a complaint with a supervisory authority</li>
-              </ul>
-            </div>
-
-            <div class="content-block">
-              <h3>6. Contact Us</h3>
-              <p>If you have any questions about this Privacy Policy, please contact us at:</p>
-              <p><strong>Email:</strong> barifoods.in@gmail.com<br>
-                <strong>Phone:</strong> +91 9829288937
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <!-- Terms & Conditions -->
-        <section id="terms" class="policy-section">
-          <div class="section-header">
-            <i class="fas fa-file-contract section-icon"></i>
-            <h2 class="section-title">Terms & Conditions</h2>
-          </div>
-          <div class="section-content">
-            <p class="last-updated"><i class="fas fa-calendar-alt"></i> Last updated: January 2025</p>
-
-            <div class="content-block">
-              <h3>1. Acceptance of Terms</h3>
-              <p>By accessing and using the Bari Foods website and services, you accept and agree to be bound by these
-                Terms and Conditions. If you do not agree to these terms, please do not use our services.</p>
-            </div>
-
-            <div class="content-block">
-              <h3>2. Use of Website</h3>
-              <p>You may use our website for lawful purposes only. You agree not to:</p>
-              <ul>
-                <li>Use the website in any way that violates applicable laws or regulations</li>
-                <li>Attempt to gain unauthorized access to our systems</li>
-                <li>Interfere with the proper functioning of the website</li>
-                <li>Use automated systems to access the website without permission</li>
-              </ul>
-            </div>
-
-            <div class="content-block">
-              <h3>3. Product Information</h3>
-              <p>We strive to provide accurate product descriptions, images, and pricing. However, we do not warrant
-                that product descriptions or other content is accurate, complete, reliable, current, or error-free. We
-                reserve the right to correct any errors or inaccuracies.</p>
-            </div>
-
-            <div class="content-block">
-              <h3>4. Orders and Payment</h3>
-              <p>All orders are subject to acceptance and availability. We reserve the right to refuse or cancel any
-                order. Payment must be made at the time of order unless otherwise specified. We accept major credit
-                cards, debit cards, UPI, and cash on delivery.</p>
-            </div>
-
-            <div class="content-block">
-              <h3>5. Pricing</h3>
-              <p>All prices are listed in Indian Rupees (INR) and are inclusive of applicable taxes unless otherwise
-                stated. We reserve the right to change prices at any time without prior notice.</p>
-            </div>
-
-            <div class="content-block">
-              <h3>6. Intellectual Property</h3>
-              <p>All content on this website, including text, graphics, logos, images, and software, is the property of
-                Bari Foods and is protected by copyright and other intellectual property laws. You may not reproduce,
-                distribute, or create derivative works without our written permission.</p>
-            </div>
-
-            <div class="content-block">
-              <h3>7. Limitation of Liability</h3>
-              <p>To the fullest extent permitted by law, Bari Foods shall not be liable for any indirect, incidental,
-                special, or consequential damages arising out of or in connection with the use of our website or
-                products.</p>
-            </div>
-
-            <div class="content-block">
-              <h3>8. Governing Law</h3>
-              <p>These Terms and Conditions are governed by and construed in accordance with the laws of India. Any
-                disputes shall be subject to the exclusive jurisdiction of the courts in Jaipur, Rajasthan.</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- Shipping Policy -->
-        <section id="shipping" class="policy-section">
-          <div class="section-header">
-            <i class="fas fa-shipping-fast section-icon"></i>
-            <h2 class="section-title">Shipping Policy</h2>
-          </div>
-          <div class="section-content">
-            <p class="last-updated"><i class="fas fa-calendar-alt"></i> Last updated: January 2025</p>
-
-            <div class="content-block">
-              <h3>1. Shipping Coverage</h3>
-              <p>We currently ship to all locations across India. International shipping is not available at this time.
-              </p>
-            </div>
-
-            <div class="content-block">
-              <h3>2. Shipping Charges</h3>
-              <p>Shipping charges are calculated based on:</p>
-              <ul>
-                <li>Order value</li>
-                <li>Delivery location</li>
-                <li>Product weight and dimensions</li>
-              </ul>
-              <p><strong>Free Shipping:</strong> Orders above ₹499 qualify for free standard shipping across India.</p>
-            </div>
-
-            <div class="content-block">
-              <h3>3. Delivery Time</h3>
-              <p>Estimated delivery times:</p>
-              <ul>
-                <li><strong>Metro Cities:</strong> 3-5 business days</li>
-                <li><strong>Other Cities:</strong> 5-7 business days</li>
-                <li><strong>Remote Areas:</strong> 7-10 business days</li>
-              </ul>
-              <p>These are estimated times and may vary based on location and external factors.</p>
-            </div>
-
-            <div class="content-block">
-              <h3>4. Order Processing</h3>
-              <p>Orders are typically processed within 24-48 hours of placement. You will receive a confirmation email
-                with tracking information once your order has been shipped.</p>
-            </div>
-
-            <div class="content-block">
-              <h3>5. Tracking Your Order</h3>
-              <p>Once your order is shipped, you will receive a tracking number via email and SMS. You can track your
-                order status through our website or the courier partner's website.</p>
-            </div>
-
-            <div class="content-block">
-              <h3>6. Delivery Issues</h3>
-              <p>If you experience any issues with delivery:</p>
-              <ul>
-                <li>Contact us within 7 days of expected delivery date</li>
-                <li>Provide your order number and details</li>
-                <li>We will investigate and resolve the issue promptly</li>
-              </ul>
-            </div>
-
-            <div class="content-block">
-              <h3>7. Undelivered Packages</h3>
-              <p>If a package is returned to us as undeliverable due to incorrect address or unavailability:</p>
-              <ul>
-                <li>We will contact you to arrange redelivery</li>
-                <li>Additional shipping charges may apply for redelivery</li>
-                <li>If redelivery is not possible, a refund will be processed after deducting original shipping costs
-                </li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <!-- Cancellation & Refund -->
-        <section id="cancellation" class="policy-section">
-          <div class="section-header">
-            <i class="fas fa-times-circle section-icon"></i>
-            <h2 class="section-title">Cancellation & Refund Policy</h2>
-          </div>
-          <div class="section-content">
-            <p class="last-updated"><i class="fas fa-calendar-alt"></i> Last updated: January 2025</p>
-
-            <div class="content-block">
-              <h3>1. Order Cancellation</h3>
-              <p>You can cancel your order:</p>
-              <ul>
-                <li><strong>Before Shipment:</strong> Full refund within 24 hours of order placement</li>
-                <li><strong>After Shipment:</strong> Cancellation not possible; please refer to our Return Policy</li>
-              </ul>
-            </div>
-
-            <div class="content-block">
-              <h3>2. How to Cancel</h3>
-              <p>To cancel your order:</p>
-              <ol>
-                <li>Log in to your account</li>
-                <li>Go to "My Orders" section</li>
-                <li>Select the order you wish to cancel</li>
-                <li>Click "Cancel Order" and follow the prompts</li>
-              </ol>
-              <p>Alternatively, contact our customer support at +91 9829288937 or barifoods.in@gmail.com</p>
-            </div>
-
-            <div class="content-block">
-              <h3>3. Refund Process</h3>
-              <p>Once your cancellation is confirmed:</p>
-              <ul>
-                <li>Refund will be initiated within 5-7 business days</li>
-                <li>Refund will be credited to your original payment method</li>
-                <li>You will receive a confirmation email once the refund is processed</li>
-              </ul>
-            </div>
-
-            <div class="content-block">
-              <h3>4. Refund Timeline</h3>
-              <ul>
-                <li><strong>Credit/Debit Cards:</strong> 7-10 business days</li>
-                <li><strong>UPI/Net Banking:</strong> 5-7 business days</li>
-                <li><strong>Cash on Delivery:</strong> Bank transfer within 7-10 business days (account details
-                  required)</li>
-              </ul>
-            </div>
-
-            <div class="content-block">
-              <h3>5. Non-Refundable Items</h3>
-              <p>The following items are non-refundable:</p>
-              <ul>
-                <li>Products marked as non-returnable</li>
-                <li>Opened or used food products (due to hygiene reasons)</li>
-                <li>Products damaged due to misuse</li>
-                <li>Custom or personalized orders</li>
-              </ul>
-            </div>
-
-            <div class="content-block">
-              <h3>6. Partial Cancellations</h3>
-              <p>For orders with multiple items, you can cancel individual items before shipment. Partial refunds will
-                be processed accordingly.</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- Return & Exchange -->
-        <section id="return" class="policy-section">
-          <div class="section-header">
-            <i class="fas fa-undo section-icon"></i>
-            <h2 class="section-title">Return & Exchange Policy</h2>
-          </div>
-          <div class="section-content">
-            <p class="last-updated"><i class="fas fa-calendar-alt"></i> Last updated: January 2025</p>
-
-            <div class="content-block">
-              <h3>1. Return Eligibility</h3>
-              <p>You can return products within 7 days of delivery if:</p>
-              <ul>
-                <li>Product is damaged or defective</li>
-                <li>Wrong product was delivered</li>
-                <li>Product quality doesn't match description</li>
-                <li>Product is unopened and in original packaging</li>
-              </ul>
-            </div>
-
-            <div class="content-block">
-              <h3>2. Non-Returnable Items</h3>
-              <p>The following items cannot be returned:</p>
-              <ul>
-                <li>Opened food products (due to hygiene and safety reasons)</li>
-                <li>Products without original packaging and tags</li>
-                <li>Products damaged due to misuse or mishandling</li>
-                <li>Products beyond the 7-day return window</li>
-              </ul>
-            </div>
-
-            <div class="content-block">
-              <h3>3. How to Return</h3>
-              <p>To initiate a return:</p>
-              <ol>
-                <li>Contact us within 7 days of delivery at +91 9829288937 or barifoods.in@gmail.com</li>
-                <li>Provide your order number and reason for return</li>
-                <li>Share photos of the product (if damaged or defective)</li>
-                <li>Our team will guide you through the return process</li>
-              </ol>
-            </div>
-
-            <div class="content-block">
-              <h3>4. Return Shipping</h3>
-              <ul>
-                <li><strong>Defective/Wrong Products:</strong> We arrange free pickup or provide a prepaid return label
-                </li>
-                <li><strong>Change of Mind:</strong> Customer bears return shipping costs</li>
-              </ul>
-            </div>
-
-            <div class="content-block">
-              <h3>5. Exchange Policy</h3>
-              <p>Product exchanges are available for:</p>
-              <ul>
-                <li>Same product in different size/variant (if applicable)</li>
-                <li>Equal or higher value products</li>
-              </ul>
-              <p>Exchanges are subject to stock availability. If exchange is not possible, a refund will be issued.</p>
-            </div>
-
-            <div class="content-block">
-              <h3>6. Refund After Return</h3>
-              <p>Once we receive and inspect the returned product:</p>
-              <ul>
-                <li>Refund will be processed within 7-10 business days</li>
-                <li>You will receive a confirmation email</li>
-                <li>Amount will be credited to your original payment method</li>
-              </ul>
-            </div>
-
-            <div class="content-block">
-              <h3>7. Quality Assurance</h3>
-              <p>All our products undergo strict quality checks before dispatch. However, if you receive a damaged or
-                defective product:</p>
-              <ul>
-                <li>Contact us immediately with photos</li>
-                <li>We will arrange immediate replacement or refund</li>
-                <li>No questions asked for genuine quality issues</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section class="contact-section">
-          <div class="contact-card">
-            <h3><i class="fas fa-headset"></i> Need Help?</h3>
-            <p>If you have any questions about our policies, please don't hesitate to contact us.</p>
-            <div class="contact-details">
-              <div class="contact-item">
-                <i class="fas fa-envelope"></i>
-                <span>barifoods.in@gmail.com</span>
-              </div>
-              <div class="contact-item">
-                <i class="fas fa-phone"></i>
-                <span>+91 9829288937</span>
-              </div>
-              <div class="contact-item">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>Jaipur, Rajasthan 302001</span>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
+<footer class="footer">
     <div class="footer-container">
       <div class="footer-left">
         <div class="footer-logo-container">
           <img src="../static/img/bari.jpg" alt="Bari Foods Logo" class="footer-logo">
           <h2>BARI FOODS</h2>
         </div>
-        <p>Savor tradition where every bite echoes Royal Rajasthani flavor and brings you closer to our rich culinary
-          heritage.</p>
+        <p>Savor tradition where every bite echoes Royal Rajasthani flavor and brings you closer to our rich culinary heritage.</p>
         <div class="footer-socials">
           <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://www.instagram.com/barifoodsofficial/" aria-label="Instagram"><i
-              class="fab fa-instagram"></i></a>
+          <a href="https://www.instagram.com/barifoodsofficial/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
           <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
           <a href="https://www.youtube.com/@barifoodsofficial" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
         </div>
@@ -488,7 +264,6 @@
             <li><a href="#">FAQs</a></li>
           </ul>
         </div>
-
         <div class="footer-column">
           <h4>Policies</h4>
           <ul>
@@ -499,7 +274,6 @@
             <li><a href="#return">Return & Exchange</a></li>
           </ul>
         </div>
-
         <div class="footer-column">
           <h4>Contact Us</h4>
           <ul>
@@ -510,7 +284,6 @@
         </div>
       </div>
     </div>
-
     <div class="footer-bottom">
       <div class="footer-bottom-content">
         <p>Copyright © 2025 Bari Foods | All rights reserved</p>
@@ -520,29 +293,17 @@
 
   <script src="../static/js/header.js"></script>
   <script>
-    // Smooth scroll for navigation links
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', function (e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-
-        if (targetSection) {
-          // Remove active class from all links
-          document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-          // Add active class to clicked link
-          this.classList.add('active');
-
-          // Smooth scroll to section
-          targetSection.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
+    // Navbar Scroll Effect
+    window.addEventListener('scroll', () => {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
     });
 
-    // Highlight active section on scroll
+    // Sidebar active state logic
     const sections = document.querySelectorAll('.policy-section');
     const navLinks = document.querySelectorAll('.nav-link');
 
@@ -550,20 +311,18 @@
       let current = '';
       sections.forEach(section => {
         const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (pageYOffset >= (sectionTop - 150)) {
+        if (pageYOffset >= sectionTop - 150) {
           current = section.getAttribute('id');
         }
       });
-
       navLinks.forEach(link => {
         link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
+        if (link.getAttribute('href').includes(current)) {
           link.classList.add('active');
         }
       });
     });
   </script>
-</body>
 
+</body>
 </html>
