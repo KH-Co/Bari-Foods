@@ -20,8 +20,21 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at top right, rgba(233, 181, 64, 0.08), transparent 60%);
-  pointer-events: none;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="pattern" patternUnits="userSpaceOnUse" width="30" height="30"><circle cx="15" cy="15" r="2" fill="%23E9B540" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23pattern)"/></svg>');
+  opacity: 0.3;
+  animation: patternFloat 20s ease-in-out infinite;
+}
+
+@keyframes patternFloat {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(1deg);
+  }
 }
 
 .hero-content {
@@ -70,13 +83,14 @@
 .policies-sidebar {
   position: sticky;
   top: 120px;
-  background: rgba(131, 21, 0, 0.15);
+  background: transparent;
   border: 2px solid rgba(233, 181, 64, 0.25);
   border-radius: var(--radius-lg);
   padding: clamp(24px, 4vw, 32px);
   backdrop-filter: blur(20px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   transition: var(--transition-normal);
+  min-width: 280px;
 }
 
 .policies-sidebar:hover {
@@ -120,7 +134,8 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-  white-space: nowrap;
+  word-wrap: break-word;
+  text-align: left;
 }
 
 .nav-link::before {
@@ -149,6 +164,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 20px;
 }
 
 .nav-link:hover {
@@ -183,8 +199,8 @@
 }
 
 .policy-section {
-  background: rgba(131, 21, 0, 0.08);
-  border: 1px solid rgba(233, 181, 64, 0.2);
+  background: transparent;
+  border: 1px solid #5a3a2f;
   border-radius: var(--radius-lg);
   padding: clamp(32px, 5vw, 48px);
   backdrop-filter: blur(15px);
@@ -248,7 +264,7 @@
 }
 
 .policy-section:hover .section-icon {
-  transform: scale(1.1) rotate(5deg);
+  transform: scale(1.1);
   box-shadow: 0 6px 16px rgba(233, 181, 64, 0.3);
 }
 
