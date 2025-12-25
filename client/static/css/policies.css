@@ -225,6 +225,12 @@
   border-bottom: 2px solid rgba(233, 181, 64, 0.15);
 }
 
+.section-header i {
+  padding-left: 15px;
+  padding-top: 15px;
+  align-items: center;
+}
+
 .section-icon {
   width: 52px;
   height: 52px;
@@ -388,8 +394,17 @@
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 0.5; }
-  50% { transform: scale(1.1); opacity: 0.8; }
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
 }
 
 .contact-card:hover {
@@ -519,6 +534,11 @@
 
   .policies-wrapper {
     padding: 0 clamp(20px, 5vw, 30px) clamp(40px, 6vw, 60px);
+  }
+
+  .section-header i {
+    padding-left: 12px;
+    padding-top: 12px;
   }
 
   .nav-list {
@@ -659,6 +679,7 @@ html {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -669,17 +690,32 @@ html {
   animation: fadeInUp 0.6s ease-out forwards;
 }
 
-.policy-section:nth-child(1) { animation-delay: 0.1s; }
-.policy-section:nth-child(2) { animation-delay: 0.2s; }
-.policy-section:nth-child(3) { animation-delay: 0.3s; }
-.policy-section:nth-child(4) { animation-delay: 0.4s; }
-.policy-section:nth-child(5) { animation-delay: 0.5s; }
+.policy-section:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.policy-section:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.policy-section:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.policy-section:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.policy-section:nth-child(5) {
+  animation-delay: 0.5s;
+}
 
 .policy-section {
   scroll-margin-top: 120px;
 }
 
 @media print {
+
   .navbar,
   .policies-sidebar,
   .contact-section,
@@ -718,6 +754,7 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
