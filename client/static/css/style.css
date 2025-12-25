@@ -1650,6 +1650,10 @@ body {
   box-shadow: 0 8px 24px rgba(233, 181, 64, 0.3);
 }
 
+.insta-icon {
+  font-size: 1.4rem;
+  margin-right: 8px;
+}
 
 /* FOOTER */
 .footer {
