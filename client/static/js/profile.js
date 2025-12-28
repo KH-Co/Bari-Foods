@@ -13,7 +13,6 @@ class ProfileManager {
     this.loadUserData();
   }
 
-  // Event Bindings
   bindEvents() {
     // Sidebar toggle
     const menuToggle = document.getElementById('menuToggle');
@@ -24,7 +23,6 @@ class ProfileManager {
     sidebarClose?.addEventListener('click', () => this.closeSidebar());
     sidebarOverlay?.addEventListener('click', () => this.closeSidebar());
 
-    // Navigation links
     document.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
@@ -35,7 +33,6 @@ class ProfileManager {
       });
     });
 
-    // Password toggle buttons
     document.querySelectorAll('.password-toggle').forEach(button => {
       button.addEventListener('click', (e) => {
         e.preventDefault();
@@ -43,7 +40,6 @@ class ProfileManager {
       });
     });
 
-    // Form submissions
     document.getElementById('profileForm')?.addEventListener('submit', (e) => {
       e.preventDefault();
       this.saveProfile();
@@ -59,12 +55,10 @@ class ProfileManager {
       this.deleteAccount();
     });
 
-    // Address management
     document.querySelectorAll('.add-address').forEach(button => {
       button.addEventListener('click', () => this.addAddress());
     });
 
-    // Escape key handler
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         this.closeSidebar();
@@ -72,7 +66,6 @@ class ProfileManager {
     });
   }
 
-  // Sidebar Management
   toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
@@ -93,12 +86,10 @@ class ProfileManager {
 
   // Section Navigation
   showSection(sectionName) {
-    // Hide all sections
     document.querySelectorAll('.content-section').forEach(section => {
       section.classList.remove('active');
     });
 
-    // Show target section
     const targetSection = document.getElementById(`${sectionName}Section`);
     if (targetSection) {
       targetSection.classList.add('active');
@@ -435,12 +426,10 @@ class ProfileManager {
     }, 1500);
   }
 
-  // Address Management
   addAddress() {
     const modal = this.createAddressModal();
     document.body.appendChild(modal);
 
-    // Show modal with animation
     setTimeout(() => {
       modal.style.opacity = '1';
       modal.style.visibility = 'visible';

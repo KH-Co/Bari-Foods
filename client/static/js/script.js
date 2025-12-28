@@ -11,29 +11,6 @@ function saveCartLS(o) {
   localStorage.setItem("cartItems", JSON.stringify(o));
 }
 
-// ========Cart count on Cart icon is currently disabled  =============
-/*  
-function addToCart(id, qty = 1) {
-  const items = loadCartLS();
-  items[id] = (items[id] || 0) + qty;
-  saveCartLS(items);
-
-  const badge = document.getElementById("cartCount");
-  if (badge) {
-    const newCount = Object.values(items).reduce((s, q) => s + q, 0);
-    badge.textContent = newCount;
-    badge.style.transform = "scale(1.3)";
-    badge.style.color = "#e9b540";
-    setTimeout(() => {
-      badge.style.transform = "scale(1)";
-      badge.style.color = "";
-    }, 200);
-  }
-  showAddToCartToast();
-}
-*/
-
-
 function showAddToCartToast() {
   const toast = document.createElement('div');
   toast.innerHTML = `

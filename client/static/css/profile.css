@@ -984,33 +984,50 @@ body {
 .status-badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-full);
-  font-size: var(--text-xs);
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.85rem;
   font-weight: 600;
-  text-transform: uppercase;
+  text-transform: capitalize;
   letter-spacing: 0.5px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.status-badge.delivered {
-  background: var(--success-light);
-  color: var(--success);
+.status-pending {
+  background: rgba(255, 179, 0, 0.15);
+  color: #ffb300;
+  border-color: rgba(255, 179, 0, 0.3);
+  box-shadow: 0 0 10px rgba(255, 179, 0, 0.1);
 }
 
-.status-badge.processing {
-  background: var(--warning-light);
-  color: var(--warning);
+.status-shipped {
+  background: rgba(41, 182, 246, 0.15);
+  color: #29b6f6;
+  border-color: rgba(41, 182, 246, 0.3);
+  box-shadow: 0 0 10px rgba(41, 182, 246, 0.1);
 }
 
-.status-badge.shipped {
-  background: var(--info-light);
-  color: var(--info);
+.status-out-for-delivery {
+  background: rgba(224, 64, 251, 0.15);
+  color: #e040fb;
+  border-color: rgba(224, 64, 251, 0.3);
+  box-shadow: 0 0 10px rgba(224, 64, 251, 0.1);
 }
 
-.status-badge.cancelled {
-  background: var(--danger-light);
-  color: var(--danger);
+.status-completed {
+  background: rgba(0, 230, 118, 0.15);
+  color: #00e676;
+  border-color: rgba(0, 230, 118, 0.3);
+  box-shadow: 0 0 10px rgba(0, 230, 118, 0.1);
+}
+
+.status-cancelled {
+  background: rgba(255, 82, 82, 0.15);
+  color: #ff5252;
+  border-color: rgba(255, 82, 82, 0.3);
 }
 
 .order-content {
@@ -1730,12 +1747,18 @@ body {
     padding-right: 44px;
   }
 
-  .header-actions {
-    display: none;
+  .breadcrumb {
+    font-size: var(--text-xs);
+    gap: var(--space-1);
+    margin-bottom: var(--space-3);
   }
 
-  .breadcrumb {
-    display: none;
+  .breadcrumb-item {
+    font-size: 0.7rem;
+  }
+
+  .breadcrumb-separator {
+    font-size: 0.6rem;
   }
 
   .page-title-section h1 {
@@ -2378,10 +2401,6 @@ body {
 }
 
 @media (max-width: 375px) {
-  .brand {
-    display: none;
-  }
-
   .page-title-section h1 {
     font-size: var(--text-lg);
   }
