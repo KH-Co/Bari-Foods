@@ -11,7 +11,6 @@
   --bg-gradient: linear-gradient(to right, #021120 0%, #641807 100%);
   --logo-gradient: linear-gradient(180deg, #e9b540 0%, #f7d2c4 100%);
 
-  /* Text Colors */
   --primary-gold: #e9b540;
   --secondary-gold: #f7d2c4;
   --warm-gold: #a67c52;
@@ -19,32 +18,26 @@
   --light-cream: #F5F5DC;
   --pure-white: #ffffff;
 
-  /* Typography */
   --font-primary: 'Poppins', sans-serif;
   --font-secondary: 'Playfair Display', serif;
   --font-tertiary: 'Inter', sans-serif;
 
-  /* Shadows & Effects */
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.3);
 
-  /* Spacing */
   --section-padding: clamp(60px, 8vw, 120px);
   --container-padding: clamp(20px, 4vw, 50px);
 
-  /* Interactive Colors */
   --button-primary: #831500;
   --button-hover: #8b1902;
 
-  /* Border Radius */
   --radius-sm: 8px;
   --radius-md: 16px;
   --radius-lg: 24px;
   --radius-xl: 32px;
 
-  /* Transitions */
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
   --transition-slow: 0.5s ease;
@@ -352,7 +345,9 @@ body {
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 18px;
+  gap: 22px;
+  margin-top: 30px;
+  margin-bottom: 50px;
 }
 
 /* Card */
@@ -652,7 +647,7 @@ body {
 }
 
 .rating {
-  color: #dfa511;
+  color: #c63a22;
   font-size: clamp(14px, 2vw, 16px);
 }
 

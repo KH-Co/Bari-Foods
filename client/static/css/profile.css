@@ -997,37 +997,45 @@ body {
 }
 
 .status-pending {
-  background: rgba(255, 179, 0, 0.15);
-  color: #ffb300;
-  border-color: rgba(255, 179, 0, 0.3);
-  box-shadow: 0 0 10px rgba(255, 179, 0, 0.1);
+  background: rgba(243, 156, 18, 0.15);
+  color: #f39c12;
+  border: 1px solid rgba(243, 156, 18, 0.3);
+}
+
+.status-confirmed {
+  background: rgba(52, 152, 219, 0.15);
+  color: #3498db;
+  border: 1px solid rgba(52, 152, 219, 0.3);
 }
 
 .status-shipped {
-  background: rgba(41, 182, 246, 0.15);
-  color: #29b6f6;
-  border-color: rgba(41, 182, 246, 0.3);
-  box-shadow: 0 0 10px rgba(41, 182, 246, 0.1);
+  background: rgba(155, 89, 182, 0.15);
+  color: #9b59b6;
+  border: 1px solid rgba(155, 89, 182, 0.3);
 }
 
-.status-out-for-delivery {
-  background: rgba(224, 64, 251, 0.15);
-  color: #e040fb;
-  border-color: rgba(224, 64, 251, 0.3);
-  box-shadow: 0 0 10px rgba(224, 64, 251, 0.1);
-}
-
-.status-completed {
-  background: rgba(0, 230, 118, 0.15);
-  color: #00e676;
-  border-color: rgba(0, 230, 118, 0.3);
-  box-shadow: 0 0 10px rgba(0, 230, 118, 0.1);
+.status-delivered {
+  background: rgba(46, 204, 113, 0.15);
+  color: #2ecc71;
+  border: 1px solid rgba(46, 204, 113, 0.3);
 }
 
 .status-cancelled {
-  background: rgba(255, 82, 82, 0.15);
-  color: #ff5252;
-  border-color: rgba(255, 82, 82, 0.3);
+  background: rgba(231, 76, 60, 0.15);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.status-refund-initiated {
+  background: rgba(230, 126, 34, 0.15);
+  color: #e67e22;
+  border: 1px solid rgba(230, 126, 34, 0.3);
+}
+
+.status-refund-completed {
+  background: rgba(26, 188, 156, 0.15);
+  color: #1abc9c;
+  border: 1px solid rgba(26, 188, 156, 0.3);
 }
 
 .order-content {
