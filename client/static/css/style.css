@@ -18,7 +18,7 @@
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.3);
 
-  --section-padding: clamp(60px, 8vw, 120px);
+  --section-padding: clamp(50px, 6vw, 100px);
   --container-padding: clamp(20px, 4vw, 50px);
 
   --button-primary: #831500;
@@ -1000,8 +1000,8 @@ body {
 
 .mascot-left,
 .mascot-right {
-  width: clamp(45px, 4vw, 45px);
-  height: clamp(45px, 4vw, 45px);
+  width: clamp(58px, 5vw, 58px);
+  height: clamp(58px, 5vw, 58px);
   object-fit: contain;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
   transition: var(--transition-normal);
