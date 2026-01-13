@@ -984,33 +984,58 @@ body {
 .status-badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-full);
-  font-size: var(--text-xs);
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.85rem;
   font-weight: 600;
-  text-transform: uppercase;
+  text-transform: capitalize;
   letter-spacing: 0.5px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.status-badge.delivered {
-  background: var(--success-light);
-  color: var(--success);
+.status-pending {
+  background: rgba(243, 156, 18, 0.15);
+  color: #f39c12;
+  border: 1px solid rgba(243, 156, 18, 0.3);
 }
 
-.status-badge.processing {
-  background: var(--warning-light);
-  color: var(--warning);
+.status-confirmed {
+  background: rgba(52, 152, 219, 0.15);
+  color: #3498db;
+  border: 1px solid rgba(52, 152, 219, 0.3);
 }
 
-.status-badge.shipped {
-  background: var(--info-light);
-  color: var(--info);
+.status-shipped {
+  background: rgba(155, 89, 182, 0.15);
+  color: #9b59b6;
+  border: 1px solid rgba(155, 89, 182, 0.3);
 }
 
-.status-badge.cancelled {
-  background: var(--danger-light);
-  color: var(--danger);
+.status-delivered {
+  background: rgba(46, 204, 113, 0.15);
+  color: #2ecc71;
+  border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.status-cancelled {
+  background: rgba(231, 76, 60, 0.15);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.status-refund-initiated {
+  background: rgba(230, 126, 34, 0.15);
+  color: #e67e22;
+  border: 1px solid rgba(230, 126, 34, 0.3);
+}
+
+.status-refund-completed {
+  background: rgba(26, 188, 156, 0.15);
+  color: #1abc9c;
+  border: 1px solid rgba(26, 188, 156, 0.3);
 }
 
 .order-content {
@@ -1730,12 +1755,18 @@ body {
     padding-right: 44px;
   }
 
-  .header-actions {
-    display: none;
+  .breadcrumb {
+    font-size: var(--text-xs);
+    gap: var(--space-1);
+    margin-bottom: var(--space-3);
   }
 
-  .breadcrumb {
-    display: none;
+  .breadcrumb-item {
+    font-size: 0.7rem;
+  }
+
+  .breadcrumb-separator {
+    font-size: 0.6rem;
   }
 
   .page-title-section h1 {
@@ -2378,10 +2409,6 @@ body {
 }
 
 @media (max-width: 375px) {
-  .brand {
-    display: none;
-  }
-
   .page-title-section h1 {
     font-size: var(--text-lg);
   }

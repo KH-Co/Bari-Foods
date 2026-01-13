@@ -22,7 +22,6 @@
 </head>
 
 <body>
-  <!-- Navigation Header -->
   <nav class="navbar">
     <div class="left-section">
       <button class="menu-toggle" id="menuToggle">
@@ -41,10 +40,8 @@
     </div>
   </nav>
 
-  <!-- Sidebar Overlay -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <button class="sidebar-close" id="sidebarClose">
@@ -52,9 +49,8 @@
       </button>
       <div class="profile-section">
         <div class="profile-info">
-          <h3>John Doe</h3>
-          <p><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-              data-cfemail="dbb1b4b3b5f5bfb4be9bbea3bab6abb7bef5b8b4b6">[email&#160;protected]</a></p>
+          <h3>Loading...</h3>
+          <p>...</p>
         </div>
       </div>
     </div>
@@ -63,9 +59,7 @@
       <ul class="nav-menu">
         <li>
           <a href="#" class="nav-link active" data-section="profile">
-            <div class="nav-icon">
-              <i class="fas fa-user"></i>
-            </div>
+            <div class="nav-icon"><i class="fas fa-user"></i></div>
             <div class="nav-content">
               <span class="nav-title">Personal Information</span>
               <span class="nav-subtitle">Update your profile details</span>
@@ -74,9 +68,7 @@
         </li>
         <li>
           <a href="#" class="nav-link" data-section="security">
-            <div class="nav-icon">
-              <i class="fas fa-shield-alt"></i>
-            </div>
+            <div class="nav-icon"><i class="fas fa-shield-alt"></i></div>
             <div class="nav-content">
               <span class="nav-title">Password & Security</span>
               <span class="nav-subtitle">Manage account security</span>
@@ -85,9 +77,7 @@
         </li>
         <li>
           <a href="#" class="nav-link" data-section="orders">
-            <div class="nav-icon">
-              <i class="fas fa-shopping-bag"></i>
-            </div>
+            <div class="nav-icon"><i class="fas fa-shopping-bag"></i></div>
             <div class="nav-content">
               <span class="nav-title">Order History</span>
               <span class="nav-subtitle">Track your purchases</span>
@@ -96,9 +86,7 @@
         </li>
         <li>
           <a href="#" class="nav-link" data-section="addresses">
-            <div class="nav-icon">
-              <i class="fas fa-map-marker-alt"></i>
-            </div>
+            <div class="nav-icon"><i class="fas fa-map-marker-alt"></i></div>
             <div class="nav-content">
               <span class="nav-title">Delivery Addresses</span>
               <span class="nav-subtitle">Manage saved locations</span>
@@ -108,9 +96,7 @@
         <li class="nav-divider"></li>
         <li>
           <a href="#" class="nav-link danger" data-section="delete">
-            <div class="nav-icon">
-              <i class="fas fa-trash-alt"></i>
-            </div>
+            <div class="nav-icon"><i class="fas fa-trash-alt"></i></div>
             <div class="nav-content">
               <span class="nav-title">Delete Account</span>
               <span class="nav-subtitle">Permanently remove account</span>
@@ -128,12 +114,10 @@
     </div>
   </aside>
 
-  <!-- Main Content -->
   <main class="main-container">
-    <!-- Page Header -->
     <header class="page-header">
       <nav class="breadcrumb">
-        <a href="../templates/index.html" class="breadcrumb-item">Home</a>
+        <a href="index.html" class="breadcrumb-item">Home</a>
         <i class="fas fa-chevron-right breadcrumb-separator"></i>
         <span class="breadcrumb-item active">Account Management</span>
       </nav>
@@ -143,7 +127,6 @@
       </div>
     </header>
 
-    <!-- Profile Section -->
     <section class="content-section active" id="profileSection">
       <div class="card">
         <div class="card-header">
@@ -153,7 +136,6 @@
           </div>
         </div>
         <div class="card-content">
-
           <form id="profileForm" class="form-grid">
             <div class="form-section">
               <h3 class="form-section-title">Basic Information</h3>
@@ -170,7 +152,7 @@
               <div class="form-row">
                 <div class="form-group">
                   <label class="form-label">Email Address</label>
-                  <input type="email" id="email" name="email" class="form-input" required>
+                  <input type="email" id="email" name="email" class="form-input" required readonly style="opacity: 0.7; cursor: not-allowed;">
                 </div>
                 <div class="form-group">
                   <label class="form-label">Mobile Number</label>
@@ -194,30 +176,19 @@
               </div>
             </div>
             <div class="form-actions">
-              <button type="button" class="btn btn-ghost">Cancel</button>
-              <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i>
-                Save Changes
-              </button>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Changes</button>
             </div>
           </form>
         </div>
       </div>
     </section>
 
-    <!-- Security Section -->
     <section class="content-section" id="securitySection">
       <div class="card">
         <div class="card-header">
           <div class="card-title-group">
             <h2>Password & Security</h2>
             <p class="card-subtitle">Keep your account secure with a strong password</p>
-          </div>
-          <div class="security-status">
-            <div class="status-indicator strong">
-              <i class="fas fa-shield-check"></i>
-              Strong
-            </div>
           </div>
         </div>
         <div class="card-content">
@@ -228,23 +199,17 @@
                 <label class="form-label">Current Password</label>
                 <div class="password-wrapper">
                   <input type="password" id="currentPassword" name="currentPassword" class="form-input" required>
-                  <button type="button" class="password-toggle" data-target="currentPassword">
-                    <i class="fas fa-eye"></i>
-                  </button>
+                  <button type="button" class="password-toggle" data-target="currentPassword"><i class="fas fa-eye"></i></button>
                 </div>
               </div>
               <div class="form-group">
                 <label class="form-label">New Password</label>
                 <div class="password-wrapper">
                   <input type="password" id="newPassword" name="newPassword" class="form-input" required>
-                  <button type="button" class="password-toggle" data-target="newPassword">
-                    <i class="fas fa-eye"></i>
-                  </button>
+                  <button type="button" class="password-toggle" data-target="newPassword"><i class="fas fa-eye"></i></button>
                 </div>
                 <div class="password-strength">
-                  <div class="strength-bar">
-                    <div class="strength-fill"></div>
-                  </div>
+                  <div class="strength-bar"><div class="strength-fill"></div></div>
                   <div class="strength-text">Password strength</div>
                 </div>
               </div>
@@ -252,48 +217,27 @@
                 <label class="form-label">Confirm New Password</label>
                 <div class="password-wrapper">
                   <input type="password" id="confirmPassword" name="confirmPassword" class="form-input" required>
-                  <button type="button" class="password-toggle" data-target="confirmPassword">
-                    <i class="fas fa-eye"></i>
-                  </button>
+                  <button type="button" class="password-toggle" data-target="confirmPassword"><i class="fas fa-eye"></i></button>
                 </div>
               </div>
             </div>
-
             <div class="password-requirements">
               <h4 class="requirements-title">Password Requirements</h4>
               <div class="requirements-list">
-                <div class="requirement">
-                  <i class="fas fa-times-circle"></i>
-                  At least 8 characters long
-                </div>
-                <div class="requirement">
-                  <i class="fas fa-times-circle"></i>
-                  Contains uppercase letter
-                </div>
-                <div class="requirement">
-                  <i class="fas fa-times-circle"></i>
-                  Contains number
-                </div>
-                <div class="requirement">
-                  <i class="fas fa-times-circle"></i>
-                  Contains special character
-                </div>
+                <div class="requirement"><i class="fas fa-times-circle"></i> At least 8 characters long</div>
+                <div class="requirement"><i class="fas fa-times-circle"></i> Contains uppercase letter</div>
+                <div class="requirement"><i class="fas fa-times-circle"></i> Contains number</div>
+                <div class="requirement"><i class="fas fa-times-circle"></i> Contains special character</div>
               </div>
             </div>
-
             <div class="form-actions">
-              <button type="button" class="btn btn-ghost">Cancel</button>
-              <button type="submit" class="btn btn-primary">
-                <i class="fas fa-key"></i>
-                Update Password
-              </button>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-key"></i> Update Password</button>
             </div>
           </form>
         </div>
       </div>
     </section>
 
-    <!-- Orders Section -->
     <section class="content-section" id="ordersSection">
       <div class="card">
         <div class="card-header">
@@ -304,91 +248,14 @@
         </div>
         <div class="card-content">
           <div class="orders-list">
-            <div class="order-item">
-              <div class="order-header">
-                <div class="order-info">
-                  <h3>Order #ORD-2024-001</h3>
-                  <div class="order-date">Placed on January 15, 2024</div>
-                </div>
-                <div class="order-status">
-                  <span class="status-badge delivered">
-                    <i class="fas fa-check-circle"></i>
-                    Delivered
-                  </span>
-                </div>
-              </div>
-              <div class="order-content">
-                <div class="product-preview">
-                  <img src="../static/products-img/p1.png" alt="Product" class="product-image">
-                  <div class="product-details">
-                    <h4>Premium Leather Handbag</h4>
-                    <div class="product-meta">
-                      <span class="product-price">â‚¹2,499</span>
-                      <span class="product-separator">â€¢</span>
-                      <span>Qty: 1</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="order-total">
-                  <div class="total-label">Total</div>
-                  <div class="total-amount">â‚¹2,499</div>
-                </div>
-              </div>
-              <div class="order-actions">
-                <button class="btn btn-small btn-ghost">
-                  <i class="fas fa-eye"></i>
-                  View Details
-                </button>
-                <button class="btn btn-small btn-outline">
-                  <i class="fas fa-redo"></i>
-                  Reorder
-                </button>
-              </div>
-            </div>
-
-            <div class="order-item">
-              <div class="order-header">
-                <div class="order-info">
-                  <h3>Order #ORD-2024-002</h3>
-                  <div class="order-date">Placed on January 20, 2024</div>
-                </div>
-                <div class="order-status">
-                  <span class="status-badge shipped">
-                    <i class="fas fa-shipping-fast"></i>
-                    Shipped
-                  </span>
-                </div>
-              </div>
-              <div class="order-content">
-                <div class="product-preview">
-                  <img src="../static/products-img/p2.png" alt="Product" class="product-image">
-                  <div class="product-details">
-                    <h4>Gourmet Spice Mix Set</h4>
-                    <div class="product-meta">
-                      <span class="product-price">â‚¹899</span>
-                      <span class="product-separator">â€¢</span>
-                      <span>Qty: 2</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="order-total">
-                  <div class="total-label">Total</div>
-                  <div class="total-amount">â‚¹1,798</div>
-                </div>
-              </div>
-              <div class="order-actions">
-                <button class="btn btn-small btn-ghost">
-                  <i class="fas fa-truck"></i>
-                  Track Order
-                </button>
-              </div>
+            <div style="padding: 20px; text-align: center; color: #888;">
+              <i class="fas fa-spinner fa-spin"></i> Loading your orders...
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Addresses Section -->
     <section class="content-section" id="addressesSection">
       <div class="card">
         <div class="card-header">
@@ -399,69 +266,6 @@
         </div>
         <div class="card-content">
           <div class="addresses-grid">
-            <div class="address-item">
-              <div class="address-header">
-                <div class="address-type">
-                  <i class="fas fa-home"></i>
-                  Home
-                </div>
-                <div class="address-badges">
-                  <span class="badge-primary">Default</span>
-                </div>
-              </div>
-              <div class="address-content">
-                <div class="address-name">John Doe</div>
-                <div class="address-details">
-                  123 Main Street, Apartment 4B<br>
-                  Mumbai, Maharashtra 400001
-                </div>
-                <div class="address-phone">
-                  <i class="fas fa-phone"></i>
-                  +91 9876543210
-                </div>
-              </div>
-              <div class="address-actions">
-                <button class="btn btn-small btn-ghost">
-                  <i class="fas fa-edit"></i>
-                  Edit
-                </button>
-                <button class="btn btn-small btn-outline">
-                  <i class="fas fa-trash"></i>
-                  Delete
-                </button>
-              </div>
-            </div>
-
-            <div class="address-item">
-              <div class="address-header">
-                <div class="address-type">
-                  <i class="fas fa-building"></i>
-                  Work
-                </div>
-              </div>
-              <div class="address-content">
-                <div class="address-name">John Doe</div>
-                <div class="address-details">
-                  456 Business Park, Floor 12<br>
-                  Bangalore, Karnataka 560001
-                </div>
-                <div class="address-phone">
-                  <i class="fas fa-phone"></i>
-                  +91 9876543210
-                </div>
-              </div>
-              <div class="address-actions">
-                <button class="btn btn-small btn-ghost">
-                  <i class="fas fa-edit"></i>
-                  Edit
-                </button>
-                <button class="btn btn-small btn-outline">
-                  <i class="fas fa-trash"></i>
-                  Delete
-                </button>
-              </div>
-            </div>
-
             <div class="add-address">
               <div class="add-address-content">
                 <i class="fas fa-plus"></i>
@@ -474,7 +278,6 @@
       </div>
     </section>
 
-    <!-- Delete Account Section -->
     <section class="content-section" id="deleteSection">
       <div class="card danger-card">
         <div class="card-header">
@@ -485,63 +288,33 @@
         </div>
         <div class="card-content">
           <div class="warning-section">
-            <div class="warning-icon">
-              <i class="fas fa-exclamation-triangle"></i>
-            </div>
+            <div class="warning-icon"><i class="fas fa-exclamation-triangle"></i></div>
             <div class="warning-content">
               <h3>This action cannot be undone</h3>
-              <p class="warning-description">
-                Deleting your account will permanently remove all your personal data, order history,
-                saved addresses, and preferences. This action is irreversible.
-              </p>
+              <p class="warning-description">Deleting your account will permanently remove all your personal data, order history, saved addresses, and preferences. This action is irreversible.</p>
               <div class="data-list">
-                <div class="data-item">
-                  <i class="fas fa-user"></i>
-                  Personal profile information
-                </div>
-                <div class="data-item">
-                  <i class="fas fa-shopping-bag"></i>
-                  Order history and receipts
-                </div>
-                <div class="data-item">
-                  <i class="fas fa-map-marker-alt"></i>
-                  Saved delivery addresses
-                </div>
-                <div class="data-item">
-                  <i class="fas fa-cog"></i>
-                  Account preferences and settings
-                </div>
-              </div>
-              <div class="support-note">
-                <i class="fas fa-info-circle"></i>
-                <p>Need help instead? <a href="#" class="support-link">Contact our support team</a> before deleting your
-                  account.</p>
+                <div class="data-item"><i class="fas fa-user"></i> Personal profile information</div>
+                <div class="data-item"><i class="fas fa-shopping-bag"></i> Order history and receipts</div>
+                <div class="data-item"><i class="fas fa-map-marker-alt"></i> Saved delivery addresses</div>
+                <div class="data-item"><i class="fas fa-cog"></i> Account preferences and settings</div>
               </div>
             </div>
           </div>
-
           <form id="deleteAccountForm">
             <div class="form-group">
               <label class="form-label">Type "DELETE MY ACCOUNT" to confirm</label>
               <input type="text" name="confirmation" class="form-input" placeholder="DELETE MY ACCOUNT" required>
               <div class="form-hint">This confirmation is required to proceed with account deletion</div>
             </div>
-
             <div class="form-actions">
-              <button type="button" class="btn btn-ghost">Cancel</button>
-              <button type="submit" class="btn btn-ghost" disabled>
-                <i class="fas fa-trash"></i>
-                Delete My Account
-              </button>
+              <button type="submit" class="btn btn-ghost" disabled><i class="fas fa-trash"></i> Delete My Account</button>
             </div>
           </form>
         </div>
-      </div>
       </div>
     </section>
   </main>
 
   <script src="../static/js/profile.js"></script>
 </body>
-
 </html>

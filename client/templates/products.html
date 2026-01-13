@@ -54,7 +54,6 @@
   <main>
 
     <section class="products">
-
       <div class="container">
         <!-- title Header -->
         <div class="products-header">
@@ -87,17 +86,29 @@
       <div id="backdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
         <div class="modal" role="document">
           <header class="modal-header">
-            <div class="crumbs" id="modalCrumbs">Products â€º All â€º <span id="crumbName"></span></div>
-            <button class="close" id="modalClose" aria-label="Close">âœ•</button>
+            <div class="crumbs" id="modalCrumbs">Products &gt; All &gt; <span id="crumbName"></span></div>
+            <button class="close" id="modalClose" aria-label="Close">✕</button>
           </header>
 
           <div class="modal-body">
-            <!-- Left: hero -->
+            <!-- Left: hero with carousel -->
             <aside class="hero">
               <div class="hero-frame">
                 <img id="modalHero" alt="">
+
+                <!-- Carousel Navigation Buttons -->
+                <div class="carousel-controls">
+                  <button class="carousel-btn" id="carouselPrev" aria-label="Previous image">
+                    <i class="fas fa-chevron-left"></i>
+                  </button>
+                  <button class="carousel-btn" id="carouselNext" aria-label="Next image">
+                    <i class="fas fa-chevron-right"></i>
+                  </button>
+                </div>
               </div>
-              <div class="thumbs" id="modalThumbs"></div>
+
+              <!-- Carousel Indicators -->
+              <div class="carousel-indicators" id="carouselIndicators"></div>
             </aside>
 
             <!-- Right: details -->
@@ -107,13 +118,8 @@
 
               <div class="price-row">
                 <div class="price" id="modalPrice"></div>
-                <div class="qty">
-                  <button id="dec" aria-label="Decrease">âˆ’</button>
-                  <span id="qtyVal">1</span>
-                  <button id="inc" aria-label="Increase">+</button>
-                </div>
                 <button class="cta-btn" id="addToCart">Add to Cart</button>
-                <button class="save" id="fav" aria-label="Favorite">â˜†</button>
+                <button class="save" id="fav" aria-label="Favorite">☆</button>
               </div>
               <div class="tiny muted">(Inclusive of all taxes)</div>
 
@@ -147,9 +153,12 @@
           heritage.</p>
 
         <div class="footer-socials">
-          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://www.instagram.com/barifoodsofficial/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="https://wa.me/919829288937?text=Hello%20Bari%20Foods%2C%20I%20want%20to%20place%20an%20order" target="_blank" aria-label="Chat on WhatsApp">
+          <a href="https://www.facebook.com/profile.php?id=61585798942050" aria-label="Facebook"><i
+              class="fab fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/barifoodsofficial/" aria-label="Instagram"><i
+              class="fab fa-instagram"></i></a>
+          <a href="https://wa.me/919829288937?text=Hello%20Bari%20Foods%2C%20I%20want%20to%20place%20an%20order"
+            target="_blank" aria-label="Chat on WhatsApp">
             <i class="fab fa-whatsapp"></i>
           </a>
           <a href="https://www.youtube.com/@barifoodsofficial" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
@@ -161,9 +170,8 @@
         <div class="footer-column">
           <h4>Information</h4>
           <ul>
-            <li><a href="#about">About Us</a></li>
-            <li><a href="#services">Our Services</a></li>
-            <li><a href="#">FAQs</a></li>
+            <li><a href="index.html#about">About Us</a></li>
+            <li><a href="index.html#services">Our Services</a></li>
           </ul>
         </div>
 
@@ -186,15 +194,13 @@
             <li class="address">Jaipur, RJ 302001</li>
           </ul>
         </div>
-
-
       </div>
     </div>
 
     <!-- Bottom -->
     <div class="footer-bottom">
       <div class="footer-bottom-content">
-        <p>Copyright © 2025 Bari Foods | All rights reserved</p>
+        <p>Copyright &copy; 2025 Bari Foods | All rights reserved</p>
       </div>
     </div>
   </footer>
@@ -211,7 +217,7 @@
       <div class="auth-form login-form active" id="loginForm">
         <div class="auth-header">
           <div class="auth-logo">
-            <img src="../static/img/bari.jpg" alt="Bari Foods">
+            <img src="/static/img/bari.jpg" alt="Bari Foods">
             <h2>Welcome Back</h2>
           </div>
           <p class="auth-subtitle">Sign in to your account</p>
@@ -260,7 +266,7 @@
       <div class="auth-form signup-form" id="signupForm">
         <div class="auth-header">
           <div class="auth-logo">
-            <img src="../static/img/bari.jpg" alt="Bari Foods">
+            <img src="/static/img/bari.jpg" alt="Bari Foods">
             <h2>Join Bari Foods</h2>
           </div>
           <p class="auth-subtitle">Create your account to get started</p>
@@ -340,9 +346,9 @@
     </div>
   </div>
 
+  <script type="module" src="../static/js/script.js"></script>
   <script type="module" src="../static/js/products.js" defer></script>
   <script src="../static/js/header.js"></script>
-  <script src="../static/js/profile.js"></script>
 </body>
 
 </html>
