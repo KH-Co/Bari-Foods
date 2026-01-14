@@ -134,6 +134,7 @@ body {
 
 .user-icon {
   font-size: 26px;
+  color: var(--primary-gold);
 }
 
 /* Page layout */
